@@ -2,25 +2,54 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot;
+package org.frc5902.robot;
 
-import edu.wpi.first.wpilibj.TimedRobot;
+import org.littletonrobotics.junction.LoggedRobot;
+import org.littletonrobotics.junction.Logger;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
-public class Robot extends TimedRobot {
-  private Command m_autonomousCommand;
+public class Robot extends LoggedRobot {
+  private Command m_autonomousCommand = null;
+  private boolean m_prevIsRedAlliance = true;
+
+  
 
   private final RobotContainer m_robotContainer;
 
   public Robot() {
-    m_robotContainer = new RobotContainer();
+    m_robotContainer = new KitbotRobotContainer();
   }
+
 
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
   }
+
+  @Override
+  public void robotInit() {
+      Logger.recordMetadata("ProjectName", BuildInfo.MAVEN_NAME);
+      Logger.recordMetadata("BuildDate", BuildInfo.BUILD_DATE);
+      Logger.recordMetadata("GitSHA", BuildInfo.GIT_SHA);
+      Logger.recordMetadata("GitDate", BuildInfo.GIT_DATE);
+      Logger.recordMetadata("GitBranch", BuildInfo.GIT_BRANCH);
+      
+      
+      switch (BuildInfo.DIRTY) {
+            case 0:
+                Logger.recordMetadata("GitDirty", "All changes committed");
+                break;
+            case 1:
+                Logger.recordMetadata("GitDirty", "Uncomitted changes");
+                break;
+            default:
+                Logger.recordMetadata("GitDirty", "Unknown");
+                break;
+        }
+  }
+
 
   @Override
   public void disabledInit() {}

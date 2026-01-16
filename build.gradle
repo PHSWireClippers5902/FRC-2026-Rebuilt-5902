@@ -1,6 +1,17 @@
+import edu.wpi.first.gradlerio.GradleRIOPlugin
+import groovy.json.JsonSlurper
+import java.nio.charset.StandardCharsets
+
 plugins {
     id "java"
     id "edu.wpi.first.GradleRIO" version "2026.1.1-beta-1"
+
+    id "com.palantir.java-format" version "2.50.0"
+    id "com.diffplug.spotless" version "6.25.0"
+    id "net.ltgt.errorprone" version "4.1.0"
+
+    id "com.peterabeles.gversion" version "1.10"
+
 }
 
 java {
@@ -70,9 +81,19 @@ dependencies {
     nativeRelease wpi.java.deps.wpilibJniRelease(wpi.platforms.desktop)
     nativeRelease wpi.java.vendor.jniRelease(wpi.platforms.desktop)
     simulationRelease wpi.sim.enableRelease()
-
+    
     testImplementation 'org.junit.jupiter:junit-jupiter:5.10.1'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    errorprone "com.google.errorprone:error_prone_core:2.36.0"
+
+    def akitJson = new JsonSlurper().parseText(new File(projectDir.getAbsolutePath() + "/vendordeps/AdvantageKit.json").text)
+    annotationProcessor "org.littletonrobotics.akit:akit-autolog:$akitJson.version"
+}
+
+compileJava {
+    options.errorprone.disableWarningsInGeneratedCode = true
+    options.errorprone.excludedPaths = ".*/build/generated/.*"
 }
 
 test {
@@ -102,4 +123,34 @@ wpi.java.configureTestTasks(test)
 // Configure string concat to always inline compile
 tasks.withType(JavaCompile) {
     options.compilerArgs.add '-XDstringConcat=inline'
+}
+
+
+// Thank you Jack-In-The-Bot
+// Create version file
+project.compileJava.dependsOn(createVersionFile)
+gversion {
+    srcDir       = "src/main/java/"
+    classPackage = "org.frc5902.robot"
+    className    = "BuildInfo"
+    dateFormat   = "yyyy-MM-dd HH:mm:ss z"
+    timeZone     = "America/New_York"
+    indent       = "  "
+}
+
+// Spotless formatting
+project.compileJava.dependsOn(spotlessApply)
+spotless {
+    java {
+        target fileTree('.') {
+            include '**/*.java'
+            exclude '**/build/**', '**/build-*/**'
+        }
+        toggleOffOn()
+        removeUnusedImports()
+        importOrder('', 'java', '\\#').wildcardsLast()
+        trimTrailingWhitespace()
+        setEncoding(StandardCharsets.UTF_8)
+        indentWithSpaces(4)
+    }
 }
