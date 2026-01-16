@@ -3,6 +3,7 @@ package org.frc5902.robot.subsystems.drive;
 import com.revrobotics.PersistMode;
 import com.revrobotics.ResetMode;
 import com.revrobotics.spark.FeedbackSensor;
+import edu.wpi.first.math.geometry.Translation2d;
 import org.frc5902.robot.util.PID;
 import org.littletonrobotics.junction.AutoLog;
 
@@ -40,39 +41,42 @@ public class ModuleConstants {
     }
 
     @AutoLog
-    public static class SwervePIDConstants {
-        public static final int kSlotIdx = 0;
-        public static final int kPIDLoopIdx = 0;
-
-        public static final int kTimeoutMs = 0;
-
-        public static boolean kSensorPhase = true;
-
-        public static boolean kMotorInvert = true;
-    }
-
-    @AutoLog
-    public static final class AbsoluteChange {
-        // 25 742
-        // 23 328
-        // 24 924
-        // 22 3677
-        public static final int FrontLeftChange = 742;
-        public static final int FrontRightChange = 305;
-        public static final int BackLeftChange = 829;
-        public static final int BackRightChange = 3673;
-    }
-
-    @AutoLog
-    public static final class SwerveCANConstants {
-        public static final int kFrontLeftDrivingCanId = 23;
-        public static final int kRearLeftDrivingCanId = 22;
-        public static final int kFrontRightDrivingCanId = 21;
-        public static final int kRearRightDrivingCanId = 20;
-
-        public static final int kFrontLeftTurningCanId = 13;
-        public static final int kRearLeftTurningCanId = 12;
-        public static final int kFrontRightTurningCanId = 11;
-        public static final int kRearRightTurningCanId = 10;
+    public static class ModuleConfigurations {
+        // Front Left Module
+        public static ModuleConfiguration FrontLeftModule = ModuleConfiguration.builder("FrontLeft")
+                .DrivingID(23)
+                .TurningID(13)
+                .TurningMotorAbsoluteOffset(742)
+                .DrivingMotorInverted(false)
+                .TurningMotorInverted(true)
+                .ModuleOffset(new Translation2d(0.523, 0.523))
+                .build();
+        // Front Right Module
+        public static ModuleConfiguration FrontRightModule = ModuleConfiguration.builder("FrontLeft")
+                .DrivingID(21)
+                .TurningID(11)
+                .TurningMotorAbsoluteOffset(305)
+                .DrivingMotorInverted(true)
+                .TurningMotorInverted(true)
+                .ModuleOffset(new Translation2d(0.523, -0.523))
+                .build();
+        // Back Left Module
+        public static ModuleConfiguration BackLeftModule = ModuleConfiguration.builder("BackLeft")
+                .DrivingID(22)
+                .TurningID(12)
+                .TurningMotorAbsoluteOffset(829)
+                .DrivingMotorInverted(false)
+                .TurningMotorInverted(true)
+                .ModuleOffset(new Translation2d(-0.523, 0.523))
+                .build();
+        // Back Right Module
+        public static ModuleConfiguration BackRightModule = ModuleConfiguration.builder("BackRight")
+                .DrivingID(20)
+                .TurningID(10)
+                .TurningMotorAbsoluteOffset(3673)
+                .DrivingMotorInverted(true)
+                .TurningMotorInverted(true)
+                .ModuleOffset(new Translation2d(-0.523, -0.523))
+                .build();
     }
 }

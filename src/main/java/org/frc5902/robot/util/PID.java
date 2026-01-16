@@ -21,8 +21,13 @@ public class PID implements LoggableInputs {
 
     public String pid_type;
 
+    @Builder.Default
     public double proportional = 0;
+
+    @Builder.Default
     public double integral = 0;
+
+    @Builder.Default
     public double deriviative = 0;
 
     public PID(String pid_type, double proportional, double integral, double deriviative) {}
