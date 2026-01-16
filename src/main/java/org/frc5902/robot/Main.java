@@ -3,12 +3,13 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package org.frc5902.robot;
+
 import edu.wpi.first.wpilibj.RobotBase;
 
 public final class Main {
-  private Main() {}
+    private Main() {}
 
-  public static void main(String... args) {
-    RobotBase.startRobot(Robot::new);
-  }
+    public static void main(String... args) {
+        RobotBase.startRobot(Robot::new);
+    }
 }
