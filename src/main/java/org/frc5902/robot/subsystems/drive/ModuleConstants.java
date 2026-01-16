@@ -32,7 +32,6 @@ public class ModuleConstants {
         public static FeedbackSensor turningFeedbackSensor = FeedbackSensor.kAbsoluteEncoder;
         public static PID turnClosedLoop =
                 PID.builder("Swerve Drive Closed Loop").proportional(0.0005).build();
-
         public static int turnEncoderResolution = 4096;
         public static double encoderToRadians = 2 * Math.PI / turnEncoderResolution;
         public static double turnPositionConversionFactor = 4096;
