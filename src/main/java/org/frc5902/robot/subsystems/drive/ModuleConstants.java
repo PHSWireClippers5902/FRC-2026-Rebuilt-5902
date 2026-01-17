@@ -18,7 +18,7 @@ public class ModuleConstants {
         public static FeedbackSensor driveFeedbackSensor = FeedbackSensor.kPrimaryEncoder;
         public static PID driveClosedLoop = PID.builder("Swerve Drive Closed Loop")
                 .proportional(0.2)
-                .integral(0.002)
+                .deriviative(0.002)
                 .build();
         public ResetMode driveResetMode = ResetMode.kNoResetSafeParameters;
         public PersistMode drivePersistMode = PersistMode.kPersistParameters;
@@ -35,8 +35,11 @@ public class ModuleConstants {
         public static int turnEncoderResolution = 4096;
         public static double encoderToRadians = 2 * Math.PI / turnEncoderResolution;
         public static double turnPositionConversionFactor = 4096;
-        public ResetMode turnResetMode = ResetMode.kNoResetSafeParameters;
-        public PersistMode turnPersistMode = PersistMode.kPersistParameters;
+        public static ResetMode turnResetMode = ResetMode.kNoResetSafeParameters;
+        public static PersistMode turnPersistMode = PersistMode.kPersistParameters;
+
+
+
     }
 
     @AutoLog

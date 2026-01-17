@@ -40,6 +40,7 @@ public class PID implements LoggableInputs {
         this.integral = table.get(pid_type + "_Integral_val", 0);
         this.deriviative = table.get(pid_type + "_Deriviative_val", 0);
     }
+
     public void toLog(LogTable table) {
         table.put(pid_type + "_Proportional_val", this.proportional);
         table.put(pid_type + "_Integral_val", this.integral);
