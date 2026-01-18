@@ -5,6 +5,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.frc5902.robot.Constants.*;
 
 @Getter
 @Setter
@@ -27,8 +28,8 @@ public class ModuleConfiguration {
             boolean TurningMotorInverted,
             boolean TurnSensorInvert,
             Translation2d ModuleOffset) {
-        ZeroRotation = Rotation2d.fromRotations((double) TurningMotorAbsoluteOffset
-                / (double) TurningMotorConstants.turnEncoderResolution);
+        ZeroRotation = Rotation2d.fromRotations(
+                (double) TurningMotorAbsoluteOffset / (double) TurnMotorConstants.turnEncoderResolution);
     }
 
     public static ModuleConfigurationBuilder builder() {

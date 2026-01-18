@@ -5,8 +5,6 @@
  * @name:    Daniel Sabalakov
  */
 package org.frc5902.robot;
-import org.frc5902.robot.subsystems.drive.ModuleConfiguration;
-import org.frc5902.robot.util.PID;
 
 import com.pathplanner.lib.config.ModuleConfig;
 import com.pathplanner.lib.config.RobotConfig;
@@ -14,12 +12,12 @@ import com.revrobotics.PersistMode;
 import com.revrobotics.ResetMode;
 import com.revrobotics.spark.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
-
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.util.Units;
-// import frc.robot.helpers.Gains;
 import edu.wpi.first.wpilibj.RobotBase;
+import org.frc5902.robot.subsystems.drive.ModuleConfiguration;
+import org.frc5902.robot.util.PID;
 
 public final class Constants {
     public static final class RobotConstants {
@@ -45,32 +43,30 @@ public final class Constants {
 
         public static int periodMs = 20;
         public static int DEFAULT_CURRENT_LIMIT = 60;
-        public static double MAX_SPEED_METERS_PER_SECOND = 4.0;
 
-    }
-
-
-    public static class PathPlannerConstants {
-        
-
-        // Pathplanner Constants
         public static final double robotMasskg = 100;
         public static final double robotMOI = 7;
         public static final double wheelCOF = 1.2;
-        
-
-        public static final RobotConfig ppConfig = 
-            new RobotConfig(robotMasskg, robotMOI, 
-                new ModuleConfig(
-                    Units.inchesToMeters(DriveMotorConstants.driveWheelRadiusInches),
-                    MAX_SPEED_METERS_PER_SECOND,
-                    wheelCOF,
-                    gearbox.withReduction(DriveMotorConstants.driveGearReduction),
-                    DEFAULT_CURRENT_LIMIT,
-                    2),
-                TRACK_WIDTH);
+        public static double MAX_SPEED_METERS_PER_SECOND = 4.0;
     }
 
+    public static class PathPlannerConstants {
+
+        // Pathplanner Constants
+        public static DCMotor gearbox = DCMotor.getNEO(1);
+
+        public static final RobotConfig ppConfig = new RobotConfig(
+                RobotConstants.robotMasskg,
+                RobotConstants.robotMOI,
+                new ModuleConfig(
+                        Units.inchesToMeters(DriveMotorConstants.driveWheelRadiusInches),
+                        RobotConstants.MAX_SPEED_METERS_PER_SECOND,
+                        RobotConstants.wheelCOF,
+                        gearbox.withReduction(DriveMotorConstants.driveGearReduction),
+                        RobotConstants.DEFAULT_CURRENT_LIMIT,
+                        1),
+                ModuleConfigurations.moduleTranslations);
+    }
 
     public static class OdometryConstants {
         public static double odometryFrequency = 100.0;
@@ -78,6 +74,7 @@ public final class Constants {
 
     public static class DriveMotorConstants {
         public static double driveWheelRadiusInches = 1.5; // convert inches
+        // TODO CONVERT
         public static double driveGearReduction = 0.5;
         public static double drivePositionConversionFactor = 2 * Math.PI / Units.inchesToMeters(driveWheelRadiusInches);
         public static double driveVelocityConversionFactor = drivePositionConversionFactor / 60;
@@ -94,10 +91,6 @@ public final class Constants {
         // TODO IMPLEMENT
         public static double kV = 0.0; // aka static
         public static double kS = 0.0; // aka velocity
-        
-
-
-
     }
 
     public static class TurnMotorConstants {
@@ -157,5 +150,12 @@ public final class Constants {
                 .TurningMotorInverted(true)
                 .ModuleOffset(new Translation2d(-0.523, -0.523))
                 .build();
+
+        public static Translation2d[] moduleTranslations = new Translation2d[] {
+            FrontLeftModule.getModuleOffset(),
+            FrontRightModule.getModuleOffset(),
+            BackLeftModule.getModuleOffset(),
+            BackRightModule.getModuleOffset()
+        };
     }
 }

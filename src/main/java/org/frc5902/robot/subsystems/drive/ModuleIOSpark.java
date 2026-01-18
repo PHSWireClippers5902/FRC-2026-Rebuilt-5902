@@ -4,13 +4,12 @@ import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkBase;
+import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkClosedLoopController;
+import com.revrobotics.spark.SparkClosedLoopController.ArbFFUnits;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.SparkBase.ControlType;
-import com.revrobotics.spark.SparkClosedLoopController.ArbFFUnits;
 import com.revrobotics.spark.config.SparkMaxConfig;
-
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -192,16 +191,15 @@ public class ModuleIOSpark implements ModuleIO {
     // set drive motor at velocity
     @Override
     public void setDriveVelocity(double velocityRadiansPerSecond) {
-        // lets calculate feed forward volts 
-        double feedForwardVolts = DriveMotorConstants.kS
-                                    * Math.signum(velocityRadiansPerSecond) + 
-                                    DriveMotorConstants.kV * velocityRadiansPerSecond;
+        // lets calculate feed forward volts
+        double feedForwardVolts = DriveMotorConstants.kS * Math.signum(velocityRadiansPerSecond)
+                + DriveMotorConstants.kV * velocityRadiansPerSecond;
         driveController.setSetpoint(
-            velocityRadiansPerSecond,
-            ControlType.kVelocity,
-            ClosedLoopSlot.kSlot0,
-            feedForwardVolts,
-            ArbFFUnits.kVoltage);
+                velocityRadiansPerSecond,
+                ControlType.kVelocity,
+                ClosedLoopSlot.kSlot0,
+                feedForwardVolts,
+                ArbFFUnits.kVoltage);
     }
 
     // sets motor specific position
@@ -209,9 +207,9 @@ public class ModuleIOSpark implements ModuleIO {
     public void setTurnPosition(Rotation2d rotation) {
         // calculate optimal position
         double setpoint = MathUtil.inputModulus(
-            rotation.plus(zeroRotation).getRadians(),
-            TurnMotorConstants.turnPIDMinInput,
-            TurnMotorConstants.turnPIDMaxInput);
+                rotation.plus(zeroRotation).getRadians(),
+                TurnMotorConstants.turnPIDMinInput,
+                TurnMotorConstants.turnPIDMaxInput);
         turnController.setSetpoint(setpoint, ControlType.kPosition);
     }
 }

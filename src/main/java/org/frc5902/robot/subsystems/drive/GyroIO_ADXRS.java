@@ -4,10 +4,9 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.SPI;
+import org.frc5902.robot.util.SparkOdometryThread;
 
 import java.util.Queue;
-
-import org.frc5902.robot.util.SparkOdometryThread;
 
 public class GyroIO_ADXRS implements GyroIO {
     public final ADXRS450_Gyro ADXRS_Gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
@@ -26,10 +25,9 @@ public class GyroIO_ADXRS implements GyroIO {
         // no cool port :(
         inputs.yawVelocityRadiansPerSeconds = Units.degreesToRadians(-ADXRS_Gyro.getAngle());
 
-        inputs.odometryYawTimestamps = 
-            yawTimestampQueue.stream().mapToDouble((Double value) -> value).toArray();
-        inputs.odometryYawPositions = 
-            yawPositionQueue.stream()
+        inputs.odometryYawTimestamps =
+                yawTimestampQueue.stream().mapToDouble((Double value) -> value).toArray();
+        inputs.odometryYawPositions = yawPositionQueue.stream()
                 .map((Double value) -> Rotation2d.fromDegrees(-value))
                 .toArray(Rotation2d[]::new);
         yawTimestampQueue.clear();

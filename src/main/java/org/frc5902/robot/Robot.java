@@ -6,7 +6,6 @@ package org.frc5902.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-
 import org.frc5902.robot.Constants.RobotConstants;
 import org.frc5902.robot.containers.KitbotRobotContainer;
 import org.frc5902.robot.containers.RobotContainer;
