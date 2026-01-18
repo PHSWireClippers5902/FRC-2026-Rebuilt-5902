@@ -28,7 +28,7 @@ public class ModuleConfiguration {
             boolean TurnSensorInvert,
             Translation2d ModuleOffset) {
         ZeroRotation = Rotation2d.fromRotations((double) TurningMotorAbsoluteOffset
-                / (double) ModuleConstants.TurnMotorConstants.turnEncoderResolution);
+                / (double) TurningMotorConstants.turnEncoderResolution);
     }
 
     public static ModuleConfigurationBuilder builder() {

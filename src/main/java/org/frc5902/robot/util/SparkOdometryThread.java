@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.RobotController;
 
 import org.frc5902.robot.subsystems.drive.Drive;
-import org.frc5902.robot.subsystems.drive.ModuleConstants.OdometryConstants;
+import org.frc5902.robot.Constants.OdometryConstants;
 
 import java.util.ArrayList;
 import java.util.List;
