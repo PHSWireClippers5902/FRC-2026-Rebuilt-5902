@@ -5,7 +5,7 @@ import org.littletonrobotics.junction.AutoLog;
 
 public interface ModuleIO {
     @AutoLog
-    public static class SwerveIOInputs {
+    public static class ModuleIOInputs {
         public boolean driveConnected = false;
         public double drivePositionRadians = 0.0;
         public double driveVelocityRadiansPerSecond = 0.0;
@@ -26,18 +26,13 @@ public interface ModuleIO {
     }
 
     // loggable inputs
-    public default void updateInputs(ModuleIO inputs) {}
-    ;
+    public default void updateInputs(ModuleIOInputs inputs) {}
     // sets drive motor at the specific open loop value
     public default void setDriveOpenLoop(double output) {}
-    ;
     // set turn open loop at specified open loop value
     public default void setTurnOpenLoop(double output) {}
-    ;
     // set drive motor at velocity
     public default void setDriveVelocity(double velocityRadiansPerSecond) {}
-    ;
     // sets motor specific position
     public default void setTurnPosition(Rotation2d rotation) {}
-    ;
 }

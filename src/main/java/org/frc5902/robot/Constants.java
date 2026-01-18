@@ -9,7 +9,7 @@ package org.frc5902.robot;
 import edu.wpi.first.wpilibj.RobotBase;
 
 public final class Constants {
-    public static final class RobotInitializationConstants {
+    public static final class RobotConstants {
         public static final String KITBOT_SERIAL_NUMBER = "";
         public static final String COMPBOT_SERIAL_NUMBER = "";
         public static final String TESTBENCH_SERIAL_NUMBER = "";
@@ -29,5 +29,7 @@ public final class Constants {
             COMP_V1,
             TESTBENCH;
         }
+
+        public static int periodMs = 20;
     }
 }
