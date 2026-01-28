@@ -30,7 +30,14 @@ public class ModuleConfiguration {
             boolean TurningMotorInverted,
             boolean TurnSensorInvert,
             Translation2d ModuleOffset) {
-        ZeroRotation = Rotation2d.fromRotations(
+        this.TurningMotorAbsoluteOffset = TurningMotorAbsoluteOffset;
+        this.DrivingID = DrivingID;
+        this.TurningID = TurningID;
+        this.DrivingMotorInverted = DrivingMotorInverted;
+        this.TurningMotorInverted = TurningMotorInverted;
+        this.TurnSensorInvert = TurnSensorInvert;
+        this.ModuleOffset = ModuleOffset;
+        this.ZeroRotation = Rotation2d.fromRotations(
                 (double) TurningMotorAbsoluteOffset / (double) TurnMotorConstants.turnEncoderResolution);
     }
 

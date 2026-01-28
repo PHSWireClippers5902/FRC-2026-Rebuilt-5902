@@ -114,10 +114,10 @@ public final class Constants {
     }
 
     public class ModuleConfigurations {
-        public double driveBaseWidthSQUARE = 24; // in
-        public double driveBaseRadius = (Units.inchesToMeters(driveBaseWidthSQUARE) / 2) * Math.sqrt(2);
+        public static double driveBaseWidthSQUARE = 24; // in
+        public static double driveBaseRadius = (Units.inchesToMeters(driveBaseWidthSQUARE) / 2) * Math.sqrt(2);
         // Front Left Module
-        public ModuleConfiguration FrontLeftModule = ModuleConfiguration.builder()
+        public static ModuleConfiguration FrontLeftModule = ModuleConfiguration.builder()
                 .DrivingID(23)
                 .TurningID(13)
                 .TurningMotorAbsoluteOffset(742)
@@ -127,7 +127,7 @@ public final class Constants {
                 .build();
 
         // Front Right Module
-        public ModuleConfiguration FrontRightModule = ModuleConfiguration.builder()
+        public static ModuleConfiguration FrontRightModule = ModuleConfiguration.builder()
                 .DrivingID(21)
                 .TurningID(11)
                 .TurningMotorAbsoluteOffset(305)
@@ -136,7 +136,7 @@ public final class Constants {
                 .ModuleOffset(new Translation2d(driveBaseRadius, -driveBaseRadius))
                 .build();
         // Back Left Module
-        public ModuleConfiguration BackLeftModule = ModuleConfiguration.builder()
+        public static ModuleConfiguration BackLeftModule = ModuleConfiguration.builder()
                 .DrivingID(22)
                 .TurningID(12)
                 .TurningMotorAbsoluteOffset(829)
@@ -145,7 +145,7 @@ public final class Constants {
                 .ModuleOffset(new Translation2d(-driveBaseRadius, driveBaseRadius))
                 .build();
         // Back Right Module
-        public ModuleConfiguration BackRightModule = ModuleConfiguration.builder()
+        public static ModuleConfiguration BackRightModule = ModuleConfiguration.builder()
                 .DrivingID(20)
                 .TurningID(10)
                 .TurningMotorAbsoluteOffset(3673)
@@ -154,7 +154,7 @@ public final class Constants {
                 .ModuleOffset(new Translation2d(-driveBaseRadius, -driveBaseRadius))
                 .build();
 
-        public Translation2d[] moduleTranslations = new Translation2d[] {
+        public static Translation2d[] moduleTranslations = new Translation2d[] {
             FrontLeftModule.getModuleOffset(),
             FrontRightModule.getModuleOffset(),
             BackLeftModule.getModuleOffset(),

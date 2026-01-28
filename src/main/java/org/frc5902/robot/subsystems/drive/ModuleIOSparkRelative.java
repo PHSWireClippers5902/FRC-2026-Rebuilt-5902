@@ -55,7 +55,9 @@ public class ModuleIOSparkRelative implements ModuleIO {
         System.out.println("Module " + MODULE_INFORMATION.toString());
         System.out.println("Module " + MODULE_INFORMATION.DrivingID);
 
-        zeroRotation = MODULE_INFORMATION.ZeroRotation;
+        // zeroRotation = MODULE_INFORMATION.ZeroRotation;
+        // if relative, there is NO zero rotation
+        zeroRotation = new Rotation2d(0, 0);
 
         driveSpark = new SparkMax(MODULE_INFORMATION.DrivingID, MotorType.kBrushless);
         turnSpark = new SparkMax(MODULE_INFORMATION.TurningID, MotorType.kBrushless);
@@ -72,7 +74,10 @@ public class ModuleIOSparkRelative implements ModuleIO {
                 .idleMode(DriveMotorConstants.driveIdleMode)
                 .smartCurrentLimit(DriveMotorConstants.driveCurrentLimit)
                 .voltageCompensation(DriveMotorConstants.driveVoltageCompensation);
-        driveConfig.encoder.positionConversionFactor(module).velocityConversionFactor(module);
+        driveConfig
+                .encoder
+                .positionConversionFactor(DriveMotorConstants.drivePositionConversionFactor)
+                .velocityConversionFactor(DriveMotorConstants.driveVelocityConversionFactor);
         driveConfig
                 .closedLoop
                 .feedbackSensor(DriveMotorConstants.driveFeedbackSensor)
