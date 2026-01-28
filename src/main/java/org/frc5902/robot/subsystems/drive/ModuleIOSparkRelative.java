@@ -1,6 +1,5 @@
 package org.frc5902.robot.subsystems.drive;
 
-import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkBase;
@@ -22,14 +21,14 @@ import java.util.function.DoubleSupplier;
 
 import static org.frc5902.robot.util.SparkUtil.*;
 
-public class ModuleIOSpark implements ModuleIO {
+public class ModuleIOSparkRelative implements ModuleIO {
     private final Rotation2d zeroRotation;
 
     private final SparkBase driveSpark;
     private final SparkBase turnSpark;
 
     private final RelativeEncoder driveEncoder;
-    private final AbsoluteEncoder turnEncoder;
+    private final RelativeEncoder turnEncoder;
 
     private final SparkClosedLoopController driveController;
     private final SparkClosedLoopController turnController;
@@ -41,9 +40,10 @@ public class ModuleIOSpark implements ModuleIO {
     private final Debouncer driveConnectedDebounce = new Debouncer(0.5, Debouncer.DebounceType.kFalling);
     private final Debouncer turnConnectedDebounce = new Debouncer(0.5, Debouncer.DebounceType.kFalling);
 
-    private final ModuleConfiguration MODULE_INFORMATION;
+    private ModuleConfiguration MODULE_INFORMATION;
 
-    public ModuleIOSpark(int module) {
+    public ModuleIOSparkRelative(int module) {
+        System.out.println("Module " + module);
         MODULE_INFORMATION = switch (module) {
             case 0 -> ModuleConfigurations.FrontLeftModule;
             case 1 -> ModuleConfigurations.FrontRightModule;
@@ -51,6 +51,9 @@ public class ModuleIOSpark implements ModuleIO {
             case 3 -> ModuleConfigurations.BackRightModule;
             default -> ModuleConfigurations.FrontLeftModule;
         };
+        System.out.println("DEFAULT FRONT LEFT MODULE INFORMAITON" + ModuleConfigurations.FrontLeftModule.toString());
+        System.out.println("Module " + MODULE_INFORMATION.toString());
+        System.out.println("Module " + MODULE_INFORMATION.DrivingID);
 
         zeroRotation = MODULE_INFORMATION.ZeroRotation;
 
@@ -58,7 +61,7 @@ public class ModuleIOSpark implements ModuleIO {
         turnSpark = new SparkMax(MODULE_INFORMATION.TurningID, MotorType.kBrushless);
 
         driveEncoder = driveSpark.getEncoder();
-        turnEncoder = turnSpark.getAbsoluteEncoder();
+        turnEncoder = turnSpark.getEncoder();
 
         driveController = driveSpark.getClosedLoopController();
         turnController = turnSpark.getClosedLoopController();

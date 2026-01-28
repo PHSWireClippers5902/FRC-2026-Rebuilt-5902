@@ -7,12 +7,13 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import org.frc5902.robot.Constants.RobotConstants;
 import org.frc5902.robot.Robot;
+import org.frc5902.robot.commands.drive.DriveCommands;
 import org.frc5902.robot.subsystems.drive.Drive;
 import org.frc5902.robot.subsystems.drive.GyroIO;
 import org.frc5902.robot.subsystems.drive.GyroIO_ADXRS;
 import org.frc5902.robot.subsystems.drive.ModuleIO;
 import org.frc5902.robot.subsystems.drive.ModuleIOSim;
-import org.frc5902.robot.subsystems.drive.ModuleIOSpark;
+import org.frc5902.robot.subsystems.drive.ModuleIOSparkRelative;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 public class KitbotRobotContainer extends RobotContainer {
@@ -29,10 +30,10 @@ public class KitbotRobotContainer extends RobotContainer {
             case REAL:
                 drive = new Drive(
                         new GyroIO_ADXRS(),
-                        new ModuleIOSpark(0),
-                        new ModuleIOSpark(1),
-                        new ModuleIOSpark(2),
-                        new ModuleIOSpark(3));
+                        new ModuleIOSparkRelative(0),
+                        new ModuleIOSparkRelative(1),
+                        new ModuleIOSparkRelative(2),
+                        new ModuleIOSparkRelative(3));
                 break;
             case SIM:
                 // sim bot
@@ -54,6 +55,12 @@ public class KitbotRobotContainer extends RobotContainer {
         if (Robot.isSimulation()) {
             DriverStation.silenceJoystickConnectionWarning(true);
         }
+
+        drive.setDefaultCommand(DriveCommands.joystickDrive(
+                drive,
+                () -> -m_XboxController.getLeftY(),
+                () -> -m_XboxController.getLeftX(),
+                () -> -m_XboxController.getRightX()));
     }
 
     public Pose2d getInitialPose() {

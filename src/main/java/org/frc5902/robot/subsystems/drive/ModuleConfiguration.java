@@ -5,10 +5,12 @@ import edu.wpi.first.math.geometry.Translation2d;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.frc5902.robot.Constants.*;
 
 @Getter
 @Setter
+@ToString
 public class ModuleConfiguration {
     public int TurningMotorAbsoluteOffset = 0;
     public final Rotation2d ZeroRotation;

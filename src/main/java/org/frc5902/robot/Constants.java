@@ -113,45 +113,48 @@ public final class Constants {
         public static double turnPIDMaxInput = 2 * Math.PI;
     }
 
-    public static class ModuleConfigurations {
+    public class ModuleConfigurations {
+        public double driveBaseWidthSQUARE = 24; // in
+        public double driveBaseRadius = (Units.inchesToMeters(driveBaseWidthSQUARE) / 2) * Math.sqrt(2);
         // Front Left Module
-        public static ModuleConfiguration FrontLeftModule = ModuleConfiguration.builder()
+        public ModuleConfiguration FrontLeftModule = ModuleConfiguration.builder()
                 .DrivingID(23)
                 .TurningID(13)
                 .TurningMotorAbsoluteOffset(742)
                 .DrivingMotorInverted(false)
                 .TurningMotorInverted(true)
-                .ModuleOffset(new Translation2d(0.523, 0.523))
+                .ModuleOffset(new Translation2d(driveBaseRadius, driveBaseRadius))
                 .build();
+
         // Front Right Module
-        public static ModuleConfiguration FrontRightModule = ModuleConfiguration.builder()
+        public ModuleConfiguration FrontRightModule = ModuleConfiguration.builder()
                 .DrivingID(21)
                 .TurningID(11)
                 .TurningMotorAbsoluteOffset(305)
                 .DrivingMotorInverted(true)
                 .TurningMotorInverted(true)
-                .ModuleOffset(new Translation2d(0.523, -0.523))
+                .ModuleOffset(new Translation2d(driveBaseRadius, -driveBaseRadius))
                 .build();
         // Back Left Module
-        public static ModuleConfiguration BackLeftModule = ModuleConfiguration.builder()
+        public ModuleConfiguration BackLeftModule = ModuleConfiguration.builder()
                 .DrivingID(22)
                 .TurningID(12)
                 .TurningMotorAbsoluteOffset(829)
                 .DrivingMotorInverted(false)
                 .TurningMotorInverted(true)
-                .ModuleOffset(new Translation2d(-0.523, 0.523))
+                .ModuleOffset(new Translation2d(-driveBaseRadius, driveBaseRadius))
                 .build();
         // Back Right Module
-        public static ModuleConfiguration BackRightModule = ModuleConfiguration.builder()
+        public ModuleConfiguration BackRightModule = ModuleConfiguration.builder()
                 .DrivingID(20)
                 .TurningID(10)
                 .TurningMotorAbsoluteOffset(3673)
                 .DrivingMotorInverted(true)
                 .TurningMotorInverted(true)
-                .ModuleOffset(new Translation2d(-0.523, -0.523))
+                .ModuleOffset(new Translation2d(-driveBaseRadius, -driveBaseRadius))
                 .build();
 
-        public static Translation2d[] moduleTranslations = new Translation2d[] {
+        public Translation2d[] moduleTranslations = new Translation2d[] {
             FrontLeftModule.getModuleOffset(),
             FrontRightModule.getModuleOffset(),
             BackLeftModule.getModuleOffset(),
