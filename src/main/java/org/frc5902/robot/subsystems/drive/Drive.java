@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import org.frc5902.robot.Constants;
 import org.frc5902.robot.Constants.ModuleConfigurations;
 import org.frc5902.robot.Constants.PathPlannerConstants;
 import org.frc5902.robot.Constants.RobotConstants;
@@ -46,8 +47,8 @@ public class Drive extends SubsystemBase {
     private final SysIdRoutine sysId;
     private final Alert gyroDisconnectedAlert =
             new Alert("Disconnected gyro, using kinematics as fallback.", AlertType.kError);
-    // TODO implement module translations......
-    private SwerveDriveKinematics kinematics = new SwerveDriveKinematics();
+    private SwerveDriveKinematics kinematics =
+            new SwerveDriveKinematics(Constants.ModuleConfigurations.moduleTranslations);
     private Rotation2d rawGyroRotation = Rotation2d.kZero;
     private SwerveModulePosition[] lastModulePositions = new SwerveModulePosition[] {
         new SwerveModulePosition(), new SwerveModulePosition(), new SwerveModulePosition(), new SwerveModulePosition()

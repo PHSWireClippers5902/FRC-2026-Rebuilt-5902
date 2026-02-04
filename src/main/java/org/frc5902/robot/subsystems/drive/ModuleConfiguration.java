@@ -12,33 +12,33 @@ import org.frc5902.robot.Constants.*;
 @Setter
 @ToString
 public class ModuleConfiguration {
-    public int TurningMotorAbsoluteOffset = 0;
-    public final Rotation2d ZeroRotation;
     public int DrivingID = 0;
     public int TurningID = 0;
+    public int TurningEncoderID = 0;
     public boolean DrivingMotorInverted = false;
     public boolean TurningMotorInverted = true;
     public boolean TurnSensorInvert = true;
     public Translation2d ModuleOffset = new Translation2d(0, 0);
+    public Rotation2d ZeroRotation = new Rotation2d(0);
 
     @Builder
     public ModuleConfiguration(
-            int TurningMotorAbsoluteOffset,
             int DrivingID,
             int TurningID,
+            int TurningEncoderID,
             boolean DrivingMotorInverted,
             boolean TurningMotorInverted,
             boolean TurnSensorInvert,
-            Translation2d ModuleOffset) {
-        this.TurningMotorAbsoluteOffset = TurningMotorAbsoluteOffset;
+            Translation2d ModuleOffset,
+            Rotation2d ZeroRotation) {
         this.DrivingID = DrivingID;
         this.TurningID = TurningID;
+        this.TurningEncoderID = TurningEncoderID;
         this.DrivingMotorInverted = DrivingMotorInverted;
         this.TurningMotorInverted = TurningMotorInverted;
         this.TurnSensorInvert = TurnSensorInvert;
         this.ModuleOffset = ModuleOffset;
-        this.ZeroRotation = Rotation2d.fromRotations(
-                (double) TurningMotorAbsoluteOffset / (double) TurnMotorConstants.turnEncoderResolution);
+        this.ZeroRotation = ZeroRotation;
     }
 
     public static ModuleConfigurationBuilder builder() {

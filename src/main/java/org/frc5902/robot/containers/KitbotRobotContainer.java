@@ -5,6 +5,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import org.frc5902.robot.Constants.RobotConstants;
 import org.frc5902.robot.Robot;
 import org.frc5902.robot.commands.drive.DriveCommands;
@@ -13,7 +14,7 @@ import org.frc5902.robot.subsystems.drive.GyroIO;
 import org.frc5902.robot.subsystems.drive.GyroIO_ADXRS;
 import org.frc5902.robot.subsystems.drive.ModuleIO;
 import org.frc5902.robot.subsystems.drive.ModuleIOSim;
-import org.frc5902.robot.subsystems.drive.ModuleIOSparkRelative;
+import org.frc5902.robot.subsystems.drive.ModuleIOSparkAbsolute;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 public class KitbotRobotContainer extends RobotContainer {
@@ -30,10 +31,10 @@ public class KitbotRobotContainer extends RobotContainer {
             case REAL:
                 drive = new Drive(
                         new GyroIO_ADXRS(),
-                        new ModuleIOSparkRelative(0),
-                        new ModuleIOSparkRelative(1),
-                        new ModuleIOSparkRelative(2),
-                        new ModuleIOSparkRelative(3));
+                        new ModuleIOSparkAbsolute(0),
+                        new ModuleIOSparkAbsolute(1),
+                        new ModuleIOSparkAbsolute(2),
+                        new ModuleIOSparkAbsolute(3));
                 break;
             case SIM:
                 // sim bot
@@ -47,6 +48,16 @@ public class KitbotRobotContainer extends RobotContainer {
                 break;
         }
         autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
+
+        // sysid routines
+        autoChooser.addOption("Drive Wheel Radius Characterization", DriveCommands.wheelRadiusCharacterization(drive));
+        autoChooser.addOption("Drive Simple FF Characterization", DriveCommands.feedforwardCharacterization(drive));
+        autoChooser.addOption(
+                "Drive SysId (Quasistatic Forward)", drive.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
+        autoChooser.addOption(
+                "Drive SysId (Quasistatic Reverse)", drive.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
+        autoChooser.addOption("Drive SysId (Dynamic Forward)", drive.sysIdDynamic(SysIdRoutine.Direction.kForward));
+        autoChooser.addOption("Drive SysId (Dynamic Reverse)", drive.sysIdDynamic(SysIdRoutine.Direction.kReverse));
 
         configureBindings();
     }

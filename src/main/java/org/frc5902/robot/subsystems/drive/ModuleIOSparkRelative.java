@@ -12,7 +12,6 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.geometry.Rotation2d;
-import org.frc5902.robot.Constants.RobotConstants;
 import org.frc5902.robot.Constants.*;
 import org.frc5902.robot.util.SparkOdometryThread;
 
@@ -57,7 +56,7 @@ public class ModuleIOSparkRelative implements ModuleIO {
 
         // zeroRotation = MODULE_INFORMATION.ZeroRotation;
         // if relative, there is NO zero rotation
-        zeroRotation = new Rotation2d(0, 0);
+        zeroRotation = Rotation2d.kZero;
 
         driveSpark = new SparkMax(MODULE_INFORMATION.DrivingID, MotorType.kBrushless);
         turnSpark = new SparkMax(MODULE_INFORMATION.TurningID, MotorType.kBrushless);
@@ -108,8 +107,7 @@ public class ModuleIOSparkRelative implements ModuleIO {
                 .smartCurrentLimit(TurnMotorConstants.turningCurrentLimit)
                 .voltageCompensation(TurnMotorConstants.turnVoltageCompensation);
         turnConfig
-                .absoluteEncoder
-                .inverted(MODULE_INFORMATION.TurnSensorInvert)
+                .encoder
                 .positionConversionFactor(TurnMotorConstants.turnPositionConversionFactor)
                 .velocityConversionFactor(TurnMotorConstants.turnVelocityConversionFactor);
         turnConfig
@@ -121,12 +119,13 @@ public class ModuleIOSparkRelative implements ModuleIO {
                         TurnMotorConstants.turnClosedLoop.getProportional(),
                         TurnMotorConstants.turnClosedLoop.getIntegral(),
                         TurnMotorConstants.turnClosedLoop.getDeriviative());
+        System.out.println(TurnMotorConstants.turnClosedLoop);
         turnConfig
                 .signals
-                .absoluteEncoderPositionAlwaysOn(true)
-                .absoluteEncoderPositionPeriodMs((int) (1000.0 / OdometryConstants.odometryFrequency))
-                .absoluteEncoderVelocityAlwaysOn(true)
-                .absoluteEncoderVelocityPeriodMs(RobotConstants.periodMs)
+                .primaryEncoderPositionAlwaysOn(true)
+                .primaryEncoderPositionPeriodMs((int) (1000.0 / OdometryConstants.odometryFrequency))
+                .primaryEncoderPositionAlwaysOn(true)
+                .primaryEncoderPositionPeriodMs(RobotConstants.periodMs)
                 .appliedOutputPeriodMs(RobotConstants.periodMs)
                 .busVoltagePeriodMs(RobotConstants.periodMs)
                 .outputCurrentPeriodMs(RobotConstants.periodMs);

@@ -17,16 +17,17 @@ import lombok.ToString;
 @NoArgsConstructor
 public class PID {
 
-    @Builder.Default
     public double proportional = 0;
-
-    @Builder.Default
     public double integral = 0;
 
-    @Builder.Default
     public double deriviative = 0;
 
-    public PID(double proportional, double integral, double deriviative) {}
+    @Builder
+    public PID(double proportional, double integral, double deriviative) {
+        this.proportional = proportional;
+        this.integral = integral;
+        this.deriviative = deriviative;
+    }
 
     public static PIDBuilder builder() {
         return new PIDBuilder();

@@ -12,6 +12,7 @@ import com.revrobotics.PersistMode;
 import com.revrobotics.ResetMode;
 import com.revrobotics.spark.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.util.Units;
@@ -73,16 +74,17 @@ public final class Constants {
     }
 
     public static class DriveMotorConstants {
-        public static double driveWheelRadiusInches = 1.5; // convert inches
+        public static double driveWheelRadiusInches = 1.5; // in inches
         // TODO CONVERT
-        public static double driveGearReduction = 0.5;
-        public static double drivePositionConversionFactor = 2 * Math.PI / Units.inchesToMeters(driveWheelRadiusInches);
+        public static double driveGearReduction = 1.0 / 5.54;
+        // First, convert to radians (2pi/5.54). Then, divide by drive train radius
+        public static double drivePositionConversionFactor = Units.inchesToMeters(driveWheelRadiusInches) / (5.54);
         public static double driveVelocityConversionFactor = drivePositionConversionFactor / 60;
         public static int driveCurrentLimit = 40;
         public static double driveVoltageCompensation = 12;
         public static FeedbackSensor driveFeedbackSensor = FeedbackSensor.kPrimaryEncoder;
         public static PID driveClosedLoop =
-                PID.builder().proportional(0.2).deriviative(0.002).build();
+                PID.builder().proportional(0.001).deriviative(0.002).build();
         public static ResetMode driveResetMode = ResetMode.kNoResetSafeParameters;
         public static PersistMode drivePersistMode = PersistMode.kPersistParameters;
         public static IdleMode driveIdleMode = IdleMode.kBrake;
@@ -97,15 +99,17 @@ public final class Constants {
         public static double turningRatio = 1;
         public static int turningCurrentLimit = 20;
         public static double turnVoltageCompensation = 12;
-        public static FeedbackSensor turningFeedbackSensor = FeedbackSensor.kAbsoluteEncoder;
-        public static PID turnClosedLoop = PID.builder().proportional(0.0005).build();
+        public static FeedbackSensor turningFeedbackSensor = FeedbackSensor.kPrimaryEncoder;
+        public static PID turnClosedLoop =
+                PID.builder().proportional(0.2).deriviative(0.1).build();
         public static int turnEncoderResolution = 4096;
-        public static double encoderToRadians = 2 * Math.PI / turnEncoderResolution;
-        public static double turnPositionConversionFactor = 2 * Math.PI; // rotations => radians
-        public static double turnVelocityConversionFactor = 2 * Math.PI / 60; // RPM => Radians / Sec
+        public static boolean turnInverted = false;
+        public static double turnPositionConversionFactor = 2 * Math.PI / (41.25); // to rads
+        public static double turnPositionAbsoluteConversionFactor = 2 * Math.PI;
+        public static double turnVelocityConversionFactor = turnPositionConversionFactor / 60; // RPM => Radians / Sec
         public static ResetMode turnResetMode = ResetMode.kNoResetSafeParameters;
         public static PersistMode turnPersistMode = PersistMode.kPersistParameters;
-        public static IdleMode turnIdleMode = IdleMode.kBrake;
+        public static IdleMode turnIdleMode = IdleMode.kCoast;
 
         // IMPORTANT: Calculates shortest path...
         public static boolean turnPositionWrappingEnabled = true;
@@ -118,39 +122,43 @@ public final class Constants {
         public static double driveBaseRadius = (Units.inchesToMeters(driveBaseWidthSQUARE) / 2) * Math.sqrt(2);
         // Front Left Module
         public static ModuleConfiguration FrontLeftModule = ModuleConfiguration.builder()
-                .DrivingID(23)
-                .TurningID(13)
-                .TurningMotorAbsoluteOffset(742)
-                .DrivingMotorInverted(false)
-                .TurningMotorInverted(true)
+                .DrivingID(10)
+                .TurningID(20)
+                .TurningEncoderID(30)
+                .ZeroRotation(Rotation2d.fromRadians(-0.5062136600022615))
+                .DrivingMotorInverted(true)
+                .TurningMotorInverted(false)
                 .ModuleOffset(new Translation2d(driveBaseRadius, driveBaseRadius))
                 .build();
 
         // Front Right Module
         public static ModuleConfiguration FrontRightModule = ModuleConfiguration.builder()
-                .DrivingID(21)
-                .TurningID(11)
-                .TurningMotorAbsoluteOffset(305)
-                .DrivingMotorInverted(true)
-                .TurningMotorInverted(true)
+                .DrivingID(11)
+                .TurningID(21)
+                .TurningEncoderID(31)
+                .ZeroRotation(Rotation2d.fromRadians(-0.6151262959421421))
+                .DrivingMotorInverted(false)
+                .TurningMotorInverted(false)
                 .ModuleOffset(new Translation2d(driveBaseRadius, -driveBaseRadius))
                 .build();
         // Back Left Module
         public static ModuleConfiguration BackLeftModule = ModuleConfiguration.builder()
-                .DrivingID(22)
-                .TurningID(12)
-                .TurningMotorAbsoluteOffset(829)
-                .DrivingMotorInverted(false)
-                .TurningMotorInverted(true)
+                .DrivingID(12)
+                .TurningID(22)
+                .TurningEncoderID(32)
+                .ZeroRotation(Rotation2d.fromRadians(1.1734953027325155))
+                .DrivingMotorInverted(true)
+                .TurningMotorInverted(false)
                 .ModuleOffset(new Translation2d(-driveBaseRadius, driveBaseRadius))
                 .build();
         // Back Right Module
         public static ModuleConfiguration BackRightModule = ModuleConfiguration.builder()
-                .DrivingID(20)
-                .TurningID(10)
-                .TurningMotorAbsoluteOffset(3673)
-                .DrivingMotorInverted(true)
-                .TurningMotorInverted(true)
+                .DrivingID(13)
+                .TurningID(23)
+                .TurningEncoderID(33)
+                .ZeroRotation(Rotation2d.fromRadians(1.1688933603688585))
+                .DrivingMotorInverted(false)
+                .TurningMotorInverted(false)
                 .ModuleOffset(new Translation2d(-driveBaseRadius, -driveBaseRadius))
                 .build();
 
@@ -160,18 +168,5 @@ public final class Constants {
             BackLeftModule.getModuleOffset(),
             BackRightModule.getModuleOffset()
         };
-    }
-
-    public static class DriveCommand_Constants {
-        // TODO FIGURE OUT
-        private static final double DEADBAND = 0.1;
-        private static final double ANGLE_KP = 5.0;
-        private static final double ANGLE_KD = 0.4;
-        private static final double ANGLE_MAX_VELOCITY = 8.0;
-        private static final double ANGLE_MAX_ACCELERATION = 20.0;
-        private static final double FF_START_DELAY = 2.0; // Secs
-        private static final double FF_RAMP_RATE = 0.1; // Volts/Sec
-        private static final double WHEEL_RADIUS_MAX_VELOCITY = 0.25; // Rad/Sec
-        private static final double WHEEL_RADIUS_RAMP_RATE = 0.05; // Rad/Sec^2
     }
 }
