@@ -23,7 +23,6 @@ public interface ModuleIO {
         public double[] odometryTimestamps = new double[] {};
         public double[] odometryDrivePositionsRadians = new double[] {};
         public Rotation2d[] odometryTurnPositions = new Rotation2d[] {};
-        public Rotation2d odometryAbsoluteTurnPositions = new Rotation2d();
     }
 
     // loggable inputs
@@ -38,5 +37,4 @@ public interface ModuleIO {
     public default void setTurnPosition(Rotation2d rotation) {}
     // sends relative encoder update to absolute encoders
     public default void setRelativeToAbsoluteValues() {}
-    ;
 }

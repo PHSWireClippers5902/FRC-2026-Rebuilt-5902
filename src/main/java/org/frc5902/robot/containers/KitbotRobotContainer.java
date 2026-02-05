@@ -18,6 +18,8 @@ import org.frc5902.robot.subsystems.drive.ModuleIO;
 import org.frc5902.robot.subsystems.drive.ModuleIOSim;
 import org.frc5902.robot.subsystems.drive.ModuleIOSparkAbsolute;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
+import org.frc5902.robot.FieldConstants;
+import org.frc5902.robot.FieldConstants.AprilTagLayoutType;
 
 public class KitbotRobotContainer extends RobotContainer {
     // init subsystems here
@@ -87,7 +89,16 @@ public class KitbotRobotContainer extends RobotContainer {
     public Command getAutonomousCommand() {
         return autoChooser.get();
     }
-
     
+    public AprilTagLayoutType getSelectedAprilTagLayout() {
+        return FieldConstants.defaultAprilTagType;
+    }
+    
+    @Override
+    public void updateDashboardOutputs() {
+        super.updateDashboardOutputs();
+
+        primaryDisconnected.set(!DriverStation.isJoystickConnected(m_XboxController.getHID().getPort()));
+    }
 
 }

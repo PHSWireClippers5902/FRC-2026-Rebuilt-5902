@@ -1,3 +1,16 @@
 package org.frc5902.robot.subsystems.kitbot.intake;
 
-public class IntakeIO {}
+import org.littletonrobotics.junction.AutoLog;
+
+
+public interface IntakeIO {
+    @AutoLog
+    public static class IntakeIOInputs {
+        public boolean connected = false;
+        public double[] intakePositions = new double[] {};
+
+    }
+    // loggable inputs
+    public default void updateInputs(IntakeIOInputs inputs) {}
+    
+}
