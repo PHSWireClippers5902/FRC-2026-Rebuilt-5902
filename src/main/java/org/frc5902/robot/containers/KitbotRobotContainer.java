@@ -2,7 +2,9 @@ package org.frc5902.robot.containers;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
@@ -25,6 +27,10 @@ public class KitbotRobotContainer extends RobotContainer {
     private final CommandXboxController m_XboxController = new CommandXboxController(0);
 
     private final LoggedDashboardChooser<Command> autoChooser;
+
+
+    private final Alert primaryDisconnected 
+        = new Alert("Primary controller disconnected.", AlertType.kWarning);
 
     public KitbotRobotContainer() {
         switch (RobotConstants.currentMode) {
@@ -81,4 +87,7 @@ public class KitbotRobotContainer extends RobotContainer {
     public Command getAutonomousCommand() {
         return autoChooser.get();
     }
+
+    
+
 }

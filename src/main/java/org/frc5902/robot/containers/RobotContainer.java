@@ -5,6 +5,8 @@
 package org.frc5902.robot.containers;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 
 public abstract class RobotContainer {
@@ -18,4 +20,9 @@ public abstract class RobotContainer {
         return;
     }
     // initialize other requirements for RobotContainer here
+    
+    /** Updates Dashboard outputs */
+    public void updateDashboardOutputs() {
+        SmartDashboard.putNumber("Match Time", DriverStation.getMatchTime());
+    }
 }

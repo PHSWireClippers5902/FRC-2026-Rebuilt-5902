@@ -20,8 +20,8 @@ import edu.wpi.first.wpilibj.RobotBase;
 import org.frc5902.robot.subsystems.drive.ModuleConfiguration;
 import org.frc5902.robot.util.PID;
 
-public final class Constants {
-    public static final class RobotConstants {
+public class Constants {
+    public static class RobotConstants {
         public static final String KITBOT_SERIAL_NUMBER = "";
         public static final String COMPBOT_SERIAL_NUMBER = "";
         public static final String TESTBENCH_SERIAL_NUMBER = "";
@@ -49,7 +49,15 @@ public final class Constants {
         public static final double robotMOI = 7;
         public static final double wheelCOF = 1.2;
         public static double MAX_SPEED_METERS_PER_SECOND = 4.0;
+
+        // idk what a 'hal' is...
+        public static boolean disableHAL = false;
+        public static void disableHAL(){
+            disableHAL = true;
+        }
     }
+
+    
 
     public static class PathPlannerConstants {
 
