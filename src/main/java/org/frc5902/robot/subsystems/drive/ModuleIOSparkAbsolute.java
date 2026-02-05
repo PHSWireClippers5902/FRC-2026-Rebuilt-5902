@@ -57,22 +57,22 @@ public class ModuleIOSparkAbsolute implements ModuleIO {
             case 3 -> ModuleConfigurations.BackRightModule;
             default -> ModuleConfigurations.FrontLeftModule;
         };
-        System.out.println("DEFAULT FRONT LEFT MODULE INFORMAITON" + ModuleConfigurations.FrontLeftModule.toString());
         System.out.println("Module " + MODULE_INFORMATION.toString());
         System.out.println("Module " + MODULE_INFORMATION.DrivingID);
 
         // cancoder configurations
         cancoder = new CANcoder(MODULE_INFORMATION.TurningEncoderID);
         CANcoderConfiguration cancoderConfig = new CANcoderConfiguration();
-        cancoderConfig.MagnetSensor.MagnetOffset = 0;
+        cancoderConfig.MagnetSensor.MagnetOffset = MODULE_INFORMATION.getMagnetOffset();
+        // cancoderConfig.MagnetSensor.MagnetOffset = 0;
         cancoderConfig.MagnetSensor.SensorDirection = SensorDirectionValue.CounterClockwise_Positive;
         cancoder.getConfigurator().apply(cancoderConfig);
+        turnAbsolutePosition = cancoder.getPosition();
+        System.out.println("Turn Absolute Position; With Mag Offsets (if aligned, should be zero), Module " + module
+                + " is: " + turnAbsolutePosition.getValueAsDouble());
 
-        turnAbsolutePosition = cancoder.getAbsolutePosition();
-
-        zeroRotation = Rotation2d.fromRotations(-turnAbsolutePosition.getValueAsDouble());
-        // zeroRotation = Rotation2d.kZero;
-
+        // zeroRotation = Rotation2d.fromRotations(MODULE_INFORMATION.getMagnetOffset());
+        zeroRotation = Rotation2d.kZero;
         driveSpark = new SparkMax(MODULE_INFORMATION.DrivingID, MotorType.kBrushless);
         turnSpark = new SparkMax(MODULE_INFORMATION.TurningID, MotorType.kBrushless);
 
@@ -150,6 +150,11 @@ public class ModuleIOSparkAbsolute implements ModuleIO {
                 5,
                 () -> turnSpark.configure(
                         turnConfig, TurnMotorConstants.turnResetMode, TurnMotorConstants.turnPersistMode));
+        tryUntilOk(
+                turnSpark,
+                5,
+                () -> turnEncoder.setPosition(turnAbsolutePosition.getValueAsDouble()
+                        * TurnMotorConstants.turnPositionAbsoluteConversionFactor));
 
         timestampQueue = SparkOdometryThread.getInstance().makeTimestampQueue();
         drivePositionQueue = SparkOdometryThread.getInstance().registerSignal(driveSpark, driveEncoder::getPosition);
@@ -161,7 +166,10 @@ public class ModuleIOSparkAbsolute implements ModuleIO {
         // refresh cancoder signal
         var turnEncoderStatus = BaseStatusSignal.refreshAll(turnAbsolutePosition);
         inputs.turnEncoderConnected = turnEncoderConnectedDebounce.calculate(turnEncoderStatus.isOK());
-        inputs.turnAbsolutePosition = Rotation2d.fromRotations(turnAbsolutePosition.getValueAsDouble());
+        inputs.turnAbsolutePosition =
+                Rotation2d.fromRadians(Rotation2d.fromRotations(turnAbsolutePosition.getValueAsDouble())
+                                .getRadians()
+                        % (2 * Math.PI));
         // if you are confused on what "->" are, read https://www.w3schools.com/java/java_lambda.asp
         sparkStickyFault = false;
         ifOk(driveSpark, driveEncoder::getPosition, (value) -> inputs.drivePositionRadians = value);

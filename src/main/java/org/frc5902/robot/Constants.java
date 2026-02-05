@@ -12,7 +12,6 @@ import com.revrobotics.PersistMode;
 import com.revrobotics.ResetMode;
 import com.revrobotics.spark.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.util.Units;
@@ -91,7 +90,7 @@ public class Constants {
         public static double driveVoltageCompensation = 12;
         public static FeedbackSensor driveFeedbackSensor = FeedbackSensor.kPrimaryEncoder;
         public static PID driveClosedLoop =
-                PID.builder().proportional(0.001).deriviative(0.002).build();
+                PID.builder().proportional(0.005).deriviative(0.002).build();
         public static ResetMode driveResetMode = ResetMode.kNoResetSafeParameters;
         public static PersistMode drivePersistMode = PersistMode.kPersistParameters;
         public static IdleMode driveIdleMode = IdleMode.kBrake;
@@ -108,7 +107,7 @@ public class Constants {
         public static double turnVoltageCompensation = 12;
         public static FeedbackSensor turningFeedbackSensor = FeedbackSensor.kPrimaryEncoder;
         public static PID turnClosedLoop =
-                PID.builder().proportional(0.2).deriviative(0.1).build();
+                PID.builder().proportional(0.4).deriviative(0.1).build();
         public static int turnEncoderResolution = 4096;
         public static boolean turnInverted = false;
         public static double turnPositionConversionFactor = 2 * Math.PI / (41.25); // to rads
@@ -132,7 +131,7 @@ public class Constants {
                 .DrivingID(10)
                 .TurningID(20)
                 .TurningEncoderID(30)
-                .ZeroRotation(Rotation2d.fromRadians(-0.5062136600022615))
+                .MagnetOffset(-0.081298828125)
                 .DrivingMotorInverted(true)
                 .TurningMotorInverted(false)
                 .ModuleOffset(new Translation2d(driveBaseRadius, driveBaseRadius))
@@ -143,7 +142,7 @@ public class Constants {
                 .DrivingID(11)
                 .TurningID(21)
                 .TurningEncoderID(31)
-                .ZeroRotation(Rotation2d.fromRadians(-0.6151262959421421))
+                .MagnetOffset(-0.099365234375)
                 .DrivingMotorInverted(false)
                 .TurningMotorInverted(false)
                 .ModuleOffset(new Translation2d(driveBaseRadius, -driveBaseRadius))
@@ -153,7 +152,7 @@ public class Constants {
                 .DrivingID(12)
                 .TurningID(22)
                 .TurningEncoderID(32)
-                .ZeroRotation(Rotation2d.fromRadians(1.1734953027325155))
+                .MagnetOffset(0.18359375)
                 .DrivingMotorInverted(true)
                 .TurningMotorInverted(false)
                 .ModuleOffset(new Translation2d(-driveBaseRadius, driveBaseRadius))
@@ -163,7 +162,7 @@ public class Constants {
                 .DrivingID(13)
                 .TurningID(23)
                 .TurningEncoderID(33)
-                .ZeroRotation(Rotation2d.fromRadians(1.1688933603688585))
+                .MagnetOffset(0.19384765625)
                 .DrivingMotorInverted(false)
                 .TurningMotorInverted(false)
                 .ModuleOffset(new Translation2d(-driveBaseRadius, -driveBaseRadius))

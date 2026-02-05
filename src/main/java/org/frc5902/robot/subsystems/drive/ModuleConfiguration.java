@@ -1,6 +1,5 @@
 package org.frc5902.robot.subsystems.drive;
 
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,7 +17,7 @@ public class ModuleConfiguration {
     public boolean TurningMotorInverted = true;
     public boolean TurnSensorInvert = true;
     public Translation2d ModuleOffset = new Translation2d(0, 0);
-    public Rotation2d ZeroRotation = new Rotation2d(0);
+    public double MagnetOffset = 0;
 
     @Builder
     public ModuleConfiguration(
@@ -29,7 +28,7 @@ public class ModuleConfiguration {
             boolean TurningMotorInverted,
             boolean TurnSensorInvert,
             Translation2d ModuleOffset,
-            Rotation2d ZeroRotation) {
+            double MagnetOffset) {
         this.DrivingID = DrivingID;
         this.TurningID = TurningID;
         this.TurningEncoderID = TurningEncoderID;
@@ -37,7 +36,7 @@ public class ModuleConfiguration {
         this.TurningMotorInverted = TurningMotorInverted;
         this.TurnSensorInvert = TurnSensorInvert;
         this.ModuleOffset = ModuleOffset;
-        this.ZeroRotation = ZeroRotation;
+        this.MagnetOffset = MagnetOffset;
     }
 
     public static ModuleConfigurationBuilder builder() {
