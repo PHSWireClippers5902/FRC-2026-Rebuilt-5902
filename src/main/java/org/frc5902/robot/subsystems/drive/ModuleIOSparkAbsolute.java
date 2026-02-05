@@ -69,11 +69,9 @@ public class ModuleIOSparkAbsolute implements ModuleIO {
         cancoder.getConfigurator().apply(cancoderConfig);
 
         turnAbsolutePosition = cancoder.getAbsolutePosition();
-        System.out.println("Cancoder Position for aligning" + module + " "
-                + Rotation2d.fromRotations(turnAbsolutePosition.getValueAsDouble())
-                        .getRadians());
 
-        zeroRotation = MODULE_INFORMATION.ZeroRotation;
+        zeroRotation = Rotation2d.fromRotations(-turnAbsolutePosition.getValueAsDouble());
+        // zeroRotation = Rotation2d.kZero;
 
         driveSpark = new SparkMax(MODULE_INFORMATION.DrivingID, MotorType.kBrushless);
         turnSpark = new SparkMax(MODULE_INFORMATION.TurningID, MotorType.kBrushless);

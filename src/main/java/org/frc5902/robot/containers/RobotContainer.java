@@ -20,7 +20,7 @@ public abstract class RobotContainer {
         return;
     }
     // initialize other requirements for RobotContainer here
-    
+
     /** Updates Dashboard outputs */
     public void updateDashboardOutputs() {
         SmartDashboard.putNumber("Match Time", DriverStation.getMatchTime());

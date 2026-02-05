@@ -3,12 +3,14 @@ package org.frc5902.robot.containers;
 import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.Alert;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Alert.AlertType;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import org.frc5902.robot.Constants.RobotConstants;
+import org.frc5902.robot.FieldConstants;
+import org.frc5902.robot.FieldConstants.AprilTagLayoutType;
 import org.frc5902.robot.Robot;
 import org.frc5902.robot.commands.drive.DriveCommands;
 import org.frc5902.robot.subsystems.drive.Drive;
@@ -18,8 +20,6 @@ import org.frc5902.robot.subsystems.drive.ModuleIO;
 import org.frc5902.robot.subsystems.drive.ModuleIOSim;
 import org.frc5902.robot.subsystems.drive.ModuleIOSparkAbsolute;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
-import org.frc5902.robot.FieldConstants;
-import org.frc5902.robot.FieldConstants.AprilTagLayoutType;
 
 public class KitbotRobotContainer extends RobotContainer {
     // init subsystems here
@@ -30,9 +30,7 @@ public class KitbotRobotContainer extends RobotContainer {
 
     private final LoggedDashboardChooser<Command> autoChooser;
 
-
-    private final Alert primaryDisconnected 
-        = new Alert("Primary controller disconnected.", AlertType.kWarning);
+    private final Alert primaryDisconnected = new Alert("Primary controller disconnected.", AlertType.kWarning);
 
     public KitbotRobotContainer() {
         switch (RobotConstants.currentMode) {
@@ -89,16 +87,16 @@ public class KitbotRobotContainer extends RobotContainer {
     public Command getAutonomousCommand() {
         return autoChooser.get();
     }
-    
+
     public AprilTagLayoutType getSelectedAprilTagLayout() {
         return FieldConstants.defaultAprilTagType;
     }
-    
+
     @Override
     public void updateDashboardOutputs() {
         super.updateDashboardOutputs();
 
-        primaryDisconnected.set(!DriverStation.isJoystickConnected(m_XboxController.getHID().getPort()));
+        primaryDisconnected.set(
+                !DriverStation.isJoystickConnected(m_XboxController.getHID().getPort()));
     }
-
 }
