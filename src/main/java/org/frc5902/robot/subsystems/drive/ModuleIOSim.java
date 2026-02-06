@@ -8,7 +8,6 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
 
 import org.frc5902.robot.Constants.DriveMotorConstants;
-import org.frc5902.robot.Constants.RobotConstants;
 import org.frc5902.robot.Constants.SimulatorConstants;
 import org.frc5902.robot.Constants.TurnMotorConstants;
 
