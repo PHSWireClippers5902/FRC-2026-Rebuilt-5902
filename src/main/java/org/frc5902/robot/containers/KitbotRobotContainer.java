@@ -79,7 +79,7 @@ public class KitbotRobotContainer extends RobotContainer {
                 drive,
                 () -> -m_XboxController.getLeftY(),
                 () -> -m_XboxController.getLeftX(),
-                () -> -m_XboxController.getRightX()));
+                () -> m_XboxController.getRightX()));
     }
 
     public Pose2d getInitialPose() {
