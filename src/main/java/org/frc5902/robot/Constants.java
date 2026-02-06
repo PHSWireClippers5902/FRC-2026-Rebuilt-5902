@@ -55,6 +55,7 @@ public class Constants {
         public static void disableHAL() {
             disableHAL = true;
         }
+
     }
 
     public static class PathPlannerConstants {
@@ -175,4 +176,18 @@ public class Constants {
             BackRightModule.getModuleOffset()
         };
     }
+
+    public static class SimulatorConstants {
+        public static DCMotor driveGearbox = DCMotor.getNEO(1);
+        public static DCMotor turnGearbox = DCMotor.getNeo550(1);
+        public static final double driveKp = 0.0;
+        public static final double driveKd = 0.0;
+        public static final double driveKs = 0.0;
+        public static final double driveKv = 0.1;
+        public static final double driveSimP = 0.05;
+        public static final double driveSimD = 0.0;
+        public static final double driveSimKs = 0.0;
+        public static final double driveSimKv = 0.0789;
+    }
+
 }
