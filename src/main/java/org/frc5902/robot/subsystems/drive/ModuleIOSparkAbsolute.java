@@ -248,5 +248,11 @@ public class ModuleIOSparkAbsolute implements ModuleIO {
     }
 
     @Override
-    public void setRelativeToAbsoluteValues() {}
+    public void setRelativeToAbsoluteValues() {
+        tryUntilOk(
+                turnSpark,
+                5,
+                () -> turnEncoder.setPosition(turnAbsolutePosition.getValueAsDouble()
+                        * TurnMotorConstants.turnPositionAbsoluteConversionFactor));
+    }
 }

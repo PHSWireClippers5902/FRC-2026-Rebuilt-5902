@@ -6,6 +6,7 @@
  */
 package org.frc5902.robot;
 
+import com.ctre.phoenix.motorcontrol.InvertType;
 import com.pathplanner.lib.config.ModuleConfig;
 import com.pathplanner.lib.config.RobotConfig;
 import com.revrobotics.PersistMode;
@@ -55,7 +56,6 @@ public class Constants {
         public static void disableHAL() {
             disableHAL = true;
         }
-
     }
 
     public static class PathPlannerConstants {
@@ -85,7 +85,8 @@ public class Constants {
         // TODO CONVERT
         public static double driveGearReduction = 1.0 / 5.54;
         // First, convert to radians (2pi/5.54). Then, divide by drive train radius
-        public static double drivePositionConversionFactor = Units.inchesToMeters(driveWheelRadiusInches) / (5.54);
+        // Units.inchesToMeters(driveWheelRadiusInches)
+        public static double drivePositionConversionFactor = 2 * Math.PI / 5.54;
         public static double driveVelocityConversionFactor = drivePositionConversionFactor / 60;
         public static int driveCurrentLimit = 40;
         public static double driveVoltageCompensation = 12;
@@ -190,4 +191,12 @@ public class Constants {
         public static final double driveSimKv = 0.0789;
     }
 
+    public static class IntakeConstants {
+        public static final int FeederCANID = 41;
+        public static final int IntakeCANID = 40;
+
+        // is the feeder / intake inverted? We want anything intake to be positive
+        public static final InvertType FeederInverted = InvertType.None;
+        public static final InvertType IntakeInverted = InvertType.InvertMotorOutput;
+    }
 }

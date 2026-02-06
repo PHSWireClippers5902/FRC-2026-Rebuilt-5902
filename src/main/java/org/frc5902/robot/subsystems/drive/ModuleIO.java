@@ -35,6 +35,6 @@ public interface ModuleIO {
     public default void setDriveVelocity(double velocityRadiansPerSecond) {}
     // sets motor specific position
     public default void setTurnPosition(Rotation2d rotation) {}
-    // sends relative encoder update to absolute encoders
+    // sends relative encoder update to absolute encoders ==>
     public default void setRelativeToAbsoluteValues() {}
 }
