@@ -25,14 +25,25 @@ public class Intake extends SubsystemBase {
         intakeDisconnected.set(!intakeIOInputs.intakeConnected);
         feederDisconnected.set(!intakeIOInputs.feederConnected);
     }
-
+    /**
+     * INTAKE METHODS
+     */
     public void intake() {
         this.intake(1, 1);
     }
 
-    public void intake(double IntakePercentOutput, double FeederPercentOutput) {}
+    public void intake(double IntakePercentOutput, double FeederPercentOutput) {
+        intakeIO.setIntakePercentageOutput(IntakePercentOutput);
+        intakeIO.setFeederPercentageOutput(FeederPercentOutput);
+    }
 
-    public void intake(DoubleSupplier IntakePercentOutput, DoubleSupplier FeederPercentOutput) {}
+    public void intake(DoubleSupplier IntakePercentOutput, DoubleSupplier FeederPercentOutput) {
+        this.intake(IntakePercentOutput.getAsDouble(),FeederPercentOutput.getAsDouble());
+    }
+
+    /**
+     * 
+     */
 
     public void stop() {
         intakeIO.setIntakePercentageOutput(0);
