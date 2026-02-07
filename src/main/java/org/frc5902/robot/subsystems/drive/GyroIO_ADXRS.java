@@ -33,4 +33,8 @@ public class GyroIO_ADXRS implements GyroIO {
         yawTimestampQueue.clear();
         yawPositionQueue.clear();
     }
+
+    public void resetGyro() {
+        ADXRS_Gyro.reset();
+    }
 }

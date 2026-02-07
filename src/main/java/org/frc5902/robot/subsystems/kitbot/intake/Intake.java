@@ -3,7 +3,6 @@ package org.frc5902.robot.subsystems.kitbot.intake;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 
@@ -55,11 +54,23 @@ public class Intake extends SubsystemBase {
     }
 
     public void spit(DoubleSupplier IntakePercentOutput, DoubleSupplier FeederPercentOutput) {
-        this.spit(IntakePercentOutput.getAsDouble(),FeederPercentOutput.getAsDouble());
+        this.spit(IntakePercentOutput.getAsDouble(), FeederPercentOutput.getAsDouble());
     }
     /**
      * FLYWHEEL METHODS
      */
+    public void launch() {
+        this.launch(1, 1);
+    }
+
+    public void launch(double IntakePercentOutput, double FeederPercentOutput) {
+        intakeIO.setIntakePercentageOutput(Math.abs(IntakePercentOutput));
+        intakeIO.setFeederPercentageOutput(-Math.abs(FeederPercentOutput));
+    }
+
+    public void launch(DoubleSupplier IntakePercentOutput, DoubleSupplier FeederPercentOutput) {
+        this.launch(IntakePercentOutput.getAsDouble(), FeederPercentOutput.getAsDouble());
+    }
 
     public void stop() {
         intakeIO.setIntakePercentageOutput(0);
@@ -67,14 +78,13 @@ public class Intake extends SubsystemBase {
     }
 
     /** AUTOLOG OUTPUT METHODS */
-    @AutoLogOutput(key="Intake/IntakePercentOutput")
-    public double getIntakePercentOutput(){
+    @AutoLogOutput(key = "Intake/IntakePercentOutput")
+    public double getIntakePercentOutput() {
         return intakeIOInputs.intakePercentOutput;
     }
-    
-    @AutoLogOutput(key="Intake/FeederPercentOutput")
-    public double getFeederPercentOutput(){
+
+    @AutoLogOutput(key = "Intake/FeederPercentOutput")
+    public double getFeederPercentOutput() {
         return intakeIOInputs.feederPercentOutput;
     }
-    
 }

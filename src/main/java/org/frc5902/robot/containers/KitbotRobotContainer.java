@@ -13,18 +13,23 @@ import org.frc5902.robot.FieldConstants;
 import org.frc5902.robot.FieldConstants.AprilTagLayoutType;
 import org.frc5902.robot.Robot;
 import org.frc5902.robot.commands.drive.DriveCommands;
+import org.frc5902.robot.commands.intake.IntakeCommands;
 import org.frc5902.robot.subsystems.drive.Drive;
 import org.frc5902.robot.subsystems.drive.GyroIO;
 import org.frc5902.robot.subsystems.drive.GyroIO_ADXRS;
 import org.frc5902.robot.subsystems.drive.ModuleIO;
 import org.frc5902.robot.subsystems.drive.ModuleIOSim;
 import org.frc5902.robot.subsystems.drive.ModuleIOSparkAbsolute;
+import org.frc5902.robot.subsystems.kitbot.intake.Intake;
+import org.frc5902.robot.subsystems.kitbot.intake.IntakeIO;
+import org.frc5902.robot.subsystems.kitbot.intake.IntakeIOSim;
+import org.frc5902.robot.subsystems.kitbot.intake.IntakeIOTalonSRX;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 public class KitbotRobotContainer extends RobotContainer {
     // init subsystems here
     private final Drive drive;
-
+    private final Intake intake;
     // command xbox
     private final CommandXboxController m_XboxController = new CommandXboxController(0);
 
@@ -41,16 +46,20 @@ public class KitbotRobotContainer extends RobotContainer {
                         new ModuleIOSparkAbsolute(1),
                         new ModuleIOSparkAbsolute(2),
                         new ModuleIOSparkAbsolute(3));
+                intake = new Intake(new IntakeIOTalonSRX());
+
                 break;
             case SIM:
                 // sim bot
                 drive = new Drive(
                         new GyroIO() {}, new ModuleIOSim(), new ModuleIOSim(), new ModuleIOSim(), new ModuleIOSim());
+                intake = new Intake(new IntakeIOSim());
                 break;
             default:
                 // replay
                 drive = new Drive(
                         new GyroIO() {}, new ModuleIO() {}, new ModuleIO() {}, new ModuleIO() {}, new ModuleIO() {});
+                intake = new Intake(new IntakeIO() {});
                 break;
         }
         autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
@@ -78,6 +87,21 @@ public class KitbotRobotContainer extends RobotContainer {
                 () -> -m_XboxController.getLeftY(),
                 () -> -m_XboxController.getLeftX(),
                 () -> m_XboxController.getRightX()));
+        intake.setDefaultCommand(IntakeCommands.stopCommand(intake));
+
+        m_XboxController
+                .rightTrigger(0.1)
+                .onTrue(IntakeCommands.intakeCommand(
+                        intake, m_XboxController::getRightTriggerAxis, m_XboxController::getRightTriggerAxis));
+
+        m_XboxController
+                .leftTrigger(0.1)
+                .onTrue(IntakeCommands.flywheelCommand(
+                        intake, m_XboxController::getLeftTriggerAxis, m_XboxController::getLeftTriggerAxis));
+
+        m_XboxController.a().whileTrue(IntakeCommands.spit(intake));
+
+        m_XboxController.b().whileTrue(DriveCommands.resetGyroscope(drive));
     }
 
     public Pose2d getInitialPose() {

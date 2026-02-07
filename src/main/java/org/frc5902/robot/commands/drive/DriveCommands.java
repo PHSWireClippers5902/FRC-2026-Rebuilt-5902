@@ -59,6 +59,14 @@ public class DriveCommands {
                 .getTranslation();
     }
 
+    public static Command resetGyroscope(Drive drive) {
+        return Commands.runOnce(
+                () -> {
+                    drive.resetGyroscope();
+                },
+                drive);
+    }
+
     /**
      * Field relative drive command using two joysticks (controlling linear and angular velocities).
      */

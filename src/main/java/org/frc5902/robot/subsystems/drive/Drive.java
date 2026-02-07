@@ -260,4 +260,7 @@ public class Drive extends SubsystemBase {
     public double getMaxAngularSpeedRadiansPerSecond() {
         return RobotConstants.MAX_SPEED_METERS_PER_SECOND / 1;
     }
+
+    // reset gyro fast commit
+    public void resetGyroscope() {}
 }

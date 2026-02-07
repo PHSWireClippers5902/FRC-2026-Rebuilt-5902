@@ -5,7 +5,6 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.math.filter.Debouncer;
 import org.frc5902.robot.Constants.IntakeConstants;
-import org.littletonrobotics.junction.AutoLogOutput;
 
 public class IntakeIOTalonSRX implements IntakeIO {
 
@@ -40,6 +39,4 @@ public class IntakeIOTalonSRX implements IntakeIO {
     public void setFeederPercentageOutput(double percent) {
         feederTalon.set(ControlMode.PercentOutput, percent);
     }
-
-
 }
