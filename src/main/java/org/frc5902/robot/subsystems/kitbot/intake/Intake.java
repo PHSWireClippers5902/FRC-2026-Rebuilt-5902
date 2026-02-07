@@ -40,7 +40,7 @@ public class Intake extends SubsystemBase {
     }
 
     public void intake(DoubleSupplier IntakePercentOutput, DoubleSupplier FeederPercentOutput) {
-        this.intake(IntakePercentOutput.getAsDouble(),FeederPercentOutput.getAsDouble());
+        this.intake(IntakePercentOutput.getAsDouble(), FeederPercentOutput.getAsDouble());
     }
     /**
      * SPIT METHODS
@@ -60,22 +60,7 @@ public class Intake extends SubsystemBase {
     /**
      * FLYWHEEL METHODS
      */
-    public void launch() {
-        this.launch(1, 1);
-    }
 
-    public void launch(double IntakePercentOutput, double FeederPercentOutput) {
-        intakeIO.setIntakePercentageOutput(Math.abs(IntakePercentOutput));
-        intakeIO.setFeederPercentageOutput(-Math.abs(FeederPercentOutput));
-    }
-
-    public void launch(DoubleSupplier IntakePercentOutput, DoubleSupplier FeederPercentOutput) {
-        this.launch(IntakePercentOutput.getAsDouble(),FeederPercentOutput.getAsDouble());
-    }
-
-    /**
-     * STOP
-     */
     public void stop() {
         intakeIO.setIntakePercentageOutput(0);
         intakeIO.setFeederPercentageOutput(0);

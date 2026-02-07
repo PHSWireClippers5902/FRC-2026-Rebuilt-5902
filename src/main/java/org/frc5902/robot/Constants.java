@@ -45,10 +45,10 @@ public class Constants {
         public static int periodMs = 20;
         public static int DEFAULT_CURRENT_LIMIT = 60;
 
-        public static final double robotMasskg = 100;
-        public static final double robotMOI = 7;
-        public static final double wheelCOF = 1.2;
-        public static double MAX_SPEED_METERS_PER_SECOND = 4.0;
+        public static final double robotMasskg = 100; // change 
+        public static final double robotMOI = 7; // change  (sysid)
+        public static final double wheelCOF = 1.2; // change (sysid)
+        public static double MAX_SPEED_METERS_PER_SECOND = 4.0; // change 
 
         // idk what a 'hal' is...
         public static boolean disableHAL = false;
@@ -81,13 +81,13 @@ public class Constants {
     }
 
     public static class DriveMotorConstants {
-        public static double driveWheelRadiusInches = 1.5; // in inches
+        public static double driveWheelRadiusInches = 1.5; // in inches // change 
         // TODO CONVERT
-        public static double driveGearReduction = 1.0 / 5.54;
+        public static double driveGearReduction = 1.0 / 5.54; //change
         // First, convert to radians (2pi/5.54). Then, divide by drive train radius
         // Units.inchesToMeters(driveWheelRadiusInches)
-        public static double drivePositionConversionFactor = 2 * Math.PI / 5.54;
-        public static double driveVelocityConversionFactor = drivePositionConversionFactor / 60;
+        public static double drivePositionConversionFactor = 2 * Math.PI / 5.54; //// change 
+        public static double driveVelocityConversionFactor = drivePositionConversionFactor / 60; // change 
         public static int driveCurrentLimit = 40;
         public static double driveVoltageCompensation = 12;
         public static FeedbackSensor driveFeedbackSensor = FeedbackSensor.kPrimaryEncoder;
@@ -99,8 +99,8 @@ public class Constants {
 
         // kS: volt to overcome static friction; kV: voltage to hold cruise velocity
         // TODO IMPLEMENT
-        public static double kV = 0.0; // aka static
-        public static double kS = 0.0; // aka velocity
+        public static double kV = 0.0; // aka velocity
+        public static double kS = 0.0; // aka static
     }
 
     public static class TurnMotorConstants {
@@ -126,8 +126,8 @@ public class Constants {
     }
 
     public class ModuleConfigurations {
-        public static double driveBaseWidthSQUARE = 24; // in
-        public static double driveBaseRadius = (Units.inchesToMeters(driveBaseWidthSQUARE) / 2) * Math.sqrt(2);
+        public static double driveBaseWidthSQUARE = 24; // in // change 
+        public static double driveBaseRadius = (Units.inchesToMeters(driveBaseWidthSQUARE) / 2) * Math.sqrt(2);  
         // Front Left Module
         public static ModuleConfiguration FrontLeftModule = ModuleConfiguration.builder()
                 .DrivingID(10)
