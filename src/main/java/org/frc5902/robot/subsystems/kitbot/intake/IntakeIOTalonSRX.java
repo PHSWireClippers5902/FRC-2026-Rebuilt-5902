@@ -3,9 +3,9 @@ package org.frc5902.robot.subsystems.kitbot.intake;
 import com.ctre.phoenix.ErrorCode;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.ctre.phoenix6.StatusSignal;
 import edu.wpi.first.math.filter.Debouncer;
 import org.frc5902.robot.Constants.IntakeConstants;
+import org.littletonrobotics.junction.AutoLogOutput;
 
 public class IntakeIOTalonSRX implements IntakeIO {
 
@@ -13,8 +13,6 @@ public class IntakeIOTalonSRX implements IntakeIO {
     private final TalonSRX feederTalon;
     private final Debouncer intakeConnectedDebounce = new Debouncer(0.5, Debouncer.DebounceType.kFalling);
     private final Debouncer feederConnectedDebounce = new Debouncer(0.5, Debouncer.DebounceType.kFalling);
-    private StatusSignal<Boolean> intakeConnectedSignal;
-    private StatusSignal<Boolean> feederConnectedSignal;
 
     public IntakeIOTalonSRX() {
         intakeTalon = new TalonSRX(IntakeConstants.IntakeCANID);
@@ -42,4 +40,6 @@ public class IntakeIOTalonSRX implements IntakeIO {
     public void setFeederPercentageOutput(double percent) {
         feederTalon.set(ControlMode.PercentOutput, percent);
     }
+
+
 }
