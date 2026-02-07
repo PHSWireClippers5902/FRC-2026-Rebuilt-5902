@@ -38,13 +38,12 @@ public class Intake extends SubsystemBase {
     }
 
     public void intake(DoubleSupplier IntakePercentOutput, DoubleSupplier FeederPercentOutput) {
-        this.intake(IntakePercentOutput.getAsDouble(),FeederPercentOutput.getAsDouble());
+        this.intake(IntakePercentOutput.getAsDouble(), FeederPercentOutput.getAsDouble());
     }
 
     /**
-     * 
+     *
      */
-
     public void stop() {
         intakeIO.setIntakePercentageOutput(0);
         intakeIO.setFeederPercentageOutput(0);
