@@ -37,7 +37,7 @@ public class GeoUtil {
         if (dt <= kMinDt) return new Twist3d();
         return calculateTwist3d(oldPose, newPose, dt);
     }
-    
+
     /**
      * Creates a pure translating transform
      *

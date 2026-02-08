@@ -1,10 +1,9 @@
 package org.frc5902.robot.subsystems.drive;
 
-import org.frc5902.robot.subsystems.drive.modules.ModuleConfiguration;
-
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.util.Units;
+import org.frc5902.robot.subsystems.drive.modules.ModuleConfiguration;
 
 public class DriveConstants {
     public static class SimulatorConstants {
@@ -72,5 +71,4 @@ public class DriveConstants {
             BackRightModule.getModuleOffset()
         };
     }
-    
 }

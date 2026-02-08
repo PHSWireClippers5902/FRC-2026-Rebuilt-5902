@@ -4,10 +4,9 @@ import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.geometry.Pose3d;
 import gg.questnav.questnav.PoseFrame;
 import gg.questnav.questnav.QuestNav;
+import org.frc5902.robot.Constants.QuestConstants;
 
 import java.util.Queue;
-
-import org.frc5902.robot.Constants.QuestConstants;
 
 public class QuestIOReal implements QuestIO {
     public final QuestNav questNav;

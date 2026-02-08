@@ -33,7 +33,7 @@ import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
 public class DriveCommands {
-        
+
     private static final double DEADBAND = 0.1;
     private static final double ANGLE_KP = 0.0005;
     private static final double ANGLE_KD = 0.0001;
@@ -254,8 +254,7 @@ public class DriveCommands {
                                         wheelDelta += Math.abs(positions[i] - state.positions[i]) / 4.0;
                                     }
                                     double wheelRadius =
-                                            (state.gyroDelta * ModuleConfigurations.driveBaseRadius)
-                                                    / wheelDelta;
+                                            (state.gyroDelta * ModuleConfigurations.driveBaseRadius) / wheelDelta;
 
                                     NumberFormat formatter = new DecimalFormat("#0.000");
                                     System.out.println("********** Wheel Radius Characterization Results **********");

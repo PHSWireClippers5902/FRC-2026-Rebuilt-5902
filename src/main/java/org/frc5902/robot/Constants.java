@@ -6,31 +6,22 @@
  */
 package org.frc5902.robot;
 
-import com.ctre.phoenix.motorcontrol.InvertType;
 import com.pathplanner.lib.config.ModuleConfig;
 import com.pathplanner.lib.config.RobotConfig;
 import com.revrobotics.PersistMode;
 import com.revrobotics.ResetMode;
 import com.revrobotics.spark.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
-
-import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Transform3d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.RobotBase;
-import lombok.Builder;
-
-import java.util.function.Supplier;
-
 import org.frc5902.robot.subsystems.drive.DriveConstants.ModuleConfigurations;
-import org.frc5902.robot.subsystems.drive.modules.ModuleConfiguration;
 import org.frc5902.robot.util.PID;
 
 public class Constants {
     public static class RobotConstants {
-        
+
         public static final String KITBOT_SERIAL_NUMBER = "";
         public static final String COMPBOT_SERIAL_NUMBER = "";
         public static final String TESTBENCH_SERIAL_NUMBER = "";
@@ -138,12 +129,4 @@ public class Constants {
         public static double turnPIDMinInput = 0;
         public static double turnPIDMaxInput = 2 * Math.PI;
     }
-
-    
-
-    
-
-    
-
-    
 }

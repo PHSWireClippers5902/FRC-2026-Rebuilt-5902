@@ -26,13 +26,14 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import org.frc5902.robot.Constants.PathPlannerConstants;
 import org.frc5902.robot.Constants.RobotConstants;
 import org.frc5902.robot.Constants.RobotConstants.Mode;
+import org.frc5902.robot.subsystems.drive.DriveConstants.ModuleConfigurations;
 import org.frc5902.robot.subsystems.drive.gyro.GyroIO;
+import org.frc5902.robot.subsystems.drive.gyro.GyroIOInputsAutoLogged;
 import org.frc5902.robot.subsystems.drive.modules.Module;
 import org.frc5902.robot.subsystems.drive.modules.ModuleIO;
 import org.frc5902.robot.util.LocalADStarAK;
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
-import org.frc5902.robot.subsystems.drive.DriveConstants.*;
 
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -48,8 +49,7 @@ public class Drive extends SubsystemBase {
     private final SysIdRoutine sysId;
     private final Alert gyroDisconnectedAlert =
             new Alert("Disconnected gyro, using kinematics as fallback.", AlertType.kError);
-    private SwerveDriveKinematics kinematics =
-            new SwerveDriveKinematics(ModuleConfigurations.moduleTranslations);
+    private SwerveDriveKinematics kinematics = new SwerveDriveKinematics(ModuleConfigurations.moduleTranslations);
     private Rotation2d rawGyroRotation = Rotation2d.kZero;
     private SwerveModulePosition[] lastModulePositions = new SwerveModulePosition[] {
         new SwerveModulePosition(), new SwerveModulePosition(), new SwerveModulePosition(), new SwerveModulePosition()
