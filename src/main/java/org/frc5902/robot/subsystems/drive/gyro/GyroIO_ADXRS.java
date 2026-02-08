@@ -1,4 +1,4 @@
-package org.frc5902.robot.subsystems.drive;
+package org.frc5902.robot.subsystems.drive.gyro;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
@@ -6,6 +6,8 @@ import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.SPI;
 
 import java.util.Queue;
+
+import org.frc5902.robot.subsystems.drive.SparkOdometryThread;
 
 public class GyroIO_ADXRS implements GyroIO {
     public final ADXRS450_Gyro ADXRS_Gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);

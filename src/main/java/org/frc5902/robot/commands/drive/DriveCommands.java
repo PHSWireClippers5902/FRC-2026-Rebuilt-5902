@@ -22,8 +22,8 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import org.frc5902.robot.Constants;
 import org.frc5902.robot.subsystems.drive.Drive;
+import org.frc5902.robot.subsystems.drive.DriveConstants.ModuleConfigurations;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -33,6 +33,7 @@ import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
 public class DriveCommands {
+        
     private static final double DEADBAND = 0.1;
     private static final double ANGLE_KP = 0.0005;
     private static final double ANGLE_KD = 0.0001;
@@ -253,7 +254,7 @@ public class DriveCommands {
                                         wheelDelta += Math.abs(positions[i] - state.positions[i]) / 4.0;
                                     }
                                     double wheelRadius =
-                                            (state.gyroDelta * Constants.ModuleConfigurations.driveBaseRadius)
+                                            (state.gyroDelta * ModuleConfigurations.driveBaseRadius)
                                                     / wheelDelta;
 
                                     NumberFormat formatter = new DecimalFormat("#0.000");

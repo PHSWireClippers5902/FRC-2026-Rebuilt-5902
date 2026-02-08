@@ -1,12 +1,10 @@
 package org.frc5902.robot.subsystems.questnav;
 
 import edu.wpi.first.math.geometry.Pose3d;
-import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Twist3d;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
 import org.frc5902.robot.Constants.QuestConstants;
 import org.frc5902.robot.util.GeoUtil;
 import org.littletonrobotics.junction.AutoLogOutput;
@@ -65,7 +63,7 @@ public class QuestSubsystem extends SubsystemBase {
     public Pose3d getLatestPoseRobotRelative() {
         if (questIOInputs.readPoses.length < 1) return new Pose3d();
         return (questIOInputs.readPoses[questIOInputs.readPoses.length - 1])
-            .transformBy(QuestConstants.ROBOT_TO_QUEST.inverse());
+                .transformBy(QuestConstants.ROBOT_TO_QUEST.inverse());
     }
 
     @AutoLogOutput(key = "QuestNav/Twist/ROBOT")

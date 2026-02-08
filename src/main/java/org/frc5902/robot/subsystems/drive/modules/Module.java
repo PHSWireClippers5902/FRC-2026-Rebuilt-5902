@@ -1,4 +1,4 @@
-package org.frc5902.robot.subsystems.drive;
+package org.frc5902.robot.subsystems.drive.modules;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
@@ -7,6 +7,7 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import org.frc5902.robot.Constants.*;
+import org.frc5902.robot.subsystems.drive.ModuleIOInputsAutoLogged;
 import org.littletonrobotics.junction.Logger;
 
 public class Module {

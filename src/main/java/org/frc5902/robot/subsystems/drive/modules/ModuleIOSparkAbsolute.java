@@ -1,4 +1,4 @@
-package org.frc5902.robot.subsystems.drive;
+package org.frc5902.robot.subsystems.drive.modules;
 
 import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.StatusSignal;
@@ -19,6 +19,8 @@ import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.units.measure.Angle;
 import org.frc5902.robot.Constants.*;
+import org.frc5902.robot.subsystems.drive.SparkOdometryThread;
+import org.frc5902.robot.subsystems.drive.DriveConstants.*;
 
 import java.util.Queue;
 import java.util.function.DoubleSupplier;

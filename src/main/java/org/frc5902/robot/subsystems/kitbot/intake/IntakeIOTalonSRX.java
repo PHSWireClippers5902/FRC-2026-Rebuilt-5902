@@ -4,7 +4,6 @@ import com.ctre.phoenix.ErrorCode;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.math.filter.Debouncer;
-import org.frc5902.robot.Constants.IntakeConstants;
 
 public class IntakeIOTalonSRX implements IntakeIO {
 

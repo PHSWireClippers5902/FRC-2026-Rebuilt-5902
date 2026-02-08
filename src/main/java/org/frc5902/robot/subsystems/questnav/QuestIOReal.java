@@ -7,6 +7,8 @@ import gg.questnav.questnav.QuestNav;
 
 import java.util.Queue;
 
+import org.frc5902.robot.Constants.QuestConstants;
+
 public class QuestIOReal implements QuestIO {
     public final QuestNav questNav;
     private final Queue<Double> timestampQueue;
@@ -50,6 +52,6 @@ public class QuestIOReal implements QuestIO {
     }
 
     public void setPose(Pose3d pose) {
-        questNav.setPose(pose);
+        questNav.setPose(pose.transformBy(QuestConstants.ROBOT_TO_QUEST));
     }
 }
