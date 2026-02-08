@@ -80,6 +80,10 @@ public class Constants {
         public static double odometryFrequency = 100.0;
     }
 
+    public static class QuestConstants {
+        public static double questFrequency = 100.0;
+    }
+
     public static class DriveMotorConstants {
         public static double driveWheelRadiusInches = 1.5; // in inches // change
         // TODO CONVERT

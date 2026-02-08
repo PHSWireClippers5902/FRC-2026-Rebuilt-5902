@@ -4,7 +4,6 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.SPI;
-import org.frc5902.robot.util.SparkOdometryThread;
 
 import java.util.Queue;
 
@@ -34,7 +33,7 @@ public class GyroIO_ADXRS implements GyroIO {
         yawPositionQueue.clear();
     }
 
-    public void resetGyro() {
+    public void resetGyroscope() {
         ADXRS_Gyro.reset();
     }
 }

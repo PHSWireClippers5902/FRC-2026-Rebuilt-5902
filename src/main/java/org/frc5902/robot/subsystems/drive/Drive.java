@@ -29,7 +29,6 @@ import org.frc5902.robot.Constants.PathPlannerConstants;
 import org.frc5902.robot.Constants.RobotConstants;
 import org.frc5902.robot.Constants.RobotConstants.Mode;
 import org.frc5902.robot.util.LocalADStarAK;
-import org.frc5902.robot.util.SparkOdometryThread;
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 

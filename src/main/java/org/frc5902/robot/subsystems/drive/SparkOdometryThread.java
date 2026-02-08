@@ -4,14 +4,13 @@
 // Use of this source code is governed by a BSD
 // license that can be found in the LICENSE file
 // at the root directory of this project.
-package org.frc5902.robot.util;
+package org.frc5902.robot.subsystems.drive;
 
 import com.revrobotics.REVLibError;
 import com.revrobotics.spark.SparkBase;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.RobotController;
 import org.frc5902.robot.Constants.OdometryConstants;
-import org.frc5902.robot.subsystems.drive.Drive;
 
 import java.util.ArrayList;
 import java.util.List;
