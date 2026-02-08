@@ -4,7 +4,7 @@ import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Twist3d;
 
-public class TwistUtil {
+public class GeoUtil {
     public static final double kMinDt = 1e-6;
 
     public static Twist3d calculateTwist3d(Pose3d oldPose, Pose3d newPose, double dt) {
@@ -26,4 +26,6 @@ public class TwistUtil {
         if (dt <= kMinDt) return new Twist3d();
         return calculateTwist3d(oldPose, newPose, dt);
     }
+
+
 }
