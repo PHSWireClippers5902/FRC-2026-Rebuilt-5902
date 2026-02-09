@@ -262,5 +262,14 @@ public class Drive extends SubsystemBase {
     }
 
     // reset gyro fast commit
-    public void resetGyroscope() {}
+    public void resetGyroscope() {
+        gyroIO.resetGyro();
+    }
+
+    // reset Absolute Positions
+    public void resetSwerveAbsolutePositions() {
+        for (int i = 0; i < 4; i++) {
+            modules[i].resetSwerveAbsolutePositions();
+        }
+    }
 }

@@ -102,6 +102,10 @@ public class KitbotRobotContainer extends RobotContainer {
         m_XboxController.a().whileTrue(IntakeCommands.spit(intake));
 
         m_XboxController.b().whileTrue(DriveCommands.resetGyroscope(drive));
+
+        m_XboxController.x().whileTrue(DriveCommands.defenceGoal(drive));
+
+        m_XboxController.y().whileTrue(DriveCommands.resetSwerveAbsolutePositions(drive));
     }
 
     public Pose2d getInitialPose() {

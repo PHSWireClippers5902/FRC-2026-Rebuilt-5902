@@ -67,6 +67,14 @@ public class DriveCommands {
                 drive);
     }
 
+    public static Command resetSwerveAbsolutePositions(Drive drive) {
+        return Commands.runOnce(
+                () -> {
+                    drive.resetSwerveAbsolutePositions();
+                },
+                drive);
+    }
+
     /**
      * Field relative drive command using two joysticks (controlling linear and angular velocities).
      */
@@ -95,6 +103,14 @@ public class DriveCommands {
                     drive.runVelocity(ChassisSpeeds.fromFieldRelativeSpeeds(
                             speeds,
                             isFlipped ? drive.getRotation().plus(new Rotation2d(Math.PI)) : drive.getRotation()));
+                },
+                drive);
+    }
+
+    public static Command defenceGoal(Drive drive) {
+        return Commands.runOnce(
+                () -> {
+                    drive.stopWithX();
                 },
                 drive);
     }

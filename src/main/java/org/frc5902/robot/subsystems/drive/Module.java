@@ -106,4 +106,8 @@ public class Module {
     public double getFFCharacterizationVelocity() {
         return inputs.driveVelocityRadiansPerSecond;
     }
+
+    public void resetSwerveAbsolutePositions() {
+        io.setRelativeToAbsoluteValues();
+    }
 }
