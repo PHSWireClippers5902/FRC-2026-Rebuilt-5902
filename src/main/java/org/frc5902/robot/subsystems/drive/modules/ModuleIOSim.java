@@ -1,4 +1,4 @@
-package org.frc5902.robot.subsystems.drive;
+package org.frc5902.robot.subsystems.drive.modules;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
@@ -7,8 +7,8 @@ import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
 import org.frc5902.robot.Constants.DriveMotorConstants;
-import org.frc5902.robot.Constants.SimulatorConstants;
 import org.frc5902.robot.Constants.TurnMotorConstants;
+import org.frc5902.robot.subsystems.drive.DriveConstants.*;
 
 public class ModuleIOSim implements ModuleIO {
     private final DCMotorSim driveSim;

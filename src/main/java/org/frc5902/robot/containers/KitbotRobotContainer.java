@@ -15,21 +15,25 @@ import org.frc5902.robot.Robot;
 import org.frc5902.robot.commands.drive.DriveCommands;
 import org.frc5902.robot.commands.intake.IntakeCommands;
 import org.frc5902.robot.subsystems.drive.Drive;
-import org.frc5902.robot.subsystems.drive.GyroIO;
-import org.frc5902.robot.subsystems.drive.GyroIO_ADXRS;
-import org.frc5902.robot.subsystems.drive.ModuleIO;
-import org.frc5902.robot.subsystems.drive.ModuleIOSim;
-import org.frc5902.robot.subsystems.drive.ModuleIOSparkAbsolute;
+import org.frc5902.robot.subsystems.drive.gyro.GyroIO;
+import org.frc5902.robot.subsystems.drive.gyro.GyroIO_ADXRS;
+import org.frc5902.robot.subsystems.drive.modules.ModuleIO;
+import org.frc5902.robot.subsystems.drive.modules.ModuleIOSim;
+import org.frc5902.robot.subsystems.drive.modules.ModuleIOSparkAbsolute;
 import org.frc5902.robot.subsystems.kitbot.intake.Intake;
 import org.frc5902.robot.subsystems.kitbot.intake.IntakeIO;
 import org.frc5902.robot.subsystems.kitbot.intake.IntakeIOSim;
 import org.frc5902.robot.subsystems.kitbot.intake.IntakeIOTalonSRX;
+import org.frc5902.robot.subsystems.questnav.QuestIO;
+import org.frc5902.robot.subsystems.questnav.QuestIOReal;
+import org.frc5902.robot.subsystems.questnav.QuestSubsystem;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 public class KitbotRobotContainer extends RobotContainer {
     // init subsystems here
     private final Drive drive;
     private final Intake intake;
+    private final QuestSubsystem quest;
     // command xbox
     private final CommandXboxController m_XboxController = new CommandXboxController(0);
 
@@ -47,19 +51,21 @@ public class KitbotRobotContainer extends RobotContainer {
                         new ModuleIOSparkAbsolute(2),
                         new ModuleIOSparkAbsolute(3));
                 intake = new Intake(new IntakeIOTalonSRX());
-
+                quest = new QuestSubsystem(new QuestIOReal());
                 break;
             case SIM:
                 // sim bot
                 drive = new Drive(
                         new GyroIO() {}, new ModuleIOSim(), new ModuleIOSim(), new ModuleIOSim(), new ModuleIOSim());
                 intake = new Intake(new IntakeIOSim());
+                quest = new QuestSubsystem(new QuestIO() {});
                 break;
             default:
                 // replay
                 drive = new Drive(
                         new GyroIO() {}, new ModuleIO() {}, new ModuleIO() {}, new ModuleIO() {}, new ModuleIO() {});
                 intake = new Intake(new IntakeIO() {});
+                quest = new QuestSubsystem(new QuestIO() {});
                 break;
         }
         autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
@@ -81,7 +87,7 @@ public class KitbotRobotContainer extends RobotContainer {
         if (Robot.isSimulation()) {
             DriverStation.silenceJoystickConnectionWarning(true);
         }
-
+        // set default commands here.... here I say.... HERE
         drive.setDefaultCommand(DriveCommands.joystickDrive(
                 drive,
                 () -> -m_XboxController.getLeftY(),
