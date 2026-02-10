@@ -129,7 +129,10 @@ public class KitbotRobotContainer extends RobotContainer {
     @Override
     public void updateDashboardOutputs() {
         super.updateDashboardOutputs();
+    }
 
+    @Override
+    public void updateAlerts() {
         primaryDisconnected.set(
                 !DriverStation.isJoystickConnected(m_XboxController.getHID().getPort()));
     }

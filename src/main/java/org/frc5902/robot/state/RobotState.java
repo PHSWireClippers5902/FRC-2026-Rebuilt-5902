@@ -172,7 +172,7 @@ public class RobotState {
 
         // calc 3x3 vision matrix (idk why Mecha-Advantage used ++i)
         var r = new double[3];
-        for (int i = 1; i < 4; ++i) {
+        for (int i = 0; i < 3; ++i) {
             r[i] = observation.stdDevs().get(i, 0) * observation.stdDevs().get(i, 0);
         }
         // as Mechanical Advantage wrote (and wise words from them...)
@@ -309,7 +309,7 @@ public class RobotState {
 
         // calc 3x3 vision matrix (idk why Mecha-Advantage used ++i)
         var r = new double[3];
-        for (int i = 1; i < 4; ++i) {
+        for (int i = 0; i < 3; ++i) {
             r[i] = questStdDevs.get(i, 0) * questStdDevs.get(i, 0);
         }
         // as Mechanical Advantage wrote (and wise words from them...)

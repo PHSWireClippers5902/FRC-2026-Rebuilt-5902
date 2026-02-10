@@ -26,6 +26,7 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import org.frc5902.robot.Constants.PathPlannerConstants;
 import org.frc5902.robot.Constants.RobotConstants;
 import org.frc5902.robot.Constants.RobotConstants.Mode;
+import org.frc5902.robot.state.RobotState;
 import org.frc5902.robot.subsystems.drive.DriveConstants.ModuleConfigurations;
 import org.frc5902.robot.subsystems.drive.gyro.GyroIO;
 import org.frc5902.robot.subsystems.drive.gyro.GyroIOInputsAutoLogged;
@@ -35,6 +36,7 @@ import org.frc5902.robot.util.LocalADStarAK;
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 
+import java.util.Optional;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -133,7 +135,14 @@ public class Drive extends SubsystemBase {
             }
 
             poseEstimator.updateWithTime(sampleTimestamps[i], rawGyroRotation, modulePositions);
+            RobotState.getInstance()
+                    .addOdometryObservation(new RobotState.OdometryObservation(
+                            modulePositions,
+                            Optional.ofNullable(gyroInputs.connected ? gyroInputs.odometryYawPositions[i] : null),
+                            sampleTimestamps[i]));
         }
+
+        RobotState.getInstance().addDriveSpeeds(getChassisSpeeds());
 
         gyroDisconnectedAlert.set(!gyroInputs.connected && RobotConstants.currentMode != Mode.SIM);
     }

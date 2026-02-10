@@ -6,6 +6,8 @@ import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.frc5902.robot.Constants.QuestConstants;
+import org.frc5902.robot.state.RobotState;
+import org.frc5902.robot.state.RobotState.QuestObservation;
 import org.frc5902.robot.util.GeoUtil;
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
@@ -23,14 +25,27 @@ public class QuestSubsystem extends SubsystemBase {
 
     public QuestSubsystem(QuestIO io) {
         this.questIO = io;
+        QuestThread.getInstance().start();
     }
 
     @Override
     public void periodic() {
+        questLock.lock();
         questIO.periodic();
         questIO.updateInputs(questIOInputs);
         Logger.processInputs("QuestNav", questIOInputs);
-
+        questLock.unlock();
+        if (questIOInputs.connected
+                && questIOInputs.isTracking
+                && questIOInputs.questTimestamps.length > 2
+                && questIOInputs.readPoses.length > 1) {
+            RobotState.getInstance()
+                    .addQuestObservation(new QuestObservation(
+                            getLatestPose(),
+                            getLatestTwist3d(),
+                            questIOInputs.isTracking,
+                            questIOInputs.questTimestamps[questIOInputs.questTimestamps.length - 1]));
+        }
         // alert
         questDisconnectedAlert.set(!questIOInputs.connected);
         questStoppedTrackingAlert.set(!questIOInputs.isTracking);

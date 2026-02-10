@@ -25,4 +25,6 @@ public abstract class RobotContainer {
     public void updateDashboardOutputs() {
         SmartDashboard.putNumber("Match Time", DriverStation.getMatchTime());
     }
+
+    public void updateAlerts() {}
 }

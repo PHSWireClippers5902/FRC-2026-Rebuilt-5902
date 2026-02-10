@@ -12,7 +12,9 @@ import com.revrobotics.PersistMode;
 import com.revrobotics.ResetMode;
 import com.revrobotics.spark.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.RobotBase;
@@ -82,7 +84,9 @@ public class Constants {
 
     public static class QuestConstants {
         public static double questFrequency = 100.0;
-        public static Transform3d ROBOT_TO_QUEST = new Transform3d();
+        public static Transform3d ROBOT_TO_QUEST = new Transform3d(
+                new Translation3d(Units.inchesToMeters(-2), Units.inchesToMeters(12), Units.inchesToMeters(15)),
+                new Rotation3d(0, 0, Units.degreesToRadians(90)));
     }
 
     public static class DriveMotorConstants {
