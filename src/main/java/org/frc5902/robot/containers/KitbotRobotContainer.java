@@ -16,6 +16,7 @@ import org.frc5902.robot.commands.drive.DriveCommands;
 import org.frc5902.robot.commands.intake.IntakeCommands;
 import org.frc5902.robot.subsystems.drive.Drive;
 import org.frc5902.robot.subsystems.drive.gyro.GyroIO;
+import org.frc5902.robot.subsystems.drive.gyro.GyroIO_ADIS;
 import org.frc5902.robot.subsystems.drive.gyro.GyroIO_ADXRS;
 import org.frc5902.robot.subsystems.drive.modules.ModuleIO;
 import org.frc5902.robot.subsystems.drive.modules.ModuleIOSim;
@@ -45,7 +46,7 @@ public class KitbotRobotContainer extends RobotContainer {
         switch (RobotConstants.currentMode) {
             case REAL:
                 drive = new Drive(
-                        new GyroIO_ADXRS(),
+                        new GyroIO_ADIS(),
                         new ModuleIOSparkAbsolute(0),
                         new ModuleIOSparkAbsolute(1),
                         new ModuleIOSparkAbsolute(2),
@@ -92,7 +93,7 @@ public class KitbotRobotContainer extends RobotContainer {
                 drive,
                 () -> -m_XboxController.getLeftY(),
                 () -> -m_XboxController.getLeftX(),
-                () -> m_XboxController.getRightX()));
+                () -> -m_XboxController.getRightX()));
         intake.setDefaultCommand(IntakeCommands.stopCommand(intake));
 
         m_XboxController
