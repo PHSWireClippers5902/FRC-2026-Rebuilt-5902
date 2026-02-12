@@ -8,6 +8,8 @@ package org.frc5902.robot;
 
 import com.pathplanner.lib.config.ModuleConfig;
 import com.pathplanner.lib.config.RobotConfig;
+
+import edu.wpi.first.math.controller.HolonomicDriveController;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
@@ -73,6 +75,7 @@ public class Constants {
                         RobotConstants.DEFAULT_CURRENT_LIMIT,
                         1),
                 ModuleConfigurations.moduleTranslations);
+        public static final HolonomicDriveController ppHolo = new HolonomicDriveController(null, null, null);
     }
 
     public static class QuestConstants {

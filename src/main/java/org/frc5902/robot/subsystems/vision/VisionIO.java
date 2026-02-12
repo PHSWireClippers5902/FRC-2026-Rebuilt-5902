@@ -4,7 +4,14 @@ import org.littletonrobotics.junction.AutoLog;
 
 public interface VisionIO {
     @AutoLog
-    public static class VisionIOInputs {
-        public boolean[] camerasConnected;
+    class VisionIOInputs {
+        public boolean ntConnected = false;
+        public double[] timestamps = new double[] {};
+        public double[][] frames = new double[][] {};
+        public long fps = 0;
     }
+
+    default void updateInputs(VisionIOInputs inputs) {}
+
+    default void setRecording(boolean active) {}
 }

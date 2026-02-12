@@ -51,8 +51,6 @@ public class Drive extends SubsystemBase {
     @AutoLogOutput
     private boolean velocityMode = false;
 
-    private final Timer lastMovementTimer = new Timer();
-
     private final SwerveDriveKinematics kinematics = new SwerveDriveKinematics(ModuleConfigurations.moduleTranslations);
 
     private SwerveSetpoint currentSetpoint = new SwerveSetpoint(new ChassisSpeeds(), new SwerveModuleState[] {
@@ -66,7 +64,6 @@ public class Drive extends SubsystemBase {
         modules[1] = new Module(frModuleIO, 1);
         modules[2] = new Module(blModuleIO, 2);
         modules[3] = new Module(brModuleIO, 3);
-        lastMovementTimer.start();
         // todo add setBrakeMode(true);
 
         swerveSetpointGenerator = new SwerveSetpointGenerator(kinematics, ModuleConfigurations.moduleTranslations);
