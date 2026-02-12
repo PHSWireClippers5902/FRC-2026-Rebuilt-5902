@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import org.frc5902.robot.state.RobotState;
 import org.frc5902.robot.subsystems.drive.Drive;
 import org.frc5902.robot.subsystems.drive.DriveConstants.ModuleConfigurations;
+import org.frc5902.robot.subsystems.drive.DriveConstants.PhysicalConstraints;
 import org.littletonrobotics.junction.Logger;
 
 import java.text.DecimalFormat;
@@ -76,6 +77,22 @@ public class DriveCommands {
                 drive);
     }
 
+    public static double getOmegaFromJoysticks(double driverOmega) {
+        double omega = MathUtil.applyDeadband(driverOmega, DEADBAND);
+        return omega * omega * Math.signum(omega);
+    }
+
+    public static ChassisSpeeds getSpeedsFromJoysticks(double driverX, double driverY, double driverOmega) {
+        // Get linear velocity
+        Translation2d linearVelocity =
+                getLinearVelocityFromJoysticks(driverX, driverY).times(PhysicalConstraints.maxLinearSpeed);
+        // Calculate angular velocity
+        double omega = getOmegaFromJoysticks(driverOmega);
+
+        return new ChassisSpeeds(
+                linearVelocity.getX(), linearVelocity.getY(), omega * PhysicalConstraints.maxAngularSpeed);
+    }
+
     /**
      * Field relative drive command using two joysticks (controlling linear and angular velocities).
      */
@@ -87,7 +104,7 @@ public class DriveCommands {
             BooleanSupplier robotRelative) {
         return Commands.run(
                 () -> {
-                    ChassisSpeeds speeds = new ChassisSpeeds(
+                    ChassisSpeeds speeds = getSpeedsFromJoysticks(
                             xSupplier.getAsDouble(), ySupplier.getAsDouble(), omegaSupplier.getAsDouble());
                     drive.runVelocity(
                             robotRelative.getAsBoolean()

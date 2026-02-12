@@ -110,8 +110,4 @@ public class Module {
     public void resetSwerveAbsolutePositions() {
         io.setRelativeToAbsoluteValues();
     }
-
-    public void setBrakeMode(boolean enabled) {
-        io.setBrakeMode(enabled);
-    }
 }

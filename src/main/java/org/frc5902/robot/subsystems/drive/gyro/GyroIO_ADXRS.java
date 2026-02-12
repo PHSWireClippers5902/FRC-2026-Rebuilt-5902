@@ -17,7 +17,7 @@ public class GyroIO_ADXRS implements GyroIO {
         yawTimestampQueue = SparkOdometryThread.getInstance().makeTimestampQueue();
         yawPositionQueue = SparkOdometryThread.getInstance().registerSignal(ADXRS_Gyro::getAngle);
     }
-    // TODO CONFIRM THAT GYROSCOPE IS REVERSED....
+
     @Override
     public void updateInputs(GyroIOInputs inputs) {
         inputs.data = new GyroIOData(

@@ -38,5 +38,4 @@ public interface ModuleIO {
     // sends relative encoder update to absolute encoders ==>
     public default void setRelativeToAbsoluteValues() {}
     // set Brake mode
-    public default void setBrakeMode(boolean enabled) {}
 }

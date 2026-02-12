@@ -14,7 +14,6 @@ import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import lombok.Setter;
 import org.frc5902.robot.Constants.RobotConstants;
 import org.frc5902.robot.Constants.RobotConstants.Mode;
 import org.frc5902.robot.Robot;
@@ -31,7 +30,6 @@ import org.frc5902.robot.util.swerve.SwerveSetpointGenerator;
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 
-import java.util.Arrays;
 import java.util.Optional;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -52,9 +50,6 @@ public class Drive extends SubsystemBase {
 
     @AutoLogOutput
     private boolean velocityMode = false;
-
-    @AutoLogOutput
-    private boolean brakeModeEnabled = true;
 
     private final Timer lastMovementTimer = new Timer();
 
@@ -78,16 +73,6 @@ public class Drive extends SubsystemBase {
 
         SparkOdometryThread.getInstance().start();
     }
-
-    public enum CoastRequest {
-        AUTOMATIC,
-        ALWAYS_BRAKE,
-        ALWAYS_COAST
-    }
-
-    @Setter
-    @AutoLogOutput
-    private CoastRequest coastRequest = CoastRequest.ALWAYS_BRAKE;
 
     @Override
     public void periodic() {
@@ -153,32 +138,6 @@ public class Drive extends SubsystemBase {
         RobotState.getInstance().setPitch(gyroInputs.data.pitchPosition());
         RobotState.getInstance().setRoll(gyroInputs.data.rollPosition());
 
-        // update brake mode
-        if (Arrays.stream(modules)
-                .anyMatch((module) ->
-                        Math.abs(module.getVelocityMetersPerSecond()) > coastMetersPerSecondThreshold.get())) {
-            lastMovementTimer.reset();
-        }
-        if (DriverStation.isEnabled()) {
-            coastRequest = CoastRequest.ALWAYS_BRAKE;
-        }
-
-        switch (coastRequest) {
-            case AUTOMATIC -> {
-                if (DriverStation.isEnabled()) {
-                    setBrakeMode(true);
-                } else if (lastMovementTimer.hasElapsed(coastWaitTime.get())) {
-                    setBrakeMode(false);
-                }
-            }
-            case ALWAYS_BRAKE -> {
-                setBrakeMode(true);
-            }
-            case ALWAYS_COAST -> {
-                setBrakeMode(false);
-            }
-        }
-
         if (!velocityMode) {
             currentSetpoint = new SwerveSetpoint(getChassisSpeeds(), getModuleStates());
         }
@@ -186,14 +145,6 @@ public class Drive extends SubsystemBase {
         gyroDisconnectedAlert.set(!gyroConnectedDebouncer.calculate(gyroInputs.data.connected())
                 && RobotConstants.currentMode != Mode.SIM
                 && !Robot.isJITing());
-    }
-
-    /** Set brake mode to {@code enabled} doesn't change brake mode if already set. */
-    private void setBrakeMode(boolean enabled) {
-        if (brakeModeEnabled != enabled) {
-            Arrays.stream(modules).forEach(module -> module.setBrakeMode(enabled));
-        }
-        brakeModeEnabled = enabled;
     }
 
     public void runVelocity(ChassisSpeeds speeds) {
