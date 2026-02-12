@@ -6,8 +6,6 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
-import org.frc5902.robot.Constants.DriveMotorConstants;
-import org.frc5902.robot.Constants.TurnMotorConstants;
 import org.frc5902.robot.subsystems.drive.DriveConstants.*;
 
 public class ModuleIOSim implements ModuleIO {

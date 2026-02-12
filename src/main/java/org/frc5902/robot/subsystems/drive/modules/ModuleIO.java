@@ -37,4 +37,6 @@ public interface ModuleIO {
     public default void setTurnPosition(Rotation2d rotation) {}
     // sends relative encoder update to absolute encoders ==>
     public default void setRelativeToAbsoluteValues() {}
+    // set Brake mode
+    public default void setBrakeMode(boolean enabled) {}
 }

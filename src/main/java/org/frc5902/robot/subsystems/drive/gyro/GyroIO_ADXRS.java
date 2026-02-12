@@ -1,7 +1,6 @@
 package org.frc5902.robot.subsystems.drive.gyro;
 
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.SPI;
 import org.frc5902.robot.subsystems.drive.SparkOdometryThread;
@@ -21,11 +20,18 @@ public class GyroIO_ADXRS implements GyroIO {
     // TODO CONFIRM THAT GYROSCOPE IS REVERSED....
     @Override
     public void updateInputs(GyroIOInputs inputs) {
-        inputs.data = 
-            new GyroIOData(ADXRS_Gyro.isConnected(), 
-                Rotation2d.fromDegrees(-ADXRS_Gyro.getAngle()), 
-                -ADXRS_Gyro.getRate(),0, Rotation2d.kZero, 0,0, Rotation2d.kZero, 0,0);
-        
+        inputs.data = new GyroIOData(
+                ADXRS_Gyro.isConnected(),
+                Rotation2d.fromDegrees(-ADXRS_Gyro.getAngle()),
+                -ADXRS_Gyro.getRate(),
+                0,
+                Rotation2d.kZero,
+                0,
+                0,
+                Rotation2d.kZero,
+                0,
+                0);
+
         inputs.odometryYawTimestamps =
                 yawTimestampQueue.stream().mapToDouble((Double value) -> value).toArray();
         inputs.odometryYawPositions = yawPositionQueue.stream()

@@ -7,7 +7,7 @@ public interface GyroIO {
     @AutoLog
     public static class GyroIOInputs {
         public GyroIOData data =
-            new GyroIOData(false, Rotation2d.kZero, 0,0, Rotation2d.kZero, 0,0, Rotation2d.kZero,0, 0);
+                new GyroIOData(false, Rotation2d.kZero, 0, 0, Rotation2d.kZero, 0, 0, Rotation2d.kZero, 0, 0);
         public double[] odometryYawTimestamps = new double[] {};
         public Rotation2d[] odometryYawPositions = new Rotation2d[] {};
     }
@@ -17,14 +17,14 @@ public interface GyroIO {
     public default void resetGyro() {}
 
     public record GyroIOData(
-      boolean connected,
-      Rotation2d yawPosition,
-      double yawVelocityRadPerSec,
-      double yawAccelerationRadPerSec,
-      Rotation2d pitchPosition,
-      double pitchVelocityRadPerSec,
-      double pitchAccelerationRadPerSec,
-      Rotation2d rollPosition,
-      double rollVelocityRadPerSec,
-      double rollAccelerationRadPerSec) {}
+            boolean connected,
+            Rotation2d yawPosition,
+            double yawVelocityRadPerSec,
+            double yawAccelerationRadPerSec,
+            Rotation2d pitchPosition,
+            double pitchVelocityRadPerSec,
+            double pitchAccelerationRadPerSec,
+            Rotation2d rollPosition,
+            double rollVelocityRadPerSec,
+            double rollAccelerationRadPerSec) {}
 }

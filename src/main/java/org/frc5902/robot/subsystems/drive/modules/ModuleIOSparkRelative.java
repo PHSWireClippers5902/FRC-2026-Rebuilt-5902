@@ -8,6 +8,7 @@ import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkClosedLoopController.ArbFFUnits;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.filter.Debouncer;
@@ -219,5 +220,26 @@ public class ModuleIOSparkRelative implements ModuleIO {
                 TurnMotorConstants.turnPIDMinInput,
                 TurnMotorConstants.turnPIDMaxInput);
         turnController.setSetpoint(setpoint, ControlType.kPosition);
+    }
+
+    @Override
+    public void setBrakeMode(boolean enabled) {
+        IdleMode mode = enabled ? IdleMode.kBrake : IdleMode.kCoast;
+
+        tryUntilOk(
+                driveSpark,
+                5,
+                () -> turnSpark.configureAsync(
+                        new SparkMaxConfig().idleMode(mode),
+                        DriveMotorConstants.driveResetMode,
+                        DriveMotorConstants.drivePersistMode));
+
+        tryUntilOk(
+                turnSpark,
+                5,
+                () -> turnSpark.configureAsync(
+                        new SparkMaxConfig().idleMode(mode),
+                        TurnMotorConstants.turnResetMode,
+                        TurnMotorConstants.turnPersistMode));
     }
 }
