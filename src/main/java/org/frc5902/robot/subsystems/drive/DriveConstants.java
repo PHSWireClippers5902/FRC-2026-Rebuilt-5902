@@ -19,6 +19,18 @@ public class DriveConstants {
         public static final double driveSimKv = 0.0789;
     }
 
+    public static final class AbsoluteChange {
+        // 25 742
+        // 23 328
+        // 24 924
+        // 22 3677
+
+        public static final int FrontLeftChange = 742;
+        public static final int FrontRightChange = 305;
+        public static final int BackLeftChange = 829;
+        public static final int BackRightChange = 3673;
+    }
+
     public class ModuleConfigurations {
         public static double driveBaseWidthSQUARE = 24; // in // change
         public static double driveBaseRadius = (Units.inchesToMeters(driveBaseWidthSQUARE) / 2) * Math.sqrt(2);
