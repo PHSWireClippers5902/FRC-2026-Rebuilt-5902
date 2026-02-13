@@ -20,11 +20,13 @@ public class QuestSubsystem extends SubsystemBase {
     private final QuestIO questIO;
     private final QuestIOInputsAutoLogged questIOInputs = new QuestIOInputsAutoLogged();
     private final Alert questDisconnectedAlert = new Alert("The Quest has disconnected.", AlertType.kError);
+    // TODO IMPLEMENT LOW BATTERY ALERTS...
     private final Alert questStoppedTrackingAlert =
             new Alert("The Quest has stopped tracking. Tracking may or may not resume.", AlertType.kError);
 
     public QuestSubsystem(QuestIO io) {
         this.questIO = io;
+        this.questIO.setPose(Pose3d.kZero);
         QuestThread.getInstance().start();
     }
 

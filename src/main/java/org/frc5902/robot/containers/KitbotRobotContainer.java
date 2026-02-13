@@ -1,13 +1,11 @@
 package org.frc5902.robot.containers;
 
-import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import org.frc5902.robot.Constants.RobotConstants;
 import org.frc5902.robot.FieldConstants;
 import org.frc5902.robot.FieldConstants.AprilTagLayoutType;
@@ -16,7 +14,7 @@ import org.frc5902.robot.commands.drive.DriveCommands;
 import org.frc5902.robot.commands.intake.IntakeCommands;
 import org.frc5902.robot.subsystems.drive.Drive;
 import org.frc5902.robot.subsystems.drive.gyro.GyroIO;
-import org.frc5902.robot.subsystems.drive.gyro.GyroIO_ADXRS;
+import org.frc5902.robot.subsystems.drive.gyro.GyroIO_ADIS;
 import org.frc5902.robot.subsystems.drive.modules.ModuleIO;
 import org.frc5902.robot.subsystems.drive.modules.ModuleIOSim;
 import org.frc5902.robot.subsystems.drive.modules.ModuleIOSparkAbsolute;
@@ -27,7 +25,6 @@ import org.frc5902.robot.subsystems.kitbot.intake.IntakeIOTalonSRX;
 import org.frc5902.robot.subsystems.questnav.QuestIO;
 import org.frc5902.robot.subsystems.questnav.QuestIOReal;
 import org.frc5902.robot.subsystems.questnav.QuestSubsystem;
-import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 public class KitbotRobotContainer extends RobotContainer {
     // init subsystems here
@@ -37,7 +34,7 @@ public class KitbotRobotContainer extends RobotContainer {
     // command xbox
     private final CommandXboxController m_XboxController = new CommandXboxController(0);
 
-    private final LoggedDashboardChooser<Command> autoChooser;
+    // private final LoggedDashboardChooser<Command> autoChooser;
 
     private final Alert primaryDisconnected = new Alert("Primary controller disconnected.", AlertType.kWarning);
 
@@ -45,7 +42,7 @@ public class KitbotRobotContainer extends RobotContainer {
         switch (RobotConstants.currentMode) {
             case REAL:
                 drive = new Drive(
-                        new GyroIO_ADXRS(),
+                        new GyroIO_ADIS(),
                         new ModuleIOSparkAbsolute(0),
                         new ModuleIOSparkAbsolute(1),
                         new ModuleIOSparkAbsolute(2),
@@ -68,17 +65,18 @@ public class KitbotRobotContainer extends RobotContainer {
                 quest = new QuestSubsystem(new QuestIO() {});
                 break;
         }
-        autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
+        // autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
 
         // sysid routines
-        autoChooser.addOption("Drive Wheel Radius Characterization", DriveCommands.wheelRadiusCharacterization(drive));
-        autoChooser.addOption("Drive Simple FF Characterization", DriveCommands.feedforwardCharacterization(drive));
-        autoChooser.addOption(
-                "Drive SysId (Quasistatic Forward)", drive.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
-        autoChooser.addOption(
-                "Drive SysId (Quasistatic Reverse)", drive.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
-        autoChooser.addOption("Drive SysId (Dynamic Forward)", drive.sysIdDynamic(SysIdRoutine.Direction.kForward));
-        autoChooser.addOption("Drive SysId (Dynamic Reverse)", drive.sysIdDynamic(SysIdRoutine.Direction.kReverse));
+        // autoChooser.addOption("Drive Wheel Radius Characterization",
+        // DriveCommands.wheelRadiusCharacterization(drive));
+        // autoChooser.addOption("Drive Simple FF Characterization", DriveCommands.feedforwardCharacterization(drive));
+        // autoChooser.addOption(
+        //         "Drive SysId (Quasistatic Forward)", drive.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
+        // autoChooser.addOption(
+        //         "Drive SysId (Quasistatic Reverse)", drive.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
+        // autoChooser.addOption("Drive SysId (Dynamic Forward)", drive.sysIdDynamic(SysIdRoutine.Direction.kForward));
+        // autoChooser.addOption("Drive SysId (Dynamic Reverse)", drive.sysIdDynamic(SysIdRoutine.Direction.kReverse));
 
         configureBindings();
     }
@@ -92,7 +90,8 @@ public class KitbotRobotContainer extends RobotContainer {
                 drive,
                 () -> -m_XboxController.getLeftY(),
                 () -> -m_XboxController.getLeftX(),
-                () -> m_XboxController.getRightX()));
+                () -> -m_XboxController.getRightX(),
+                () -> false));
         intake.setDefaultCommand(IntakeCommands.stopCommand(intake));
 
         m_XboxController
@@ -109,7 +108,7 @@ public class KitbotRobotContainer extends RobotContainer {
 
         m_XboxController.b().whileTrue(DriveCommands.resetGyroscope(drive));
 
-        m_XboxController.x().whileTrue(DriveCommands.defenceGoal(drive));
+        // m_XboxController.x().whileTrue(DriveCommands.defenceGoal(drive));
 
         m_XboxController.y().whileTrue(DriveCommands.resetSwerveAbsolutePositions(drive));
     }
@@ -119,7 +118,8 @@ public class KitbotRobotContainer extends RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        return autoChooser.get();
+        // return autoChooser.get();
+        return null;
     }
 
     public AprilTagLayoutType getSelectedAprilTagLayout() {

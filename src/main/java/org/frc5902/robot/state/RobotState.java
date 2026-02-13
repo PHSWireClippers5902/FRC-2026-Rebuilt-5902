@@ -86,6 +86,7 @@ public class RobotState {
     private final TimeInterpolatableBuffer<Pose2d> poseBuffer =
             TimeInterpolatableBuffer.createBuffer(poseBufferSizeSec);
     private final Matrix<N3, N1> qStdDevs = new Matrix<>(Nat.N3(), Nat.N1());
+
     private final SwerveDriveKinematics kinematics;
     private SwerveModulePosition[] lastWheelPositions = new SwerveModulePosition[] {
         new SwerveModulePosition(), new SwerveModulePosition(), new SwerveModulePosition(), new SwerveModulePosition()
