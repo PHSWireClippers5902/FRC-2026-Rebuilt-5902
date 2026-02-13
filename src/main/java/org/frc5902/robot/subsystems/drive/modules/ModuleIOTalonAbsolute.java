@@ -25,23 +25,17 @@ import java.util.function.DoubleSupplier;
 
 import static org.frc5902.robot.util.SparkUtil.*;
 
-public class ModuleIOTalonAbsolute
-        implements ModuleIO { // <----- PLEASE IMPLEMENT MODULEIO..... WITHOUT THIS YOU CANNOT ACCESS OTHER CLASSES
+public class ModuleIOTalonAbsolute implements ModuleIO {
 
     private final Rotation2d zeroRotation;
-
     private final SparkBase driveSpark;
     private final WPI_TalonSRX turnTalons;
-
     private final RelativeEncoder driveEncoder;
-
-    //     private final SparkClosedLoopController turnController;
+    // private final SparkClosedLoopController turnController;
     private final SparkClosedLoopController driveController;
-
     // private final Queue<Double> turnPositionQueue;
     private final Queue<Double> timestampQueue;
     private final Queue<Double> drivePositionQueue;
-
     private final Debouncer driveConnectedDebounce = new Debouncer(0.5, Debouncer.DebounceType.kFalling);
     private final Debouncer turnConnectedDebounce = new Debouncer(0.5, Debouncer.DebounceType.kFalling);
 
@@ -66,7 +60,7 @@ public class ModuleIOTalonAbsolute
         driveController = driveSpark.getClosedLoopController();
 
         driveEncoder = driveSpark.getEncoder();
-
+        // turning TalonSRX config
         turnTalons.configFactoryDefault();
         turnTalons.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute);
         turnTalons.setSensorPhase(true); // come back later
@@ -97,6 +91,7 @@ public class ModuleIOTalonAbsolute
         System.out.println("Module" + MODULE_INFORMATION.DrivingID
                 + absolutePosition); // prints out position for manual alignement
 
+        // SparkMax config for drive motors
         var driveConfig = new SparkMaxConfig();
         driveConfig
                 .inverted(MODULE_INFORMATION.DrivingMotorInverted)
@@ -155,7 +150,7 @@ public class ModuleIOTalonAbsolute
                 timestampQueue.stream().mapToDouble((Double value) -> value).toArray();
         inputs.odometryDrivePositionsRadians =
                 drivePositionQueue.stream().mapToDouble((Double value) -> value).toArray();
-        // inputs.odometryTurnPositions = turnPositionQueue.stream()    //ask lil D abt drive position que
+        // inputs.odometryTurnPositions = turnPositionQueue.stream()    //ask lil D abt turn position que
         //         .map((Double value) -> new Rotation2d(value).minus(zeroRotation))
         //         .toArray(Rotation2d[]::new);
         // clear queues
@@ -197,6 +192,6 @@ public class ModuleIOTalonAbsolute
                 rotation.plus(zeroRotation).getRadians(),
                 TurnMotorConstants.turnPIDMinInput,
                 TurnMotorConstants.turnPIDMaxInput);
-        turnTalons.set(ControlMode.Position, setpoint); // turn is talon not 550 Check me lil D
+        turnTalons.set(ControlMode.Position, setpoint); // turn is talon not 550    Check me out lil D
     }
 }
