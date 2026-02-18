@@ -11,7 +11,7 @@ import org.frc5902.robot.FieldConstants;
 import org.frc5902.robot.FieldConstants.AprilTagLayoutType;
 import org.frc5902.robot.Robot;
 import org.frc5902.robot.commands.drive.DriveCommands;
-import org.frc5902.robot.commands.intake.IntakeCommands;
+import org.frc5902.robot.commands.kitbotcommands.intake.IntakeCommands;
 import org.frc5902.robot.subsystems.drive.Drive;
 import org.frc5902.robot.subsystems.drive.gyro.GyroIO;
 import org.frc5902.robot.subsystems.drive.gyro.GyroIO_ADIS;
@@ -30,6 +30,8 @@ public class KitbotRobotContainer extends RobotContainer {
     // init subsystems here
     private final Drive drive;
     private final Intake intake;
+
+    @SuppressWarnings("unused")
     private final QuestSubsystem quest;
     // command xbox
     private final CommandXboxController m_XboxController = new CommandXboxController(0);
