@@ -35,7 +35,6 @@ public class QuestIOReal implements QuestIO {
         for (PoseFrame frame : newFrames) {
             latestPose = frame.questPose3d();
         }
-
         inputs.connected = questConnectedDebounce.calculate(questNav.isConnected());
         inputs.isTracking = questTrackingDebounce.calculate(questNav.isTracking());
         inputs.batteryPercent = questNav.getBatteryPercent().orElse(-1);

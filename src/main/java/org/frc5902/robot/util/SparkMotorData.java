@@ -4,10 +4,9 @@
 package org.frc5902.robot.util;
 
 public record SparkMotorData(
-    boolean connected,
-    double positionRadians,
-    double velocityRadiansPerSecond,
-    double appliedVoltage,
-    double supplyCurrentAmps,
-    double temperatureCelsius
-) {}
+        boolean connected,
+        double positionRadians,
+        double velocityRadiansPerSecond,
+        double appliedVoltage,
+        double supplyCurrentAmps,
+        double temperatureCelsius) {}

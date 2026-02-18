@@ -1,21 +1,21 @@
-package org.frc5902.robot.subsystems.compbot.launcher.flywheel;
+package org.frc5902.robot.subsystems.compbot.agitator;
 
 import org.littletonrobotics.junction.AutoLog;
 
-public interface FlywheelIO {
+public interface AgitatorIO {
     @AutoLog
-    class FlywheelIOInputs {
-        public FlywheelIOData data = new FlywheelIOData(false, 0.0, 0.0, 0.0, 0.0);
+    class AgitatorIOInputs {
+        public AgitatorIOData data = new AgitatorIOData(false, 0.0, 0.0, 0.0, 0.0);
     }
 
-    record FlywheelIOData(
+    record AgitatorIOData(
             boolean motorConnected,
             double positionRads,
             double velocityRadsPerSec,
             double appliedVoltage,
             double tempCelsius) {}
 
-    default void updateInputs(FlywheelIOInputs inputs) {}
+    default void updateInputs(AgitatorIOInputs inputs) {}
 
     default void runVolts(double volts) {}
 

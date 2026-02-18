@@ -205,6 +205,7 @@ public class ModuleIOSparkAbsolute implements ModuleIO {
         inputs.odometryTurnPositions = turnPositionQueue.stream()
                 .map((Double value) -> new Rotation2d(value).minus(zeroRotation))
                 .toArray(Rotation2d[]::new);
+        ifOk(turnSpark, turnSpark::getMotorTemperature, (value) -> inputs.turnTempCelsius = value);
         // clear queues
         timestampQueue.clear();
         drivePositionQueue.clear();
