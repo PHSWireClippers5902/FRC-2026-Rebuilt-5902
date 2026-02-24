@@ -19,7 +19,9 @@ import org.frc5902.robot.containers.KitbotRobotContainer;
 import org.frc5902.robot.containers.RobotContainer;
 import org.frc5902.robot.state.RobotState;
 import org.frc5902.robot.util.BuildInfo;
+import org.frc5902.robot.util.Phases;
 import org.frc5902.robot.util.SystemTimeValidReader;
+import org.frc5902.robot.util.VirtualSubsystem;
 import org.littletonrobotics.junction.AutoLogOutputManager;
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
@@ -136,7 +138,10 @@ public class Robot extends LoggedRobot {
 
     @Override
     public void robotPeriodic() {
+        VirtualSubsystem.runAllPeriodic();
         CommandScheduler.getInstance().run();
+        VirtualSubsystem.runAllPeriodicAfterScheduler();
+
 
         if (autonomousCommand != null) {
             if (!autonomousCommand.isScheduled() && !autoMessagePrinted) {
@@ -175,7 +180,9 @@ public class Robot extends LoggedRobot {
     }
 
     @Override
-    public void robotInit() {}
+    public void robotInit() {
+        Phases.getInstance();
+    }
 
     @Override
     public void disabledInit() {}
@@ -207,6 +214,8 @@ public class Robot extends LoggedRobot {
         if (autonomousCommand != null) {
             autonomousCommand.cancel();
         }
+        // notify phases that autonomous has ended
+        Phases.getInstance().teleopInit();
     }
 
     @Override

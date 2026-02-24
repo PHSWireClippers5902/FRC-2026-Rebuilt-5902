@@ -64,7 +64,7 @@
 //         PathPlannerConstants.ppConfig,
 //         () -> DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Red,
 //         driveSubsystem);
-    
+
 //     // Configure pathfinding
 //     Pathfinding.setPathfinder(new LocalADStarAK());
 
@@ -217,7 +217,7 @@
 //     try {
 //       PathPlannerPath path = PathPlannerPath.fromPathFile(pathName);
 //       Optional<PathPlannerTrajectory> expectedTrajectory =
-        
+
 //           path.getIdealTrajectory(PathPlannerConstants.ppConfig);
 //       if (expectedTrajectory.isPresent()) {
 //         PathPlannerTrajectory trajectory = expectedTrajectory.get();

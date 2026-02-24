@@ -8,7 +8,6 @@ package org.frc5902.robot;
 
 import com.pathplanner.lib.config.ModuleConfig;
 import com.pathplanner.lib.config.RobotConfig;
-
 import edu.wpi.first.math.controller.HolonomicDriveController;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
@@ -50,6 +49,9 @@ public class Constants {
         public static final double robotMOI = 7; // change  (sysid)
         public static final double wheelCOF = 1.2; // change (sysid)
         public static double MAX_SPEED_METERS_PER_SECOND = 4.0; // change
+        
+        public static final boolean SHOOTER_OVERRIDE = true;
+
         public static boolean tuningMode = true;
         // idk what a 'hal' is...
         public static boolean disableHAL = false;
@@ -82,6 +84,6 @@ public class Constants {
         public static double questFrequency = 100.0;
         public static Transform3d ROBOT_TO_QUEST = new Transform3d(
                 new Translation3d(Units.inchesToMeters(-2), Units.inchesToMeters(12), Units.inchesToMeters(15)),
-                new Rotation3d(0, 0, Units.degreesToRadians(90)));
+                new Rotation3d(0, 0, Units.degreesToRadians(-90)));
     }
 }
