@@ -34,9 +34,6 @@ public class Phases {
         return instance;
     }
 
-    public int remainingSeconds() {
-        return -1;
-    }
 
     public void teleopInit() {
         phase = Phase.UNDEFINED;
