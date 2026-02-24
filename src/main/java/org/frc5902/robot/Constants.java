@@ -49,6 +49,9 @@ public class Constants {
         public static final double robotMOI = 7; // change  (sysid)
         public static final double wheelCOF = 1.2; // change (sysid)
         public static double MAX_SPEED_METERS_PER_SECOND = 4.0; // change
+        
+        public static final boolean SHOOTER_OVERRIDE = true;
+
         public static boolean tuningMode = true;
         // idk what a 'hal' is...
         public static boolean disableHAL = false;

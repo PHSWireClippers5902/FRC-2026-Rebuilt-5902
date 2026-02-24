@@ -4,18 +4,18 @@ import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Twist3d;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.frc5902.robot.Constants.QuestConstants;
 import org.frc5902.robot.state.RobotState;
 import org.frc5902.robot.state.RobotState.QuestObservation;
 import org.frc5902.robot.util.GeoUtil;
+import org.frc5902.robot.util.VirtualSubsystem;
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class QuestSubsystem extends SubsystemBase {
+public class QuestSubsystem extends VirtualSubsystem {
     public static final Lock questLock = new ReentrantLock();
     private final QuestIO questIO;
     private final QuestIOInputsAutoLogged questIOInputs = new QuestIOInputsAutoLogged();
@@ -99,4 +99,7 @@ public class QuestSubsystem extends SubsystemBase {
         double newTimestamp = questIOInputs.questTimestamps[i - 1];
         return GeoUtil.calculateTwist3d(oldPose, newPose, oldTimestamp, newTimestamp);
     }
+
+    @Override
+    public void periodicAfterScheduler() {}
 }
