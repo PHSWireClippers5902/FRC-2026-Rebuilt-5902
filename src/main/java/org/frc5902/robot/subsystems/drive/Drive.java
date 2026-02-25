@@ -43,7 +43,6 @@ public class Drive extends SubsystemBase {
     private final Alert gyroDisconnectedAlert =
             new Alert("Disconnected gyro, using kinematics as fallback.", AlertType.kError);
 
-
     @AutoLogOutput
     private boolean velocityMode = false;
 

@@ -1,8 +1,7 @@
 package org.frc5902.robot.subsystems.compbot.launcher;
 
-import org.frc5902.robot.util.motorutil.PID;
-
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+import org.frc5902.robot.util.motorutil.PID;
 
 public class LauncherConstants {
     public class FlywheelConstants {

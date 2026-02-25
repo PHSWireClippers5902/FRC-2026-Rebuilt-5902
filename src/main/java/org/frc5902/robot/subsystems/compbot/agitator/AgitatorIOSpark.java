@@ -16,7 +16,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 
 import java.util.function.DoubleSupplier;
 
-import static org.frc5902.robot.util.SparkUtil.tryUntilOk;
+import static org.frc5902.robot.util.motorutil.SparkUtil.tryUntilOk;
 
 public class AgitatorIOSpark implements AgitatorIO {
     // hardware

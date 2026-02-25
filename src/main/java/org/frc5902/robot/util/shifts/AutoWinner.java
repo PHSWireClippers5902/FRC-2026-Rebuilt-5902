@@ -1,18 +1,17 @@
 /**
  * The FMS tells us who won auto, so we can deduce whose shift it is.
- * 
+ *
  * see https://gist.github.com/LordOfFrogs/240ba37cf696ba156d87f387c1461bd5
  * https://github.com/Team100/all26/blob/main/comp/src/main/java/org/team100/frc2026/util/AutoWinner.java
  */
 package org.frc5902.robot.util.shifts;
 
-import java.util.Optional;
-
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
+import java.util.Optional;
 
- public class AutoWinner {
+public class AutoWinner {
     /**
      * Returns the Alliance that won auto as specified by the FMS/Driver
      * Station's game specific message data, or empty if no game message or alliance
@@ -30,5 +29,4 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
                 return Optional.empty();
         }
     }
-
 }

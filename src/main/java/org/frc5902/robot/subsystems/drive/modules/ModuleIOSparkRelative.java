@@ -16,10 +16,10 @@ import org.frc5902.robot.Constants.*;
 import org.frc5902.robot.subsystems.drive.DriveConstants.*;
 import org.frc5902.robot.subsystems.drive.SparkOdometryThread;
 
-import static org.frc5902.robot.util.motorutil.SparkUtil.*;
-
 import java.util.Queue;
 import java.util.function.DoubleSupplier;
+
+import static org.frc5902.robot.util.motorutil.SparkUtil.*;
 
 public class ModuleIOSparkRelative implements ModuleIO {
     private final Rotation2d zeroRotation;

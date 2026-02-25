@@ -142,7 +142,6 @@ public class Robot extends LoggedRobot {
         CommandScheduler.getInstance().run();
         VirtualSubsystem.runAllPeriodicAfterScheduler();
 
-
         if (autonomousCommand != null) {
             if (!autonomousCommand.isScheduled() && !autoMessagePrinted) {
                 if (DriverStation.isAutonomousEnabled()) {

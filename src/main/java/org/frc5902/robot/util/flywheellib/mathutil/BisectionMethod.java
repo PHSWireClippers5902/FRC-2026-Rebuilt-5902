@@ -5,22 +5,22 @@ import org.frc5902.robot.util.flywheellib.functions.BaseFunction;
 public class BisectionMethod {
     /**
      * Calculate a solution to the root function f
-     * How does the bisection method work, you ask? 
+     * How does the bisection method work, you ask?
      * We split down the middle (bound1 - bound2)
      * According to the Intermediate Value Theorum, if the sign changes, every value must exist between the two bounds.
      * Hence, the root is between the two.
      * @param f root function
      * @param bounds bounds in which the function is finite
-     * @param tolerance tolerance 
+     * @param tolerance tolerance
      * @return approximate to root
      */
     public static double calculate(BaseFunction f, double[] bounds, double tolerance) {
         double lowerBound = bounds[0];
         double upperBound = bounds[1];
-        double midpoint = calculateMidpoint(lowerBound,upperBound);
+        double midpoint = calculateMidpoint(lowerBound, upperBound);
         if (withinTolerance(f, midpoint, tolerance)) return midpoint;
-        if (withinTolerance(f,lowerBound,tolerance)) return lowerBound;
-        if (withinTolerance(f,upperBound,tolerance)) return upperBound;
+        if (withinTolerance(f, lowerBound, tolerance)) return lowerBound;
+        if (withinTolerance(f, upperBound, tolerance)) return upperBound;
 
         System.out.println(f.function(lowerBound));
         System.out.println(f.function(midpoint));
@@ -31,11 +31,10 @@ public class BisectionMethod {
         // if midpoint is within tolerance, simply return the midpoint
         // now crunch
         while (!withinTolerance(f, midpoint, tolerance)) {
-            // if there is a root between, set upper bound to midpoint. 
-            if (rootBetween(f,lowerBound,midpoint)) {
+            // if there is a root between, set upper bound to midpoint.
+            if (rootBetween(f, lowerBound, midpoint)) {
                 upperBound = midpoint;
-            }
-            else {
+            } else {
                 lowerBound = midpoint;
             }
             midpoint = calculateMidpoint(lowerBound, upperBound);

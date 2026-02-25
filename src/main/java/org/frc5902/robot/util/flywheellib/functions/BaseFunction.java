@@ -3,9 +3,9 @@
  */
 package org.frc5902.robot.util.flywheellib.functions;
 
-import java.util.function.DoubleSupplier;
-
 import org.frc5902.robot.util.flywheellib.mathutil.Point;
+
+import java.util.function.DoubleSupplier;
 
 /**
  * The very base of these values. Given an input "input" or 'x', override this method to return a f(input) or f(x).
@@ -15,6 +15,13 @@ import org.frc5902.robot.util.flywheellib.mathutil.Point;
 @FunctionalInterface
 public interface BaseFunction {
     double function(double input);
-    default DoubleSupplier getDoubleSupplier(DoubleSupplier inputSupplier) {return () -> function(inputSupplier.getAsDouble());};
-    default Point getPoint(double input) {return new Point(input,function(input));}
+
+    default DoubleSupplier getDoubleSupplier(DoubleSupplier inputSupplier) {
+        return () -> function(inputSupplier.getAsDouble());
+    }
+    ;
+
+    default Point getPoint(double input) {
+        return new Point(input, function(input));
+    }
 }

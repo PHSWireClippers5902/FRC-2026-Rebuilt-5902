@@ -29,12 +29,13 @@ public class FunctionLib {
         return (double value) -> value * value;
     }
 
-
     /**
      * Return arc tangent function as a BaseFunction
      * @return arc tangent function
      */
-    public static BaseFunction ArcTangent() {return (value) -> Math.atan(value);}
+    public static BaseFunction ArcTangent() {
+        return (value) -> Math.atan(value);
+    }
     /**
      * Unit function returns 1 regardless of the input, whether or not NaN or other.
      * @return Unit Function (1)
@@ -42,5 +43,4 @@ public class FunctionLib {
     public static BaseFunction UnitFunction() {
         return (value) -> 1;
     }
-
 }

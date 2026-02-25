@@ -1,23 +1,25 @@
 package org.frc5902.robot.util.shifts;
 
-import java.util.function.DoubleSupplier;
-
-import org.frc5902.robot.Constants.RobotConstants;
-
 import edu.wpi.first.wpilibj.DriverStation;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.frc5902.robot.Constants.RobotConstants;
+
+import java.util.function.DoubleSupplier;
 
 @ToString
 public class Phases {
     private Phase phase = Phase.AUTO;
     private DoubleSupplier dsTime;
     // assume we lost auto unless we update it.
-    @Getter @Setter
+    @Getter
+    @Setter
     private Boolean autonomousWin = null;
+
     @Getter
     private double timeUntilNextPhase = 0.0;
+
     @Getter
     private boolean realMatch = false;
     // create instance
@@ -27,6 +29,7 @@ public class Phases {
     }
     // instance manager
     private static Phases instance = null;
+
     public static Phases getInstance() {
         if (instance == null) {
             instance = new Phases();
@@ -34,18 +37,19 @@ public class Phases {
         return instance;
     }
 
-
     public void teleopInit() {
         phase = Phase.UNDEFINED;
     }
 
-    public boolean canScore() {return canScore(0);}
+    public boolean canScore() {
+        return canScore(0);
+    }
 
     public boolean canScore(double timeToFlySeconds) {
         updatePhase();
-        if (phase != Phase.AUTO){
+        if (phase != Phase.AUTO) {
             // you are allowed to shoot if you cannot shoot but it takes enough time to fly
-            if (timeUntilNextPhase - timeToFlySeconds < 0){
+            if (timeUntilNextPhase - timeToFlySeconds < 0) {
                 return !phase.allowedToScore;
             }
             return phase.allowedToScore;
@@ -54,18 +58,17 @@ public class Phases {
     }
 
     private void updatePhase() {
-        double dst = dsTime.getAsDouble();      
+        double dst = dsTime.getAsDouble();
         if (autonomousWin.equals(null)) {
             // try
             if (AutoWinner.get().isPresent()) {
                 autonomousWin = AutoWinner.get().equals(DriverStation.getAlliance());
             }
-            
-        }  
+        }
         // if the phase is not auto
         if (phase != Phase.AUTO && realMatch) {
             phase = Phase.CANNOT_SCORE;
-            if ((autonomousWin) ? dst % 50 <= 25 : dst % 50 >= 25){
+            if ((autonomousWin) ? dst % 50 <= 25 : dst % 50 >= 25) {
                 phase = Phase.CAN_SCORE;
             }
             timeUntilNextPhase = 25 - dst % 25;
@@ -78,11 +81,10 @@ public class Phases {
                 phase = Phase.CAN_SCORE;
                 timeUntilNextPhase = Double.POSITIVE_INFINITY;
             }
-        }
-        else if (phase != Phase.AUTO){
+        } else if (phase != Phase.AUTO) {
             phase = Phase.CANNOT_SCORE;
             // infinitely count down
-            if ((autonomousWin) ? dst % 50 <= 25 : dst % 50 >= 25){
+            if ((autonomousWin) ? dst % 50 <= 25 : dst % 50 >= 25) {
                 phase = Phase.CAN_SCORE;
             }
             timeUntilNextPhase = 25 - dst % 25;
@@ -93,21 +95,15 @@ public class Phases {
         }
     }
 
-    
-    
-
-
-
     public enum Phase {
         CAN_SCORE(true),
         CANNOT_SCORE(false),
         UNDEFINED(true),
         AUTO(true);
         private final boolean allowedToScore;
-        private Phase(boolean allowedToScore){
+
+        private Phase(boolean allowedToScore) {
             this.allowedToScore = allowedToScore;
         }
     }
-    
-    
 }

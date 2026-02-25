@@ -6,8 +6,9 @@ package org.frc5902.robot.util.flywheellib.flywheelfunctions;
 import org.frc5902.robot.util.flywheellib.constants.FlywheelConstants;
 import org.frc5902.robot.util.flywheellib.functions.BaseFunction;
 // TODO IMPLEMENT POSE3D IN REAL ROBOT PROJECT... USE ROBOTSTATE
+
 public class FuelDistanceFunctions2 {
-    
+
     /**
      * Return the root function (defined as f(x) - h(x))
      * @param t time function to avoid redundancy
@@ -24,9 +25,8 @@ public class FuelDistanceFunctions2 {
                 if (time <= 0 || Double.isNaN(time)) return Double.NaN;
 
                 // Launch speed from flywheel
-                double v = FuelVelocityOutOfLauncher
-                            .getFuelVelocityDistanceFunction()
-                            .function(omega);
+                double v = FuelVelocityOutOfLauncher.getFuelVelocityDistanceFunction()
+                        .function(omega);
 
                 // Left side: projectile distance squared
                 double projectileDistSq = (v * time) * (v * time);
@@ -42,6 +42,4 @@ public class FuelDistanceFunctions2 {
             }
         };
     }
-
-
 }

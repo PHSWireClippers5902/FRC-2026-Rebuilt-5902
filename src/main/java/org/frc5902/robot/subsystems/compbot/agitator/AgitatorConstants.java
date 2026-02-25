@@ -1,7 +1,7 @@
 package org.frc5902.robot.subsystems.compbot.agitator;
 
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
-import org.frc5902.robot.util.PID;
+import org.frc5902.robot.util.motorutil.PID;
 
 public class AgitatorConstants {
     public static int AgitatorCANID = -1;
