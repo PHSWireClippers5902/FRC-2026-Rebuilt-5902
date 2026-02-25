@@ -7,8 +7,8 @@ import edu.wpi.first.wpilibj.Alert.AlertType;
 import org.frc5902.robot.Constants.QuestConstants;
 import org.frc5902.robot.state.RobotState;
 import org.frc5902.robot.state.RobotState.QuestObservation;
-import org.frc5902.robot.util.GeoUtil;
-import org.frc5902.robot.util.VirtualSubsystem;
+import org.frc5902.robot.util.buildutil.GeoUtil;
+import org.frc5902.robot.util.buildutil.VirtualSubsystem;
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 

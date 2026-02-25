@@ -1,4 +1,4 @@
-package org.frc5902.robot.util;
+package org.frc5902.robot.util.shifts;
 
 import java.util.function.DoubleSupplier;
 
@@ -15,7 +15,7 @@ public class Phases {
     private DoubleSupplier dsTime;
     // assume we lost auto unless we update it.
     @Getter @Setter
-    private boolean autonomousWin = false;
+    private Boolean autonomousWin = null;
     @Getter
     private double timeUntilNextPhase = 0.0;
     @Getter
@@ -44,12 +44,9 @@ public class Phases {
     public boolean canScore(double timeToFlySeconds) {
         updatePhase();
         if (phase != Phase.AUTO){
-            if (phase.allowedToScore && timeUntilNextPhase - timeToFlySeconds < 0){
-                return false;
-            }
-            if (!phase.allowedToScore && timeUntilNextPhase - timeToFlySeconds < 0){
-                // you are allowed to shoot if you cannot shoot but it takes enough time to fly
-                return true;
+            // you are allowed to shoot if you cannot shoot but it takes enough time to fly
+            if (timeUntilNextPhase - timeToFlySeconds < 0){
+                return !phase.allowedToScore;
             }
             return phase.allowedToScore;
         }
@@ -57,7 +54,14 @@ public class Phases {
     }
 
     private void updatePhase() {
-        double dst = dsTime.getAsDouble();        
+        double dst = dsTime.getAsDouble();      
+        if (autonomousWin.equals(null)) {
+            // try
+            if (AutoWinner.get().isPresent()) {
+                autonomousWin = AutoWinner.get().equals(DriverStation.getAlliance());
+            }
+            
+        }  
         // if the phase is not auto
         if (phase != Phase.AUTO && realMatch) {
             phase = Phase.CANNOT_SCORE;

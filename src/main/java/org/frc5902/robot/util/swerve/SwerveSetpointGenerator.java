@@ -16,14 +16,15 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.ExtensionMethod;
-import org.frc5902.robot.util.EqualsUtil;
-import org.frc5902.robot.util.GeoUtil;
+
+import org.frc5902.robot.util.buildutil.EqualsUtil;
+import org.frc5902.robot.util.buildutil.GeoUtil;
+
+import static org.frc5902.robot.util.buildutil.EqualsUtil.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-import static org.frc5902.robot.util.EqualsUtil.*;
 
 /**
  * "Inspired" by FRC team 254. See the license file in the root directory of this project.

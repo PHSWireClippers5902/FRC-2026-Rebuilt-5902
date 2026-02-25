@@ -2,7 +2,7 @@
 // Link can be found
 // https://github.com/Mechanical-Advantage/RobotCode2026Public/blob/main/src/main/java/org/littletonrobotics/frc2026/util/geometry/GeomUtil.java
 
-package org.frc5902.robot.util;
+package org.frc5902.robot.util.buildutil;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;

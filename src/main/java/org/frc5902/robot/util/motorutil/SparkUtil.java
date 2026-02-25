@@ -5,7 +5,7 @@
 // license that can be found in the LICENSE file
 // at the root directory of this project.
 
-package org.frc5902.robot.util;
+package org.frc5902.robot.util.motorutil;
 
 import com.revrobotics.REVLibError;
 import com.revrobotics.spark.SparkBase;

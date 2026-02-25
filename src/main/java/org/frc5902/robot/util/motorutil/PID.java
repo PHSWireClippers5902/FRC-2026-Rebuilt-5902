@@ -1,4 +1,4 @@
-package org.frc5902.robot.util;
+package org.frc5902.robot.util.motorutil;
 
 import lombok.Builder;
 import lombok.EqualsAndHashCode;

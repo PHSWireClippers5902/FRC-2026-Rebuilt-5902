@@ -1,4 +1,4 @@
-package org.frc5902.robot.util;
+package org.frc5902.robot.util.buildutil;
 
 /**
  * Automatically generated file containing build version information.
