@@ -4,24 +4,11 @@ import com.ctre.phoenix.ErrorCode;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
-import com.revrobotics.PersistMode;
-import com.revrobotics.REVLibError;
-import com.revrobotics.RelativeEncoder;
-import com.revrobotics.ResetMode;
-import com.revrobotics.spark.SparkBase;
-import com.revrobotics.spark.SparkBase.ControlType;
-import com.revrobotics.spark.SparkClosedLoopController;
-import com.revrobotics.spark.SparkLowLevel.MotorType;
-import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.filter.Debouncer.DebounceType;
-import edu.wpi.first.math.geometry.Rotation2d;
 
 import java.util.function.DoubleSupplier;
 
-import static org.frc5902.robot.util.motorutil.SparkUtil.tryUntilOk;
 
 public class AgitatorIOTalon implements AgitatorIO {
 
@@ -39,7 +26,7 @@ public class AgitatorIOTalon implements AgitatorIO {
         agitator = new TalonSRX(AgitatorConstants.AgitatorCANID);
         agitator.setInverted(AgitatorConstants.inverted);
         agitator.clearStickyFaults();
-        
+
         appliedVolts = () -> agitator.getMotorOutputVoltage();
 
         temp = () -> agitator.getTemperature();
