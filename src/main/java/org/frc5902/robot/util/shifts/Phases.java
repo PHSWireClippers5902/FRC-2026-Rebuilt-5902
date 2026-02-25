@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.frc5902.robot.Constants.RobotConstants;
+import org.littletonrobotics.junction.AutoLogOutput;
+import org.littletonrobotics.junction.Logger;
 
 import java.util.function.DoubleSupplier;
 
@@ -45,6 +47,7 @@ public class Phases {
         return canScore(0);
     }
 
+    @AutoLogOutput(key="Field/CanScore")
     public boolean canScore(double timeToFlySeconds) {
         updatePhase();
         if (phase != Phase.AUTO) {
