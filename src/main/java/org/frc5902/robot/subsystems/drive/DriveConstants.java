@@ -8,7 +8,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.util.Units;
 import org.frc5902.robot.subsystems.drive.modules.ModuleConfiguration;
-import org.frc5902.robot.util.PID;
+import org.frc5902.robot.util.motorutil.PID;
 import org.frc5902.robot.util.swerve.ModuleLimits;
 
 public class DriveConstants {

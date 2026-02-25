@@ -24,7 +24,6 @@ import org.frc5902.robot.subsystems.drive.gyro.GyroIO;
 import org.frc5902.robot.subsystems.drive.gyro.GyroIOInputsAutoLogged;
 import org.frc5902.robot.subsystems.drive.modules.Module;
 import org.frc5902.robot.subsystems.drive.modules.ModuleIO;
-import org.frc5902.robot.util.LoggedTunableNumber;
 import org.frc5902.robot.util.swerve.SwerveSetpoint;
 import org.frc5902.robot.util.swerve.SwerveSetpointGenerator;
 import org.littletonrobotics.junction.AutoLogOutput;
@@ -43,10 +42,6 @@ public class Drive extends SubsystemBase {
     private final Debouncer gyroConnectedDebouncer = new Debouncer(0.5, Debouncer.DebounceType.kFalling);
     private final Alert gyroDisconnectedAlert =
             new Alert("Disconnected gyro, using kinematics as fallback.", AlertType.kError);
-
-    private static final LoggedTunableNumber coastWaitTime = new LoggedTunableNumber("Drive/CoastWaitTimeSeconds", 0.5);
-    private static final LoggedTunableNumber coastMetersPerSecondThreshold =
-            new LoggedTunableNumber("Drive/CoastMetersPerSecThreshold", .05);
 
     @AutoLogOutput
     private boolean velocityMode = false;

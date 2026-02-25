@@ -17,7 +17,7 @@ import org.frc5902.robot.subsystems.compbot.launcher.LauncherConstants.FlywheelC
 
 import java.util.function.DoubleSupplier;
 
-import static org.frc5902.robot.util.SparkUtil.tryUntilOk;
+import static org.frc5902.robot.util.motorutil.SparkUtil.tryUntilOk;
 
 public class FlywheelSpark implements FlywheelIO {
     // hardware

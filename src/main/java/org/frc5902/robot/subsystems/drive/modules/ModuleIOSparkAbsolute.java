@@ -25,7 +25,7 @@ import org.frc5902.robot.subsystems.drive.SparkOdometryThread;
 import java.util.Queue;
 import java.util.function.DoubleSupplier;
 
-import static org.frc5902.robot.util.SparkUtil.*;
+import static org.frc5902.robot.util.motorutil.SparkUtil.*;
 
 public class ModuleIOSparkAbsolute implements ModuleIO {
     private final Rotation2d zeroRotation;

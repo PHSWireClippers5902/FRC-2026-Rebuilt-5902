@@ -3,44 +3,40 @@
  */
 package org.frc5902.robot.util.flywheellib.flywheelfunctions;
 
-import java.util.HashMap;
-
-import org.frc5902.robot.util.flywheellib.constants.FlywheelConstants;
-import org.frc5902.robot.util.flywheellib.functions.QuadraticFunction;
-import org.frc5902.robot.util.flywheellib.functions.BaseFunction;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.frc5902.robot.util.flywheellib.constants.FlywheelConstants;
+import org.frc5902.robot.util.flywheellib.functions.BaseFunction;
+import org.frc5902.robot.util.flywheellib.functions.QuadraticFunction;
 
+import java.util.HashMap;
 
 @ToString
 public class FuelTimeFunction implements BaseFunction {
 
-    @Getter @Setter
+    @Getter
+    @Setter
     private FuelTimeAim aim = FuelTimeAim.HUB;
 
     HashMap<FuelTimeAim, Double> aimMap = FlywheelConstants.aimToDifference;
 
-    QuadraticFunction fuelTimeFunction = QuadraticFunction.builder()
-                                        .a(-9.8)
-                                        .c(aimMap.getOrDefault(aim, 0.0))
-                                        .build();
+    QuadraticFunction fuelTimeFunction =
+            QuadraticFunction.builder().a(-9.8).c(aimMap.getOrDefault(aim, 0.0)).build();
 
     BaseFunction verticalVelocityFunction = FuelVelocityOutOfLauncher.getFuelVelocityVerticalFunction();
-    
-    public FuelTimeFunction(){}
 
-
+    public FuelTimeFunction() {}
 
     /**
-     * Returns time, 
+     * Returns time,
      * @param input input as double angular velocity RPS
      * @return return greater root
      */
     @Override
     public double function(double angularVelocityRadiansPerSecond) {
         fuelTimeFunction.setB(verticalVelocityFunction.function(angularVelocityRadiansPerSecond));
-        return fuelTimeFunction.getGreaterRoot();        
+        return fuelTimeFunction.getGreaterRoot();
     }
     /**
      * Return if the time function is a real number
@@ -57,5 +53,4 @@ public class FuelTimeFunction implements BaseFunction {
         GROUND,
         HUB
     }
-
 }

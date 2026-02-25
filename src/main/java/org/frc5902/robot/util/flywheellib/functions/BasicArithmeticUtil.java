@@ -15,7 +15,7 @@ public class BasicArithmeticUtil {
         return (value) -> {
             double result = 0.0;
             for (BaseFunction b : bf) {
-                result+=b.function(value);
+                result += b.function(value);
             }
             return result;
         };
@@ -36,7 +36,7 @@ public class BasicArithmeticUtil {
     }
     /**
      * Multiplies a series of base functions
-     * @param bf series of base functions to multiply. 
+     * @param bf series of base functions to multiply.
      * @return the base functions multiplied together.
      */
     public static BaseFunction multiply(BaseFunction... bf) {
@@ -62,6 +62,4 @@ public class BasicArithmeticUtil {
             return result;
         };
     }
-
-
 }

@@ -1,7 +1,7 @@
 /**
  * Describes Desired Motor Data from a base Spark Max...
  */
-package org.frc5902.robot.util;
+package org.frc5902.robot.util.motorutil;
 
 public record SparkMotorData(
         boolean connected,

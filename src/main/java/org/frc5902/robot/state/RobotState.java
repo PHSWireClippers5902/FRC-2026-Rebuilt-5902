@@ -27,8 +27,8 @@ import lombok.experimental.ExtensionMethod;
 import org.frc5902.robot.FieldConstants;
 import org.frc5902.robot.subsystems.drive.DriveConstants.ModuleConfigurations;
 import org.frc5902.robot.subsystems.vision.VisionConstants;
-import org.frc5902.robot.util.GeoUtil;
-import org.frc5902.robot.util.LoggedTunableNumber;
+import org.frc5902.robot.util.buildutil.GeoUtil;
+import org.frc5902.robot.util.buildutil.LoggedTunableNumber;
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 
