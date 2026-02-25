@@ -53,9 +53,9 @@ public class FlywheelRootEstimator2 {
      */
     public static boolean conditionsMet(double angularVelocityRadiansPerSecond) {        
         // If the quadratic is not real, return false.
-        if (!timeFunc.real()) return false;
         // if the time it takes for the flywheel to fly is less than 0, return false.
         if (timeFunc.function(angularVelocityRadiansPerSecond) < 0) return false;
+        if (!timeFunc.real()) return false;
         return true;
     }
 
