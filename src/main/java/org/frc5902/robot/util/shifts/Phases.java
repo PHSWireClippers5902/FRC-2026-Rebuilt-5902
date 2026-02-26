@@ -71,7 +71,7 @@ public class Phases {
         // if the phase is not auto
         if (phase != Phase.AUTO && realMatch) {
             phase = Phase.CANNOT_SCORE;
-            if ((autonomousWin) ? dst % 50 <= 25 : dst % 50 >= 25) {
+            if ((!autonomousWin) ? dst % 50 <= 25 : dst % 50 >= 25) {
                 phase = Phase.CAN_SCORE;
             }
             timeUntilNextPhase = 25 - dst % 25;
@@ -87,7 +87,7 @@ public class Phases {
         } else if (phase != Phase.AUTO) {
             phase = Phase.CANNOT_SCORE;
             // infinitely count down
-            if ((autonomousWin) ? dst % 50 <= 25 : dst % 50 >= 25) {
+            if ((!autonomousWin) ? dst % 50 <= 25 : dst % 50 >= 25) {
                 phase = Phase.CAN_SCORE;
             }
             timeUntilNextPhase = 25 - dst % 25;
