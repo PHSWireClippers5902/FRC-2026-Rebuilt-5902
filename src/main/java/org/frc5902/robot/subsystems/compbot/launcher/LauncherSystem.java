@@ -52,4 +52,13 @@ public class LauncherSystem extends SubsystemBase {
         iIO.stop();
         fIO.stop();
     }
+
+    public enum Goal {
+        TOP_FLYWHEEL,
+        BOTH,
+        KICKBOTH,
+        
+    }
+
+
 }
