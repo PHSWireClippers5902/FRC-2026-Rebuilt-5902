@@ -9,7 +9,6 @@ import edu.wpi.first.math.filter.Debouncer.DebounceType;
 
 import java.util.function.DoubleSupplier;
 
-
 public class AgitatorIOTalon implements AgitatorIO {
 
     // hardware
@@ -49,7 +48,6 @@ public class AgitatorIOTalon implements AgitatorIO {
         // To reverse, output / bus voltage = percent output
         agitator.set(TalonSRXControlMode.PercentOutput, volts / busVoltage.getAsDouble());
     }
-
 
     @Override
     public void stop() {

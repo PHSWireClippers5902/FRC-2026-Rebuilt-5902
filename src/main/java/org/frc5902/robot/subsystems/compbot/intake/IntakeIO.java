@@ -1,21 +1,21 @@
-package org.frc5902.robot.subsystems.compbot.intake.slider;
+package org.frc5902.robot.subsystems.compbot.intake;
 
 import org.littletonrobotics.junction.AutoLog;
 
-public interface SliderIO {
+public interface IntakeIO {
     @AutoLog
-    class SliderIOInputs {
-        public SliderIOData data = new SliderIOData(false, 0.0, 0.0, 0.0, 0.0);
+    class IntakeIOInputs {
+        public IntakeIOData data = new IntakeIOData(false, 0.0, 0.0, 0.0, 0.0);
     }
 
-    record SliderIOData(
+    record IntakeIOData(
             boolean motorConnected,
             double positionRads,
             double velocityRadsPerSec,
             double appliedVoltage,
             double tempCelsius) {}
 
-    default void updateInputs(SliderIOInputs inputs) {}
+    default void updateInputs(IntakeIOInputs inputs) {}
 
     default void runVolts(double volts) {}
 

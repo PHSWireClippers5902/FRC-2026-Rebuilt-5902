@@ -1,4 +1,4 @@
-package org.frc5902.robot.subsystems.compbot.intake.slider;
+package org.frc5902.robot.subsystems.compbot.slider;
 
 import com.revrobotics.PersistMode;
 import com.revrobotics.REVLibError;

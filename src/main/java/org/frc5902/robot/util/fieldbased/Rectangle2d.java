@@ -1,6 +1,5 @@
 package org.frc5902.robot.util.fieldbased;
 
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
@@ -9,20 +8,21 @@ import lombok.Setter;
 import lombok.ToString;
 
 @ToString
-public class Rectangle2d extends Shape2d{
-    @Getter @Setter
+public class Rectangle2d extends Shape2d {
+    @Getter
+    @Setter
     // should be backleft
     private Translation2d corner1;
-    @Getter @Setter 
+
+    @Getter
+    @Setter
     // should be frontright
     private Translation2d corner2;
-
-
 
     public Rectangle2d(Translation2d corner1, Translation2d corner2) {
         this.corner1 = corner1;
         this.corner2 = corner2;
-        this.alerts = new Alert[]{
+        this.alerts = new Alert[] {
             new Alert("Rectangle2d X's are the same: " + this, AlertType.kWarning),
             new Alert("Rectangle2d Y's are the same: " + this, AlertType.kWarning)
         };
@@ -40,7 +40,6 @@ public class Rectangle2d extends Shape2d{
         alerts[0].set(corner1.getX() == corner2.getX());
         alerts[1].set(corner1.getY() == corner2.getY());
     }
-
 
     /**
      * Why do we need this method?
@@ -61,28 +60,16 @@ public class Rectangle2d extends Shape2d{
         }
     }
 
-
     @Override
     public boolean insideShape(Translation2d translation) {
-        // return if the pose is within 
-        return 
-            (translation.getX() < corner1.getX() || translation.getX() > corner2.getX()) || 
-            (translation.getY() < corner1.getY() || translation.getY() > corner2.getY());
-            
+        // return if the pose is within
+        return (translation.getX() < corner1.getX() || translation.getX() > corner2.getX())
+                || (translation.getY() < corner1.getY() || translation.getY() > corner2.getY());
     }
-
-
 
     @Override
     public void transform(Translation2d by) {
-        this.corner1 = new Translation2d(
-            this.corner1.getX() - by.getX(),
-            this.corner1.getY() - by.getY()
-        );
-        this.corner2 = new Translation2d(
-            this.corner2.getX() - by.getX(),
-            this.corner2.getY() - by.getY()
-        );
+        this.corner1 = new Translation2d(this.corner1.getX() - by.getX(), this.corner1.getY() - by.getY());
+        this.corner2 = new Translation2d(this.corner2.getX() - by.getX(), this.corner2.getY() - by.getY());
     }
-    
 }
