@@ -73,8 +73,10 @@ public class Superstructure extends SubsystemBase {
                 agitator.setGoal(AgitatorSystem.Goal.AGITATE_INTAKE);
                 intake.setGoal(IntakeSystem.Goal.INTAKE_LOW);
             }
-            case CLEAR_JAM_FLYWHEEL -> {
-                agitator.setGoal(AgitatorSystem.Goal.AGITATE_KICK);
+            case CLEAR_JAM_FLYWHEEL -> {                
+                slide.setGoal(SliderSystem.Goal.DEPLOYED);
+                agitator.setGoal(AgitatorSystem.Goal.AGITATE_KICK);     
+                intake.setGoal(IntakeSystem.Goal.INTAKE_LOW);
             }
         }
     }
