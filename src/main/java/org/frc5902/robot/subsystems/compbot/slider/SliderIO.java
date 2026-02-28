@@ -18,9 +18,12 @@ public interface SliderIO {
 
     default void updateInputs(SliderIOInputs inputs) {}
 
+    default void runToPosition(double position) {}
+    
     default void runVolts(double volts) {}
 
     default void runRadiansPerSecond(double radiansPerSecond) {}
 
     default void stop() {}
+
 }

@@ -25,9 +25,9 @@ import static org.frc5902.robot.util.motorutil.SparkUtil.tryUntilOk;
 
 public class SliderSparkIO implements SliderIO {
     // hardware
-    public final SparkBase Slider;
-    public final RelativeEncoder Sliderencoder;
-    public final SparkClosedLoopController Slidercontroller;
+    public final SparkBase slider;
+    public final RelativeEncoder sliderEncoder;
+    public final SparkClosedLoopController sliderController;
     // signals
     public final DoubleSupplier position;
     public final DoubleSupplier velocity;
@@ -39,10 +39,10 @@ public class SliderSparkIO implements SliderIO {
     public final BooleanSupplier limitSwitchValue;
     public final Debouncer limitSwitchDebouncer = new Debouncer(0.1, DebounceType.kFalling);
     // outputs
-    public final Debouncer SliderConnectedDebounce = new Debouncer(0.5, DebounceType.kFalling);
+    public final Debouncer sliderConnectedDebounce = new Debouncer(0.5, DebounceType.kFalling);
 
     public SliderSparkIO() {
-        Slider = new SparkMax(SliderConstants.SliderCANID, MotorType.kBrushless);
+        slider = new SparkMax(SliderConstants.SliderCANID, MotorType.kBrushless);
         var config = new SparkMaxConfig();
         config.encoder.positionConversionFactor(SliderConstants.SliderPositionConversionFactor);
         config.closedLoop.positionWrappingEnabled(false);
@@ -55,45 +55,50 @@ public class SliderSparkIO implements SliderIO {
                 SliderConstants.SliderPID.getDeriviative());
 
         tryUntilOk(
-                Slider,
+                slider,
                 5,
-                () -> Slider.configure(config, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters));
-        Sliderencoder = Slider.getEncoder();
-        tryUntilOk(Slider, 5, () -> Sliderencoder.setPosition(0.0));
-        Slidercontroller = Slider.getClosedLoopController();
+                () -> slider.configure(config, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters));
+        sliderEncoder = slider.getEncoder();
+        tryUntilOk(slider, 5, () -> sliderEncoder.setPosition(0.0));
+        sliderController = slider.getClosedLoopController();
 
         sliderLimitSwitch = new DigitalInput(SliderConstants.LimitSwitchPort);
 
-        position = () -> Sliderencoder.getPosition();
-        velocity = () -> Sliderencoder.getVelocity();
-        appliedVolts = () -> Slider.getAppliedOutput();
-        temp = () -> Slider.getMotorTemperature();
+        position = () -> sliderEncoder.getPosition();
+        velocity = () -> sliderEncoder.getVelocity();
+        appliedVolts = () -> slider.getAppliedOutput();
+        temp = () -> slider.getMotorTemperature();
         limitSwitchValue = () -> sliderLimitSwitch.get();
     }
 
     @Override
     public void updateInputs(SliderIOInputs inputs) {
         inputs.data = new SliderIOData(
-                SliderConnectedDebounce.calculate(Slider.getLastError() != REVLibError.kOk),
+                sliderConnectedDebounce.calculate(slider.getLastError() != REVLibError.kOk),
                 Rotation2d.fromRotations(position.getAsDouble()).getRadians(),
                 Rotation2d.fromRotations(velocity.getAsDouble()).getRadians(),
                 appliedVolts.getAsDouble(),
                 temp.getAsDouble(),
-                SliderConnectedDebounce.calculate(limitSwitchValue.getAsBoolean()));
+                sliderConnectedDebounce.calculate(limitSwitchValue.getAsBoolean()));
+    }
+
+    
+    public void runToPosition(double position) {
+        sliderController.setSetpoint(position, ControlType.kPosition);
     }
 
     @Override
     public void runVolts(double volts) {
-        Slider.setVoltage(volts);
+        slider.setVoltage(volts);
     }
 
     @Override
     public void runRadiansPerSecond(double radiansPerSecond) {
-        Slidercontroller.setSetpoint(radiansPerSecond, ControlType.kVelocity);
+        sliderController.setSetpoint(radiansPerSecond, ControlType.kVelocity);
     }
 
     @Override
     public void stop() {
-        Slider.stopMotor();
+        slider.stopMotor();
     }
 }
