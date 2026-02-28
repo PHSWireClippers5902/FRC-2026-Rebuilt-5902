@@ -37,8 +37,8 @@ public class FuelDistanceFunctions2 {
                 Pose2d estimatedPose = robotState.getEstimatedPose();
                 Twist2d estimatedTwist = robotState.getFieldVelocity().toTwist2d(0.5);
 
-                double x = estimatedPose.getX() - estimatedTwist.dx * time;
-                double y = estimatedPose.getY() - estimatedTwist.dy * time;
+                double x = estimatedPose.transformBy(FlywheelConstants.botToFlywheel2d).getX() - estimatedTwist.dx * time;
+                double y = estimatedPose.transformBy(FlywheelConstants.botToFlywheel2d).getY() - estimatedTwist.dy * time;
 
                 // Right side: intercept distance squared
                 double targetDistSq = x * x + y * y;

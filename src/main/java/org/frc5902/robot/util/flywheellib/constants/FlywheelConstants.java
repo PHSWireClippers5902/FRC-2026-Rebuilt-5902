@@ -9,9 +9,11 @@ import org.frc5902.robot.util.flywheellib.flywheelfunctions.FuelTimeFunction.Fue
 import org.frc5902.robot.util.flywheellib.functions.BaseConstant;
 import org.frc5902.robot.util.flywheellib.functions.BaseFunction;
 
-import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
 
@@ -31,6 +33,14 @@ public class FlywheelConstants {
         new Rotation3d(0,0,-Math.PI/2)
     ); 
     public static Transform3d flywheelToBot = botToFlywheel.inverse();
+    
+    public static Transform2d botToFlywheel2d = new Transform2d(
+        new Translation2d(botToFlywheel.getX(), botToFlywheel.getY()),
+        new Rotation2d(-Math.PI/2)); 
+    public static Transform2d flywheelToBot2d = botToFlywheel2d.inverse();
+    
+
+
     public static double FuelWeight = 0.226; // kg
     public static double FlywheelRadius = 0.0762; // meters
     public static BaseFunction FlywheelEfficiency = new BaseConstant(() -> 0.5); // a function 1-to-1, TUNABLE NUM
@@ -38,7 +48,7 @@ public class FlywheelConstants {
 
     static {
         aimToDifference = new HashMap<FuelTimeAim, Double>();
-        aimToDifference.put(FuelTimeAim.GROUND, -0.3);
+        aimToDifference.put(FuelTimeAim.GROUND, 0.0);
         aimToDifference.put(FuelTimeAim.HUB, 1.8288);
     }
     // TUNABLE (radian tuned)

@@ -22,7 +22,7 @@ public class FuelTimeFunction implements BaseFunction {
     HashMap<FuelTimeAim, Double> aimMap = FlywheelConstants.aimToDifference;
 
     QuadraticFunction fuelTimeFunction =
-            QuadraticFunction.builder().a(-9.8).c(aimMap.getOrDefault(aim, 0.0)).build();
+            QuadraticFunction.builder().a(-9.8).c(aimMap.getOrDefault(aim, 0.0) - FlywheelConstants.botToFlywheel.getZ()).build();
 
     BaseFunction verticalVelocityFunction = FuelVelocityOutOfLauncher.getFuelVelocityVerticalFunction();
 
