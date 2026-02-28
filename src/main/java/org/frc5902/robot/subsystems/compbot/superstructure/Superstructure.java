@@ -4,7 +4,6 @@ import org.frc5902.robot.subsystems.compbot.agitator.AgitatorSystem;
 import org.frc5902.robot.subsystems.compbot.intake.IntakeSystem;
 import org.frc5902.robot.subsystems.compbot.launcher.LauncherSystem;
 import org.frc5902.robot.subsystems.compbot.slider.SliderSystem;
-import org.frc5902.robot.subsystems.drive.Drive;
 import org.littletonrobotics.junction.AutoLogOutput;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -36,6 +35,7 @@ public class Superstructure extends SubsystemBase {
 
     @Override
     public void periodic() {
+
         switch (target_state) {
             case STOW -> {
                 slide.setGoal(SliderSystem.Goal.STOW);
