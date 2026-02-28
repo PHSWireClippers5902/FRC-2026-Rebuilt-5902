@@ -1,14 +1,14 @@
-package org.frc5902.robot.util.fieldbased;
-
-import org.frc5902.robot.FieldConstants;
-import org.frc5902.robot.Constants.RobotConstants;
-
 // Copyright (c) 2025 FRC 6328
 // http://github.com/Mechanical-Advantage
 //
 // Use of this source code is governed by an MIT-style
 // license that can be found in the LICENSE file at
 // the root directory of this project.
+package org.frc5902.robot.util.fieldbased;
+
+import org.frc5902.robot.FieldConstants;
+import org.frc5902.robot.Constants.RobotConstants;
+
 import edu.wpi.first.math.geometry.*;
 import edu.wpi.first.wpilibj.DriverStation;
 
