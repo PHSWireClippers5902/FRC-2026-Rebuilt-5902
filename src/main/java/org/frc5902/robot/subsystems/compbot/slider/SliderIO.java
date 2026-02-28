@@ -5,7 +5,7 @@ import org.littletonrobotics.junction.AutoLog;
 public interface SliderIO {
     @AutoLog
     class SliderIOInputs {
-        public SliderIOData data = new SliderIOData(false, 0.0, 0.0, 0.0, 0.0);
+        public SliderIOData data = new SliderIOData(false, 0.0, 0.0, 0.0, 0.0, false);
     }
 
     record SliderIOData(
@@ -13,7 +13,8 @@ public interface SliderIO {
             double positionRads,
             double velocityRadsPerSec,
             double appliedVoltage,
-            double tempCelsius) {}
+            double tempCelsius,
+            boolean limitSwitchActivated) {}
 
     default void updateInputs(SliderIOInputs inputs) {}
 

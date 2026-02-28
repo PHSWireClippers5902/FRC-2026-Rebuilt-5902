@@ -5,18 +5,22 @@ import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import lombok.Getter;
 import lombok.Setter;
+
+import org.frc5902.robot.util.buildutil.LoggedTunableNumber;
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 
 public class SliderSystem extends SubsystemBase {
     private final SliderIO sIO;
     private final SliderIOInputsAutoLogged sIOInputs = new SliderIOInputsAutoLogged();
+    private final LoggedTunableNumber SLIDER_PREDICTED_LIMIT_STATE = 
+        new LoggedTunableNumber("Slider/Slider_PREDICTED_FINAL_LOCATION", 10000);
 
     private final Alert sliderDisconnectedAlert = new Alert(
             "The SLIDER has been disconnected. IF the SLIDER has deployed, you can still run the intake system"
                     + " normally.",
             AlertType.kWarning);
-
+    
     @Getter
     @Setter
     @AutoLogOutput

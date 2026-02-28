@@ -13,8 +13,12 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.math.geometry.Rotation2d;
-import org.frc5902.robot.subsystems.compbot.intake.IntakeSystemConstants.SliderConstants;
+import edu.wpi.first.wpilibj.DigitalInput;
 
+import org.frc5902.robot.subsystems.compbot.slider.SliderConstants;
+import org.frc5902.robot.util.buildutil.LoggedTunableNumber;
+
+import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
 import static org.frc5902.robot.util.motorutil.SparkUtil.tryUntilOk;
@@ -30,6 +34,10 @@ public class SliderSparkIO implements SliderIO {
     public final DoubleSupplier appliedVolts;
     public final DoubleSupplier temp;
 
+    public final DigitalInput sliderLimitSwitch;
+
+    public final BooleanSupplier limitSwitchValue;
+    public final Debouncer limitSwitchDebouncer = new Debouncer(0.1, DebounceType.kFalling);
     // outputs
     public final Debouncer SliderConnectedDebounce = new Debouncer(0.5, DebounceType.kFalling);
 
@@ -54,10 +62,13 @@ public class SliderSparkIO implements SliderIO {
         tryUntilOk(Slider, 5, () -> Sliderencoder.setPosition(0.0));
         Slidercontroller = Slider.getClosedLoopController();
 
+        sliderLimitSwitch = new DigitalInput(SliderConstants.LimitSwitchPort);
+
         position = () -> Sliderencoder.getPosition();
         velocity = () -> Sliderencoder.getVelocity();
         appliedVolts = () -> Slider.getAppliedOutput();
         temp = () -> Slider.getMotorTemperature();
+        limitSwitchValue = () -> sliderLimitSwitch.get();
     }
 
     @Override
@@ -67,7 +78,8 @@ public class SliderSparkIO implements SliderIO {
                 Rotation2d.fromRotations(position.getAsDouble()).getRadians(),
                 Rotation2d.fromRotations(velocity.getAsDouble()).getRadians(),
                 appliedVolts.getAsDouble(),
-                temp.getAsDouble());
+                temp.getAsDouble(),
+                SliderConnectedDebounce.calculate(limitSwitchValue.getAsBoolean()));
     }
 
     @Override
