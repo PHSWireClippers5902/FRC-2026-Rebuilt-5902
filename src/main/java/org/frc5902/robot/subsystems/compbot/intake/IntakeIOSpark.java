@@ -19,7 +19,7 @@ import java.util.function.DoubleSupplier;
 
 import static org.frc5902.robot.util.motorutil.SparkUtil.tryUntilOk;
 
-public class IntakeSparkIO implements IntakeIO {
+public class IntakeIOSpark implements IntakeIO {
     // hardware
     public final SparkBase Intake;
     public final RelativeEncoder IntakeEncoder;
@@ -33,7 +33,7 @@ public class IntakeSparkIO implements IntakeIO {
     // outputs
     public final Debouncer IntakeConnectedDebounce = new Debouncer(0.5, DebounceType.kFalling);
 
-    public IntakeSparkIO() {
+    public IntakeIOSpark() {
         Intake = new SparkMax(IntakeConstants.IntakeCANID, MotorType.kBrushless);
         var config = new SparkMaxConfig();
         config.encoder.positionConversionFactor(IntakeConstants.IntakePositionConversionFactor);

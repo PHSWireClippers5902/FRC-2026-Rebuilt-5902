@@ -19,7 +19,7 @@ import java.util.function.DoubleSupplier;
 
 import static org.frc5902.robot.util.motorutil.SparkUtil.tryUntilOk;
 
-public class InserterSpark implements InserterIO {
+public class InserterIOSpark implements InserterIO {
     // hardware
     public final SparkBase inserter;
     public final RelativeEncoder inserterencoder;
@@ -33,7 +33,7 @@ public class InserterSpark implements InserterIO {
     // outputs
     public final Debouncer inserterConnectedDebounce = new Debouncer(0.5, DebounceType.kFalling);
 
-    public InserterSpark() {
+    public InserterIOSpark() {
         inserter = new SparkMax(InserterConstants.InserterCANID, MotorType.kBrushless);
         var config = new SparkMaxConfig();
         config.encoder.positionConversionFactor(InserterConstants.inserterPositionConversionFactor);

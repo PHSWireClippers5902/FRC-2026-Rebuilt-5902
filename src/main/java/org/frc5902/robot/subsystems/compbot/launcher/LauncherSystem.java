@@ -48,10 +48,11 @@ public class LauncherSystem {
 
         switch (goal) {
             case IDLE -> {
+                runLaunchVolts(0.0,0.0);
                 break;
             }
             case READY -> {
-                
+
                 // run top motor at flywheel velocity
                 runLaunchVelocities(0, estimation.getTotalFlywheelVelocity());
                 break;

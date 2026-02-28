@@ -23,7 +23,7 @@ import java.util.function.DoubleSupplier;
 
 import static org.frc5902.robot.util.motorutil.SparkUtil.tryUntilOk;
 
-public class SliderSparkIO implements SliderIO {
+public class SliderIOSpark implements SliderIO {
     // hardware
     public final SparkBase slider;
     public final RelativeEncoder sliderEncoder;
@@ -41,7 +41,7 @@ public class SliderSparkIO implements SliderIO {
     // outputs
     public final Debouncer sliderConnectedDebounce = new Debouncer(0.5, DebounceType.kFalling);
 
-    public SliderSparkIO() {
+    public SliderIOSpark() {
         slider = new SparkMax(SliderConstants.SliderCANID, MotorType.kBrushless);
         var config = new SparkMaxConfig();
         config.encoder.positionConversionFactor(SliderConstants.SliderPositionConversionFactor);
@@ -82,7 +82,7 @@ public class SliderSparkIO implements SliderIO {
                 sliderConnectedDebounce.calculate(limitSwitchValue.getAsBoolean()));
     }
 
-    
+
     public void runToPosition(double position) {
         sliderController.setSetpoint(position, ControlType.kPosition);
     }

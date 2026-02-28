@@ -36,14 +36,17 @@ public class Superstructure extends SubsystemBase {
 
     @Override
     public void periodic() {
+        // do I manage aim elsewhere? We shall see...
         switch (target_state) {
             case STOW -> {
+                launch.setGoal(LauncherSystem.Goal.IDLE);
                 slide.setGoal(SliderSystem.Goal.STOW);
                 agitator.setGoal(AgitatorSystem.Goal.STOP);
                 intake.setGoal(IntakeSystem.Goal.STOP);
                 break;
             }
             case DEPLOY_IDLE -> {
+                launch.setGoal(LauncherSystem.Goal.IDLE);
                 slide.setGoal(SliderSystem.Goal.DEPLOYED);
                 agitator.setGoal(AgitatorSystem.Goal.STOP);
                 intake.setGoal(IntakeSystem.Goal.STOP);
@@ -51,37 +54,42 @@ public class Superstructure extends SubsystemBase {
             }
             case INTAKE -> {
                 // when you are intaking, set slide goal to deployed, agitate the agitator, and intake the intake
+                launch.setGoal(LauncherSystem.Goal.IDLE);
                 slide.setGoal(SliderSystem.Goal.DEPLOYED);
                 agitator.setGoal(AgitatorSystem.Goal.AGITATE_KICK);
                 intake.setGoal(IntakeSystem.Goal.INTAKE);
                 break;
             }
             case INTAKE_PASS -> {
+                launch.setGoal(LauncherSystem.Goal.LAUNCH);
                 slide.setGoal(SliderSystem.Goal.DEPLOYED);
                 agitator.setGoal(AgitatorSystem.Goal.AGITATE_INTAKE);
                 intake.setGoal(IntakeSystem.Goal.INTAKE);
                 break;
             }
             case OUTTAKE -> {
+                launch.setGoal(LauncherSystem.Goal.IDLE);
                 slide.setGoal(SliderSystem.Goal.DEPLOYED);
                 agitator.setGoal(AgitatorSystem.Goal.AGITATE_KICK);
                 intake.setGoal(IntakeSystem.Goal.OUTTAKE);
                 break;
             }
             case LAUNCH_READY -> {
+                launch.setGoal(LauncherSystem.Goal.READY);
                 slide.setGoal(SliderSystem.Goal.DEPLOYED);
                 agitator.setGoal(AgitatorSystem.Goal.STOP);
                 intake.setGoal(IntakeSystem.Goal.STOP);
                 break;
             }
             case LAUNCH -> {
+                launch.setGoal(LauncherSystem.Goal.LAUNCH);
                 slide.setGoal(SliderSystem.Goal.DEPLOYED);
                 agitator.setGoal(AgitatorSystem.Goal.AGITATE_INTAKE);
                 intake.setGoal(IntakeSystem.Goal.INTAKE_LOW);
                 break;
             }
             case CLEAR_JAM_FLYWHEEL -> {    
-                            
+                launch.setGoal(LauncherSystem.Goal.CLEAR_JAM);
                 slide.setGoal(SliderSystem.Goal.DEPLOYED);
                 agitator.setGoal(AgitatorSystem.Goal.AGITATE_KICK);     
                 intake.setGoal(IntakeSystem.Goal.INTAKE_LOW);

@@ -19,7 +19,7 @@ import java.util.function.DoubleSupplier;
 
 import static org.frc5902.robot.util.motorutil.SparkUtil.tryUntilOk;
 
-public class FlywheelSpark implements FlywheelIO {
+public class FlywheelIOSpark implements FlywheelIO {
     // hardware
     public final SparkBase flywheel;
     public final RelativeEncoder flywheelencoder;
@@ -33,7 +33,7 @@ public class FlywheelSpark implements FlywheelIO {
     // outputs
     public final Debouncer flywheelConnectedDebounce = new Debouncer(0.5, DebounceType.kFalling);
 
-    public FlywheelSpark() {
+    public FlywheelIOSpark() {
         flywheel = new SparkMax(FlywheelConstants.FlywheelCANID, MotorType.kBrushless);
         var config = new SparkMaxConfig();
         config.encoder.positionConversionFactor(FlywheelConstants.flywheelPositionConversionFactor);
