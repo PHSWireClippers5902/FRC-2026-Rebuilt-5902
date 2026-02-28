@@ -38,10 +38,13 @@ public class AgitatorSystem extends SubsystemBase {
         switch (goal) {
             case AGITATE_INTAKE:
                 runVolts(agitatorAgitateVolts.getAsDouble());
+                break;
             case AGITATE_KICK:
                 runVolts(agitatorKickVolts.getAsDouble());
+                break;
             default:
                 runVolts(0.0);
+                break;
         }
     }
 

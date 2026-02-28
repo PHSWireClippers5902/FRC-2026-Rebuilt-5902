@@ -31,54 +31,69 @@ public class Superstructure extends SubsystemBase {
         this.intake = intake;
         this.launch = launch;
         this.slide = slide;
+        
     }
 
     @Override
     public void periodic() {
-
         switch (target_state) {
             case STOW -> {
                 slide.setGoal(SliderSystem.Goal.STOW);
                 agitator.setGoal(AgitatorSystem.Goal.STOP);
                 intake.setGoal(IntakeSystem.Goal.STOP);
+                break;
             }
             case DEPLOY_IDLE -> {
                 slide.setGoal(SliderSystem.Goal.DEPLOYED);
                 agitator.setGoal(AgitatorSystem.Goal.STOP);
                 intake.setGoal(IntakeSystem.Goal.STOP);
+                break;
             }
             case INTAKE -> {
                 // when you are intaking, set slide goal to deployed, agitate the agitator, and intake the intake
                 slide.setGoal(SliderSystem.Goal.DEPLOYED);
                 agitator.setGoal(AgitatorSystem.Goal.AGITATE_KICK);
                 intake.setGoal(IntakeSystem.Goal.INTAKE);
+                break;
             }
             case INTAKE_PASS -> {
                 slide.setGoal(SliderSystem.Goal.DEPLOYED);
                 agitator.setGoal(AgitatorSystem.Goal.AGITATE_INTAKE);
                 intake.setGoal(IntakeSystem.Goal.INTAKE);
+                break;
             }
             case OUTTAKE -> {
                 slide.setGoal(SliderSystem.Goal.DEPLOYED);
                 agitator.setGoal(AgitatorSystem.Goal.AGITATE_KICK);
                 intake.setGoal(IntakeSystem.Goal.OUTTAKE);
+                break;
             }
             case LAUNCH_READY -> {
                 slide.setGoal(SliderSystem.Goal.DEPLOYED);
                 agitator.setGoal(AgitatorSystem.Goal.STOP);
                 intake.setGoal(IntakeSystem.Goal.STOP);
+                break;
             }
             case LAUNCH -> {
                 slide.setGoal(SliderSystem.Goal.DEPLOYED);
                 agitator.setGoal(AgitatorSystem.Goal.AGITATE_INTAKE);
                 intake.setGoal(IntakeSystem.Goal.INTAKE_LOW);
+                break;
             }
-            case CLEAR_JAM_FLYWHEEL -> {                
+            case CLEAR_JAM_FLYWHEEL -> {    
+                            
                 slide.setGoal(SliderSystem.Goal.DEPLOYED);
                 agitator.setGoal(AgitatorSystem.Goal.AGITATE_KICK);     
                 intake.setGoal(IntakeSystem.Goal.INTAKE_LOW);
+                break;
             }
         }
+
+
+        agitator.periodic();
+        intake.periodic();
+        launch.periodic();
+        slide.periodic();
     }
     
 

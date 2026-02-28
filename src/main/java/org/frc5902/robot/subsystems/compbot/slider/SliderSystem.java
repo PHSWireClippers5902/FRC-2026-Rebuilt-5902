@@ -11,7 +11,7 @@ import org.frc5902.robot.util.buildutil.LoggedTunableNumber;
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 
-public class SliderSystem extends SubsystemBase {
+public class SliderSystem {
     private final SliderIO sIO;
     private final SliderIOInputsAutoLogged sIOInputs = new SliderIOInputsAutoLogged();
     // SHOULD BE OVEREXAGGERATED
@@ -39,7 +39,7 @@ public class SliderSystem extends SubsystemBase {
     @AutoLogOutput 
     private double reachedPosition = Double.NaN;
     
-    @Override
+    
     public void periodic() {
         sIO.updateInputs(sIOInputs);
         Logger.processInputs("Launcher/Flywheel", sIOInputs);
@@ -50,6 +50,7 @@ public class SliderSystem extends SubsystemBase {
             case STOW:
                 // run 0 volts. we should NEVER stow in this case until climbing is figured out.
                 sIO.runVolts(0.0);
+                break;
             case DEPLOYED:
                 // if the motor is at its limit STOP...
                 if (sIOInputs.data.limitSwitchActivated()) {
@@ -65,9 +66,10 @@ public class SliderSystem extends SubsystemBase {
                     }
                     else {sIO.runToPosition(reachedPosition);}
                 }
-
+                break;
             default:
-                sIO.runVolts(0.0);;
+                sIO.runVolts(0.0);
+                break;
         }
     }
 

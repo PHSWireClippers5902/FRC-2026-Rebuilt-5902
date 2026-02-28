@@ -10,7 +10,7 @@ import org.frc5902.robot.util.buildutil.LoggedTunableNumber;
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 
-public class IntakeSystem extends SubsystemBase {
+public class IntakeSystem {
     private final IntakeIO iIO;
     private final IntakeIOInputsAutoLogged iIOInputs = new IntakeIOInputsAutoLogged();
     
@@ -34,7 +34,7 @@ public class IntakeSystem extends SubsystemBase {
         this.iIO = iIO;
     }
 
-    @Override
+    
     public void periodic() {
         iIO.updateInputs(iIOInputs);
         Logger.processInputs("Launcher/Inserter", iIOInputs);
@@ -44,14 +44,19 @@ public class IntakeSystem extends SubsystemBase {
         switch (goal) {
             case INTAKE:
                 iIO.runVolts(intakeVolts.getAsDouble());
+                break;
             case INTAKE_LOW: 
                 iIO.runVolts(intakeLowVolts.getAsDouble());
+                break;
             case OUTTAKE:
                 iIO.runVolts(outtakeVolts.getAsDouble());
+                break;
             case STOP:
                 iIO.runVolts(0);
+                break;
             default:
                 iIO.runVolts(0);
+                break;
         }
     }
 
