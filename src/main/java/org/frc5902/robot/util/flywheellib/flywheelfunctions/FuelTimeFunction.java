@@ -9,24 +9,31 @@ import lombok.ToString;
 import org.frc5902.robot.util.flywheellib.constants.FlywheelConstants;
 import org.frc5902.robot.util.flywheellib.functions.BaseFunction;
 import org.frc5902.robot.util.flywheellib.functions.QuadraticFunction;
+import org.littletonrobotics.junction.AutoLogOutput;
 
 import java.util.HashMap;
 
 @ToString
 public class FuelTimeFunction implements BaseFunction {
-
-    @Getter
-    @Setter
-    private FuelTimeAim aim = FuelTimeAim.HUB;
-
-    HashMap<FuelTimeAim, Double> aimMap = FlywheelConstants.aimToDifference;
+    @Getter @AutoLogOutput
+    private double c;
 
     QuadraticFunction fuelTimeFunction =
-            QuadraticFunction.builder().a(-9.8).c(aimMap.getOrDefault(aim, 0.0) - FlywheelConstants.botToFlywheel.getZ()).build();
+            QuadraticFunction.builder().a(-9.8).build();
 
     BaseFunction verticalVelocityFunction = FuelVelocityOutOfLauncher.getFuelVelocityVerticalFunction();
 
-    public FuelTimeFunction() {}
+    public FuelTimeFunction(double c) {
+        fuelTimeFunction.setC(c);
+    }
+    public FuelTimeFunction() {
+        fuelTimeFunction.setC(0.0);
+    }
+
+    public void setC(double newC) {
+        this.c = newC;
+        fuelTimeFunction.setC(this.c);
+    }
 
     /**
      * Returns time,
@@ -46,11 +53,4 @@ public class FuelTimeFunction implements BaseFunction {
         return fuelTimeFunction.real();
     }
 
-    /**
-     * Enumerator defined as GROUND, HUB (aiming passing locations)
-     */
-    public enum FuelTimeAim {
-        GROUND,
-        HUB
-    }
 }

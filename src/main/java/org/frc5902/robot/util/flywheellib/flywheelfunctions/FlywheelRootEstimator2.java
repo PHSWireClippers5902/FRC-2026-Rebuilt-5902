@@ -7,6 +7,7 @@
 package org.frc5902.robot.util.flywheellib.flywheelfunctions;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Twist2d;
 import org.frc5902.robot.state.RobotState;
 import org.frc5902.robot.util.flywheellib.constants.FlywheelConstants;
@@ -31,21 +32,22 @@ public class FlywheelRootEstimator2 {
         robotState = RobotState.getInstance();
     }
     // root = 0
-    public Point CalculateFlywheelRoot() {
+    public Point CalculateFlywheelRoot(Pose3d whereToHit) {
         // calculate lower and upper bounds
         double[] bounds = new double[] {10, 1000};
 
-        BaseFunction dfunc = FuelDistanceFunctions2.getRootFunction(timeFunc);
+        BaseFunction dfunc = FuelDistanceFunctions2.getRootFunction(timeFunc, whereToHit);
         double root = BisectionMethod.calculate(dfunc, bounds, FlywheelConstants.RootFunctionTolerance);
 
+        timeFunc.setC(whereToHit.getZ() - FlywheelConstants.botToFlywheel.getZ());
         double t = timeFunc.function(root);
-
+        
         // get pose
         Pose2d estimatedPose = robotState.getEstimatedPose();
         Twist2d estimatedTwist = robotState.getFieldVelocity().toTwist2d(0.5);
 
-        double x = estimatedPose.getX() - estimatedTwist.dx * t;
-        double y = estimatedPose.getY() - estimatedTwist.dy * t;
+        double x = estimatedPose.transformBy(FlywheelConstants.botToFlywheel2d).getX() - whereToHit.getX() - estimatedTwist.dx * t;
+        double y = estimatedPose.transformBy(FlywheelConstants.botToFlywheel2d).getY() - whereToHit.getX() - estimatedTwist.dy * t;
 
         // Compute angle safely
         double theta = Math.atan2(y, x);
@@ -65,4 +67,7 @@ public class FlywheelRootEstimator2 {
         if (!timeFunc.real()) return false;
         return true;
     }
+
+
+
 }

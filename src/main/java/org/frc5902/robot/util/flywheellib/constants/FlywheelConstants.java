@@ -5,7 +5,6 @@
  */
 package org.frc5902.robot.util.flywheellib.constants;
 
-import org.frc5902.robot.util.flywheellib.flywheelfunctions.FuelTimeFunction.FuelTimeAim;
 import org.frc5902.robot.util.flywheellib.functions.BaseConstant;
 import org.frc5902.robot.util.flywheellib.functions.BaseFunction;
 
@@ -18,7 +17,6 @@ import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
 
 import java.util.HashMap;
-import java.util.function.DoubleSupplier;
 
 public class FlywheelConstants {
     public static double FlywheelMountedAngleRadians = Math.PI / 6;
@@ -44,19 +42,12 @@ public class FlywheelConstants {
     public static double FuelWeight = 0.226; // kg
     public static double FlywheelRadius = 0.0762; // meters
     public static BaseFunction FlywheelEfficiency = new BaseConstant(() -> 0.5); // a function 1-to-1, TUNABLE NUM
-    public static HashMap<FuelTimeAim, Double> aimToDifference;
 
-    static {
-        aimToDifference = new HashMap<FuelTimeAim, Double>();
-        aimToDifference.put(FuelTimeAim.GROUND, 0.0);
-        aimToDifference.put(FuelTimeAim.HUB, 1.8288);
-    }
+    public static double GROUND_HEIGHT = 0.0;
+    public static double HUB_HEIGHT = 1.8288;
+
+    
     // TUNABLE (radian tuned)
     public static double RootFunctionTolerance = 0.005;
 
-    // TUN
-    public static DoubleSupplier dx = () -> -4;
-    public static DoubleSupplier vx = () -> 0;
-    public static DoubleSupplier dy = () -> -4;
-    public static DoubleSupplier vy = () -> 0;
 }
