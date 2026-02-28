@@ -31,7 +31,6 @@ public class FlywheelEstimation {
     public double getTotalFlywheelVelocity() {
         switch (goal) {
             case FLOOR_LEFT -> {
-                
                 return 0.0;
             }
             case FLOOR_RIGHT -> {

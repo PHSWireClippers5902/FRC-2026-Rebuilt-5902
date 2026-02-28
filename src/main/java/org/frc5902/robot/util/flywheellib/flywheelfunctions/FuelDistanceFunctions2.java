@@ -3,12 +3,15 @@
  */
 package org.frc5902.robot.util.flywheellib.flywheelfunctions;
 
+import org.frc5902.robot.state.RobotState;
 import org.frc5902.robot.util.flywheellib.constants.FlywheelConstants;
 import org.frc5902.robot.util.flywheellib.functions.BaseFunction;
 // TODO IMPLEMENT POSE3D IN REAL ROBOT PROJECT... USE ROBOTSTATE
 
-public class FuelDistanceFunctions2 {
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Twist2d;
 
+public class FuelDistanceFunctions2 {
     /**
      * Return the root function (defined as f(x) - h(x))
      * @param t time function to avoid redundancy
@@ -18,7 +21,7 @@ public class FuelDistanceFunctions2 {
         return new BaseFunction() {
             @Override
             public double function(double omega) {
-
+                RobotState robotState =  RobotState.getInstance();
                 // Time of flight for this angular velocity
                 double time = t.function(omega);
 
@@ -31,9 +34,11 @@ public class FuelDistanceFunctions2 {
                 // Left side: projectile distance squared
                 double projectileDistSq = (v * time) * (v * time);
 
-                // Target relative position at time t
-                double x = FlywheelConstants.dx.getAsDouble() - FlywheelConstants.vx.getAsDouble() * time;
-                double y = FlywheelConstants.dy.getAsDouble() - FlywheelConstants.vy.getAsDouble() * time;
+                Pose2d estimatedPose = robotState.getEstimatedPose();
+                Twist2d estimatedTwist = robotState.getFieldVelocity().toTwist2d(0.5);
+
+                double x = estimatedPose.getX() - estimatedTwist.dx * time;
+                double y = estimatedPose.getY() - estimatedTwist.dy * time;
 
                 // Right side: intercept distance squared
                 double targetDistSq = x * x + y * y;
