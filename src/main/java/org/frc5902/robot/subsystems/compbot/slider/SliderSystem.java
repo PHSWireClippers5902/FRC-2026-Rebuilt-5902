@@ -37,7 +37,7 @@ public class SliderSystem {
 
     public void periodic() {
         sIO.updateInputs(sIOInputs);
-        Logger.processInputs("Launcher/Slider/Inputs", sIOInputs);
+        Logger.processInputs("Slider/Inputs", sIOInputs);
 
         sliderDisconnectedAlert.set(sIOInputs.data.motorConnected());
         // TODO IMPLEMENT
@@ -74,9 +74,9 @@ public class SliderSystem {
         sIO.runVolts(launchVolts);
     }
 
-    public void runVelocitiesVolts(double sliderVelocityPerSecond) {
-        Logger.recordOutput("Outputs/Launcher/Flywheel/FlywheelVelocityPerSecond", sliderVelocityPerSecond);
-        sIO.runRadiansPerSecond(sliderVelocityPerSecond);
+    public void runVelocitiesVolts(double sliderRotationsPerSecond) {
+        Logger.recordOutput("Outputs/Slider/SliderRotationsPerSecond", sliderRotationsPerSecond);
+        sIO.runRadiansPerSecond(sliderRotationsPerSecond);
     }
 
     public void stop() {

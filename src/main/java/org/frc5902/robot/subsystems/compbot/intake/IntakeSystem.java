@@ -59,7 +59,7 @@ public class IntakeSystem {
     }
 
     public void runVelocitiesVolts(double insertVelocityPerSecond) {
-        Logger.recordOutput("Outputs/Launcher/Inserter/InsertVelocityPerSecond", insertVelocityPerSecond);
+        Logger.recordOutput("Outputs/Intake/IntakeVelocityRotationsPerSecond", insertVelocityPerSecond);
         iIO.runRadiansPerSecond(insertVelocityPerSecond);
     }
 
