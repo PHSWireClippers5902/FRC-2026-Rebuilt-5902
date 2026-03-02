@@ -20,7 +20,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import org.frc5902.robot.state.RobotState;
+import org.frc5902.robot.RobotState;
 import org.frc5902.robot.subsystems.drive.Drive;
 import org.frc5902.robot.subsystems.drive.DriveConstants.ModuleConfigurations;
 import org.frc5902.robot.subsystems.drive.DriveConstants.PhysicalConstraints;

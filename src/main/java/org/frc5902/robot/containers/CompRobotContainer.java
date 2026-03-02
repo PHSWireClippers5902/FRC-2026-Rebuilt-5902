@@ -84,6 +84,7 @@ public class CompRobotContainer extends RobotContainer {
                 superstructure = new Superstructure(agitator, intake, launcher, slider);
                 break;
         }
+
         // autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
 
         // sysid routines
@@ -104,16 +105,15 @@ public class CompRobotContainer extends RobotContainer {
         if (Robot.isSimulation()) {
             DriverStation.silenceJoystickConnectionWarning(true);
         }
+        // set the default command of the superstructure to do NOTHING
+        superstructure.setDefaultCommand(superstructure.getGoalCommand(Superstructure.OVERALL_GOALS.DEPLOY_IDLE));
+
 
         m_XboxController
                 .x()
-                .onTrue(new InstantCommand(
-                        () -> superstructure.setTarget_state(Superstructure.OVERALL_GOALS.INTAKE), superstructure));
-        m_XboxController
-                .x()
-                .onFalse(new InstantCommand(
-                        () -> superstructure.setTarget_state(Superstructure.OVERALL_GOALS.DEPLOY_IDLE),
-                        superstructure));
+                .whileTrue(new InstantCommand(
+                        () -> superstructure.getGoalCommand(Superstructure.OVERALL_GOALS.INTAKE)));
+        
 
         // set default commands here.... here I say.... HERE
         // drive.setDefaultCommand(DriveCommands.joystickDrive(

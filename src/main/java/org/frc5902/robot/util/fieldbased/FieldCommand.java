@@ -8,7 +8,7 @@ import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.wpilibj2.command.Command;
 import lombok.ToString;
-import org.frc5902.robot.state.RobotState;
+import org.frc5902.robot.RobotState;
 
 @ToString
 public class FieldCommand extends Command {

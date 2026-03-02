@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.frc5902.robot.Constants.RobotConstants;
 import org.frc5902.robot.Constants.RobotConstants.Mode;
 import org.frc5902.robot.Robot;
-import org.frc5902.robot.state.RobotState;
+import org.frc5902.robot.RobotState;
 import org.frc5902.robot.subsystems.drive.DriveConstants.ModuleConfigurations;
 import org.frc5902.robot.subsystems.drive.DriveConstants.PhysicalConstraints;
 import org.frc5902.robot.subsystems.drive.gyro.GyroIO;

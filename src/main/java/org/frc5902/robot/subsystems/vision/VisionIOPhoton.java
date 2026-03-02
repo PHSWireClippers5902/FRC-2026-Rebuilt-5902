@@ -1,7 +1,7 @@
 package org.frc5902.robot.subsystems.vision;
 
-import org.frc5902.robot.state.RobotState;
-import org.frc5902.robot.state.RobotState.VisionObservation;
+import org.frc5902.robot.RobotState;
+import org.frc5902.robot.RobotState.VisionObservation;
 import org.photonvision.PhotonCamera;
 
 import java.util.HashSet;

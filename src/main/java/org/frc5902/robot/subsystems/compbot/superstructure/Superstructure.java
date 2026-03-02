@@ -1,5 +1,6 @@
 package org.frc5902.robot.subsystems.compbot.superstructure;
 
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,7 +23,7 @@ public class Superstructure extends SubsystemBase {
     @Getter
     @Setter
     @AutoLogOutput
-    private OVERALL_GOALS target_state = OVERALL_GOALS.DEPLOY_IDLE;
+    private OVERALL_GOALS goal = OVERALL_GOALS.DEPLOY_IDLE;
 
     public Superstructure(AgitatorSystem agitator, IntakeSystem intake, LauncherSystem launch, SliderSystem slide) {
         this.agitator = agitator;
@@ -34,7 +35,7 @@ public class Superstructure extends SubsystemBase {
     @Override
     public void periodic() {
         // do I manage aim elsewhere? We shall see...
-        switch (target_state) {
+        switch (goal) {
             case STOW -> {
                 launch.setGoal(LauncherSystem.Goal.IDLE);
                 slide.setGoal(SliderSystem.Goal.STOW);
@@ -98,6 +99,11 @@ public class Superstructure extends SubsystemBase {
         intake.periodic();
         launch.periodic();
         slide.periodic();
+    }
+
+
+    public InstantCommand getGoalCommand(OVERALL_GOALS g) {
+        return new InstantCommand(() -> this.setGoal(g), this);
     }
 
     public enum OVERALL_GOALS {

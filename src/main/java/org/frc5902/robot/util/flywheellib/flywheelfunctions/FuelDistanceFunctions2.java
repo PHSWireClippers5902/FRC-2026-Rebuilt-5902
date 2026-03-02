@@ -6,7 +6,7 @@ package org.frc5902.robot.util.flywheellib.flywheelfunctions;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Twist2d;
-import org.frc5902.robot.state.RobotState;
+import org.frc5902.robot.RobotState;
 import org.frc5902.robot.util.flywheellib.constants.FlywheelConstants;
 import org.frc5902.robot.util.flywheellib.functions.BaseFunction;
 // TODO IMPLEMENT POSE3D IN REAL ROBOT PROJECT... USE ROBOTSTATE

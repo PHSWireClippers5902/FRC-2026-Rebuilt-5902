@@ -1,4 +1,4 @@
-package org.frc5902.robot.state;
+package org.frc5902.robot;
 
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.Nat;
@@ -24,7 +24,6 @@ import edu.wpi.first.wpilibj.Timer;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.ExtensionMethod;
-import org.frc5902.robot.FieldConstants;
 import org.frc5902.robot.subsystems.drive.DriveConstants.ModuleConfigurations;
 import org.frc5902.robot.subsystems.vision.VisionConstants;
 import org.frc5902.robot.util.buildutil.GeoUtil;
