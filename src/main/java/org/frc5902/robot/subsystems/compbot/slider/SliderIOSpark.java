@@ -12,11 +12,7 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.filter.Debouncer.DebounceType;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DigitalInput;
-
-import org.frc5902.robot.subsystems.compbot.slider.SliderConstants;
-import org.frc5902.robot.util.buildutil.LoggedTunableNumber;
 
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
@@ -75,15 +71,16 @@ public class SliderIOSpark implements SliderIO {
     public void updateInputs(SliderIOInputs inputs) {
         inputs.data = new SliderIOData(
                 sliderConnectedDebounce.calculate(slider.getLastError() != REVLibError.kOk),
-                Rotation2d.fromRotations(position.getAsDouble()).getRadians(),
-                Rotation2d.fromRotations(velocity.getAsDouble()).getRadians(),
+                position.getAsDouble(),
+                velocity.getAsDouble(),
                 appliedVolts.getAsDouble(),
                 temp.getAsDouble(),
                 sliderConnectedDebounce.calculate(limitSwitchValue.getAsBoolean()));
     }
 
-
     public void runToPosition(double position) {
+        System.out.println("position" + position);
+        System.out.println("Slider Controller: " + sliderEncoder.getPosition());
         sliderController.setSetpoint(position, ControlType.kPosition);
     }
 

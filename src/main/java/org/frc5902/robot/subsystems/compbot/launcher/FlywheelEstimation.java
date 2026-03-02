@@ -1,20 +1,19 @@
 package org.frc5902.robot.subsystems.compbot.launcher;
 
-import org.frc5902.robot.util.flywheellib.flywheelfunctions.FlywheelRootEstimator2;
-import org.littletonrobotics.junction.AutoLogOutput;
-
 import edu.wpi.first.math.geometry.Pose3d;
-import edu.wpi.first.math.geometry.Translation2d;
 import lombok.Getter;
 import lombok.Setter;
+import org.frc5902.robot.util.flywheellib.flywheelfunctions.FlywheelRootEstimator2;
+import org.littletonrobotics.junction.AutoLogOutput;
 
 public class FlywheelEstimation {
     // create util object
     private final FlywheelRootEstimator2 root;
     private static FlywheelEstimation instance = null;
 
-
-    @Getter @Setter @AutoLogOutput
+    @Getter
+    @Setter
+    @AutoLogOutput
     public Goal goal;
 
     public static FlywheelEstimation getInstance() {
@@ -23,7 +22,6 @@ public class FlywheelEstimation {
         }
         return instance;
     }
-
 
     private FlywheelEstimation() {
         root = new FlywheelRootEstimator2();
@@ -63,12 +61,9 @@ public class FlywheelEstimation {
         }
     }
 
-
-
     public enum Goal {
         FLOOR_LEFT,
         FLOOR_RIGHT,
         HUB
     }
-
 }

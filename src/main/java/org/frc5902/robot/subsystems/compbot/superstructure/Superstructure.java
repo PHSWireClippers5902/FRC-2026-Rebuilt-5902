@@ -1,37 +1,34 @@
 package org.frc5902.robot.subsystems.compbot.superstructure;
 
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import lombok.Getter;
+import lombok.Setter;
 import org.frc5902.robot.subsystems.compbot.agitator.AgitatorSystem;
 import org.frc5902.robot.subsystems.compbot.intake.IntakeSystem;
 import org.frc5902.robot.subsystems.compbot.launcher.LauncherSystem;
 import org.frc5902.robot.subsystems.compbot.slider.SliderSystem;
 import org.littletonrobotics.junction.AutoLogOutput;
 
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import lombok.Getter;
-import lombok.Setter;
-
 public class Superstructure extends SubsystemBase {
     private final AgitatorSystem agitator;
     private final IntakeSystem intake;
     private final LauncherSystem launch;
     private final SliderSystem slide;
-    @Getter @AutoLogOutput
+
+    @Getter
+    @AutoLogOutput
     private OVERALL_GOALS current_state = OVERALL_GOALS.STOW;
-    @Getter @Setter @AutoLogOutput
+
+    @Getter
+    @Setter
+    @AutoLogOutput
     private OVERALL_GOALS target_state = OVERALL_GOALS.DEPLOY_IDLE;
 
-
-    public Superstructure(
-        AgitatorSystem agitator,
-        IntakeSystem intake,
-        LauncherSystem launch,
-        SliderSystem slide
-    ) {
+    public Superstructure(AgitatorSystem agitator, IntakeSystem intake, LauncherSystem launch, SliderSystem slide) {
         this.agitator = agitator;
         this.intake = intake;
         this.launch = launch;
         this.slide = slide;
-        
     }
 
     @Override
@@ -88,22 +85,20 @@ public class Superstructure extends SubsystemBase {
                 intake.setGoal(IntakeSystem.Goal.INTAKE_LOW);
                 break;
             }
-            case CLEAR_JAM_FLYWHEEL -> {    
+            case CLEAR_JAM_FLYWHEEL -> {
                 launch.setGoal(LauncherSystem.Goal.CLEAR_JAM);
                 slide.setGoal(SliderSystem.Goal.DEPLOYED);
-                agitator.setGoal(AgitatorSystem.Goal.AGITATE_KICK);     
+                agitator.setGoal(AgitatorSystem.Goal.AGITATE_KICK);
                 intake.setGoal(IntakeSystem.Goal.INTAKE_LOW);
                 break;
             }
         }
-
 
         agitator.periodic();
         intake.periodic();
         launch.periodic();
         slide.periodic();
     }
-    
 
     public enum OVERALL_GOALS {
         STOW,
@@ -115,6 +110,4 @@ public class Superstructure extends SubsystemBase {
         LAUNCH,
         CLEAR_JAM_FLYWHEEL,
     }
-
-
 }

@@ -41,13 +41,17 @@ public class FlywheelRootEstimator2 {
 
         timeFunc.setC(whereToHit.getZ() - FlywheelConstants.botToFlywheel.getZ());
         double t = timeFunc.function(root);
-        
+
         // get pose
         Pose2d estimatedPose = robotState.getEstimatedPose();
         Twist2d estimatedTwist = robotState.getFieldVelocity().toTwist2d(0.5);
 
-        double x = estimatedPose.transformBy(FlywheelConstants.botToFlywheel2d).getX() - whereToHit.getX() - estimatedTwist.dx * t;
-        double y = estimatedPose.transformBy(FlywheelConstants.botToFlywheel2d).getY() - whereToHit.getX() - estimatedTwist.dy * t;
+        double x = estimatedPose.transformBy(FlywheelConstants.botToFlywheel2d).getX()
+                - whereToHit.getX()
+                - estimatedTwist.dx * t;
+        double y = estimatedPose.transformBy(FlywheelConstants.botToFlywheel2d).getY()
+                - whereToHit.getX()
+                - estimatedTwist.dy * t;
 
         // Compute angle safely
         double theta = Math.atan2(y, x);
@@ -67,7 +71,4 @@ public class FlywheelRootEstimator2 {
         if (!timeFunc.real()) return false;
         return true;
     }
-
-
-
 }

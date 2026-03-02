@@ -28,7 +28,4 @@ public class VisionIOLimelight implements VisionIO {
         megatag1Subscriber = table.getDoubleArrayTopic("botpose_wpiblue").subscribe(new double[] {});
         megatag2Subscriber = table.getDoubleArrayTopic("botpose_orb_wpiblue").subscribe(new double[] {});
     }
-
-
-    
 }

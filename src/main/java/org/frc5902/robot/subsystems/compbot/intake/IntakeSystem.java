@@ -2,10 +2,8 @@ package org.frc5902.robot.subsystems.compbot.intake;
 
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import lombok.Getter;
 import lombok.Setter;
-
 import org.frc5902.robot.util.buildutil.LoggedTunableNumber;
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
@@ -13,13 +11,10 @@ import org.littletonrobotics.junction.Logger;
 public class IntakeSystem {
     private final IntakeIO iIO;
     private final IntakeIOInputsAutoLogged iIOInputs = new IntakeIOInputsAutoLogged();
-    
 
     private final LoggedTunableNumber intakeVolts = new LoggedTunableNumber("Intake/Tuneable/IntakeVolts", 12.0);
     private final LoggedTunableNumber intakeLowVolts = new LoggedTunableNumber("Intake/Tuneable/IntakeVolts", 4.0);
     private final LoggedTunableNumber outtakeVolts = new LoggedTunableNumber("Intake/Tuneable/IntakeVolts", -12.0);
-
-
 
     private final Alert intakeDisconnectedAlert = new Alert(
             "The INTAKE has been disconnected. Recommended to coordinate with Alliance Partners and swap to defence.",
@@ -34,10 +29,9 @@ public class IntakeSystem {
         this.iIO = iIO;
     }
 
-    
     public void periodic() {
         iIO.updateInputs(iIOInputs);
-        Logger.processInputs("Launcher/Inserter", iIOInputs);
+        Logger.processInputs("Intake/Inputs", iIOInputs);
 
         intakeDisconnectedAlert.set(iIOInputs.data.motorConnected());
         // TODO IMPLEMENT
@@ -45,7 +39,7 @@ public class IntakeSystem {
             case INTAKE:
                 iIO.runVolts(intakeVolts.getAsDouble());
                 break;
-            case INTAKE_LOW: 
+            case INTAKE_LOW:
                 iIO.runVolts(intakeLowVolts.getAsDouble());
                 break;
             case OUTTAKE:

@@ -1,12 +1,9 @@
 package org.frc5902.robot.subsystems.compbot.slider;
 
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import lombok.Getter;
 import lombok.Setter;
-
 import org.frc5902.robot.util.buildutil.LoggedTunableNumber;
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
@@ -15,10 +12,8 @@ public class SliderSystem {
     private final SliderIO sIO;
     private final SliderIOInputsAutoLogged sIOInputs = new SliderIOInputsAutoLogged();
     // SHOULD BE OVEREXAGGERATED
-    private final LoggedTunableNumber SLIDER_PREDICTED_LIMIT_STATE = 
-        new LoggedTunableNumber("Slider/Slider_PREDICTED_FINAL_LOCATION_OVEREXAGGERATED", 10000);
-
-
+    private final LoggedTunableNumber SLIDER_PREDICTED_LIMIT_STATE =
+            new LoggedTunableNumber("Slider/Slider_PREDICTED_FINAL_LOCATION_OVEREXAGGERATED", 120);
 
     private final Alert sliderDisconnectedAlert = new Alert(
             "The SLIDER has been disconnected. IF the SLIDER has deployed, you can still run the intake system"
@@ -36,13 +31,13 @@ public class SliderSystem {
 
     @AutoLogOutput
     private boolean firstLimitSwitchActivation = false;
-    @AutoLogOutput 
+
+    @AutoLogOutput
     private double reachedPosition = Double.NaN;
-    
-    
+
     public void periodic() {
         sIO.updateInputs(sIOInputs);
-        Logger.processInputs("Launcher/Flywheel", sIOInputs);
+        Logger.processInputs("Launcher/Slider/Inputs", sIOInputs);
 
         sliderDisconnectedAlert.set(sIOInputs.data.motorConnected());
         // TODO IMPLEMENT
@@ -53,19 +48,21 @@ public class SliderSystem {
                 break;
             case DEPLOYED:
                 // if the motor is at its limit STOP...
-                if (sIOInputs.data.limitSwitchActivated()) {
-                    if (!firstLimitSwitchActivation) {
-                        firstLimitSwitchActivation = true;
-                        reachedPosition = Rotation2d.fromRadians(sIOInputs.data.positionRads()).getRotations();
-                    }
-                    sIO.runToPosition(reachedPosition);
-                }
-                else {
-                    if (reachedPosition != Double.NaN){
-                        sIO.runToPosition(SLIDER_PREDICTED_LIMIT_STATE.getAsDouble());
-                    }
-                    else {sIO.runToPosition(reachedPosition);}
-                }
+                // if (sIOInputs.data.limitSwitchActivated()) {
+                //     if (!firstLimitSwitchActivation) {
+                //         firstLimitSwitchActivation = true;
+                //         reachedPosition = Rotation2d.fromRadians(sIOInputs.data.positionRads())
+                //                 .getRotations();
+                //     }
+                //     sIO.runToPosition(reachedPosition);
+                // } else {
+                //     if (reachedPosition != Double.NaN) {
+                //         sIO.runToPosition(SLIDER_PREDICTED_LIMIT_STATE.getAsDouble());
+                //     } else {
+                //         sIO.runToPosition(reachedPosition);
+                //     }
+                // }
+                sIO.runToPosition(SLIDER_PREDICTED_LIMIT_STATE.getAsDouble());
                 break;
             default:
                 sIO.runVolts(0.0);

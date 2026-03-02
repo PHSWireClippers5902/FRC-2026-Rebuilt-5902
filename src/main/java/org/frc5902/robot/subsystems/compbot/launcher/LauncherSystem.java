@@ -2,10 +2,8 @@ package org.frc5902.robot.subsystems.compbot.launcher;
 
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import lombok.Getter;
 import lombok.Setter;
-
 import org.frc5902.robot.subsystems.compbot.launcher.flywheel.*;
 import org.frc5902.robot.subsystems.compbot.launcher.inserter.*;
 import org.frc5902.robot.util.buildutil.LoggedTunableNumber;
@@ -20,10 +18,12 @@ public class LauncherSystem {
     private final FlywheelEstimation estimation = FlywheelEstimation.getInstance();
 
     private final LoggedTunableNumber jam_volts = new LoggedTunableNumber("Launcher/Jam_Volts", -4.0);
+
     @Getter
     @Setter
     @AutoLogOutput
     private Goal goal = Goal.IDLE;
+
     private final Alert inserterDisconnectedAlert = new Alert(
             "The INSERTER has been disconnected. Recommended to coordinate with Alliance Partners and swap to defence.",
             AlertType.kError);
@@ -36,19 +36,18 @@ public class LauncherSystem {
         this.fIO = fIO;
     }
 
-    
     public void periodic() {
         iIO.updateInputs(iIOInputs);
         fIO.updateInputs(fIOInputs);
-        Logger.processInputs("Launcher/Inserter", iIOInputs);
-        Logger.processInputs("Launcher/Flywheel", fIOInputs);
+        Logger.processInputs("Launcher/Inserter/Inputs", iIOInputs);
+        Logger.processInputs("Launcher/Flywheel/Inputs", fIOInputs);
 
         inserterDisconnectedAlert.set(iIOInputs.data.motorConnected());
         flywheelDisconnectedAlert.set(fIOInputs.data.motorConnected());
 
         switch (goal) {
             case IDLE -> {
-                runLaunchVolts(0.0,0.0);
+                runLaunchVolts(0.0, 0.0);
                 break;
             }
             case READY -> {
@@ -67,12 +66,10 @@ public class LauncherSystem {
                 break;
             }
             default -> {
-                runLaunchVolts(0,0);
+                runLaunchVolts(0, 0);
                 break;
             }
-            
         }
-
     }
 
     // insert, launch
@@ -80,9 +77,8 @@ public class LauncherSystem {
         // we would want the top and the botton to be at about equal speeds
         double estimatedTotalVelocity = estimation.getTotalFlywheelVelocity();
 
-        return new double[]{estimatedTotalVelocity/2,estimatedTotalVelocity/2};
+        return new double[] {estimatedTotalVelocity / 2, estimatedTotalVelocity / 2};
     }
-
 
     public void runLaunchVolts(double insertVolts, double launchVolts) {
         iIO.runVolts(insertVolts);
@@ -106,8 +102,5 @@ public class LauncherSystem {
         READY,
         LAUNCH,
         CLEAR_JAM
-        
     }
-
-
 }

@@ -32,7 +32,7 @@ public class AgitatorSystem extends SubsystemBase {
     @Override
     public void periodic() {
         io.updateInputs(inputs);
-        Logger.processInputs("Agitator/inputs", inputs);
+        Logger.processInputs("Agitator/Inputs", inputs);
         agitatorConnectedAlert.set(inputs.data.motorConnected());
 
         switch (goal) {

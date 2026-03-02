@@ -6,11 +6,10 @@
 // the root directory of this project.
 package org.frc5902.robot.util.fieldbased;
 
-import org.frc5902.robot.FieldConstants;
-import org.frc5902.robot.Constants.RobotConstants;
-
 import edu.wpi.first.math.geometry.*;
 import edu.wpi.first.wpilibj.DriverStation;
+import org.frc5902.robot.Constants.RobotConstants;
+import org.frc5902.robot.FieldConstants;
 
 public class AllianceFlipUtil {
     public static double applyX(double x) {
@@ -30,14 +29,11 @@ public class AllianceFlipUtil {
     }
 
     public static Pose2d apply(Pose2d pose) {
-        return shouldFlip()
-            ? new Pose2d(apply(pose.getTranslation()), apply(pose.getRotation()))
-            : pose;
+        return shouldFlip() ? new Pose2d(apply(pose.getTranslation()), apply(pose.getRotation())) : pose;
     }
 
     public static Translation3d apply(Translation3d translation) {
-        return new Translation3d(
-            applyX(translation.getX()), applyY(translation.getY()), translation.getZ());
+        return new Translation3d(applyX(translation.getX()), applyY(translation.getY()), translation.getZ());
     }
 
     public static Rotation3d apply(Rotation3d rotation) {
@@ -47,9 +43,10 @@ public class AllianceFlipUtil {
     public static Pose3d apply(Pose3d pose) {
         return new Pose3d(apply(pose.getTranslation()), apply(pose.getRotation()));
     }
+
     public static boolean shouldFlip() {
         return !RobotConstants.disableHAL
-            && DriverStation.getAlliance().isPresent()
-            && DriverStation.getAlliance().get() == DriverStation.Alliance.Red;
+                && DriverStation.getAlliance().isPresent()
+                && DriverStation.getAlliance().get() == DriverStation.Alliance.Red;
     }
 }

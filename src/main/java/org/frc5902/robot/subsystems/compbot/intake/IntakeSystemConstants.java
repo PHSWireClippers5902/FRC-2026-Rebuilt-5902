@@ -5,8 +5,8 @@ import org.frc5902.robot.util.motorutil.PID;
 
 public class IntakeSystemConstants {
     public class IntakeConstants {
-        public static int IntakeCANID = -1;
-        public static boolean inverted = false;
+        public static int IntakeCANID = 40;
+        public static boolean inverted = true;
         public static final double reduction = 1;
         public static int StallLimit = 20;
         public static int FreeLimit = 20;
