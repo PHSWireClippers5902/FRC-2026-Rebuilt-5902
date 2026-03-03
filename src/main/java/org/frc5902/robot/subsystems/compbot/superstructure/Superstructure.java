@@ -34,10 +34,6 @@ public class Superstructure extends SubsystemBase {
     private ArrayList<SuperstructureAction> scheduled_goals = new ArrayList<SuperstructureAction>();
 
     public Superstructure(AgitatorSystem agitator, IntakeSystem intake, LauncherSystem launch, SliderSystem slide) {
-        this.agitator = agitator;
-        this.intake = intake;
-        this.launch = launch;
-        this.slide = slide;
         // schedule the default command, deploy & idle
         SuperstructureAction.setStaticSubsystems(launch, agitator, slide, intake);
         scheduled_goals.add(SuperstructureActions.DEPLOY_IDLE);
