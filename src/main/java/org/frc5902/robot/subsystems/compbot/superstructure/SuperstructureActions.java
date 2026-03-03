@@ -7,7 +7,6 @@ import org.frc5902.robot.subsystems.compbot.agitator.AgitatorSystem;
 import org.frc5902.robot.subsystems.compbot.intake.IntakeSystem;
 import org.frc5902.robot.subsystems.compbot.launcher.LauncherSystem;
 import org.frc5902.robot.subsystems.compbot.slider.SliderSystem;
-import org.frc5902.robot.subsystems.compbot.superstructure.SuperstructureActions.SuperstructureAction;
 
 public class SuperstructureActions {
 
