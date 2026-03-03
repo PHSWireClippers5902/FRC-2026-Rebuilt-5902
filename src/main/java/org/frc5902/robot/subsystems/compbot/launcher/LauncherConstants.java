@@ -13,7 +13,7 @@ public class LauncherConstants {
         public static PID flywheelPID =
                 PID.builder().proportional(0.1).deriviative(0.1).build();
         public static double flywheelPositionConversionFactor = 1.0;
-
+        public static double flywheelVelocityConversionFactor = flywheelPositionConversionFactor / 60;
         public static IdleMode idleMode = IdleMode.kBrake;
     }
 
@@ -26,6 +26,7 @@ public class LauncherConstants {
         public static PID inserterPID =
                 PID.builder().proportional(0.1).deriviative(0.1).build();
         public static double inserterPositionConversionFactor = 1.0;
+        public static double inserterVelocityConversionFactor = inserterPositionConversionFactor / 60;
         public static IdleMode idleMode = IdleMode.kBrake;
     }
 }

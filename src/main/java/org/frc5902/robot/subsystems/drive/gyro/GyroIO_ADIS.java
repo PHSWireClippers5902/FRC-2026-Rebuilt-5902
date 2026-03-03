@@ -10,28 +10,42 @@ import java.util.Queue;
 import java.util.function.DoubleSupplier;
 
 public class GyroIO_ADIS implements GyroIO {
-    public final ADIS16470_IMU ADIS_Gyro = new ADIS16470_IMU();
+    public final ADIS16470_IMU ADIS_Gyro;
 
-    public DoubleSupplier yaw = () -> ADIS_Gyro.getAngle(IMUAxis.kYaw);
-    public DoubleSupplier pitch = () -> ADIS_Gyro.getAngle(IMUAxis.kPitch);
-    public DoubleSupplier roll = () -> ADIS_Gyro.getAngle(IMUAxis.kRoll);
+    public final DoubleSupplier yaw;
+    public final DoubleSupplier pitch;
+    public final DoubleSupplier roll;
 
-    public DoubleSupplier yawVelocity = () -> ADIS_Gyro.getRate(IMUAxis.kYaw);
-    public DoubleSupplier pitchVelocity = () -> ADIS_Gyro.getRate(IMUAxis.kPitch);
-    public DoubleSupplier rollVelocity = () -> ADIS_Gyro.getRate(IMUAxis.kRoll);
+    public final DoubleSupplier yawVelocity;
+    public final DoubleSupplier pitchVelocity;
+    public final DoubleSupplier rollVelocity;
 
-    public DoubleSupplier yawAcceleration = () -> ADIS_Gyro.getAccelZ();
-    public DoubleSupplier pitchAcceleration = () -> ADIS_Gyro.getAccelX();
-    public DoubleSupplier rollAcceleration = () -> ADIS_Gyro.getAccelY();
+    public final DoubleSupplier yawAcceleration;
+    public final DoubleSupplier pitchAcceleration;
+    public final DoubleSupplier rollAcceleration;
 
     private final Queue<Double> yawPositionQueue;
     private final Queue<Double> yawTimestampQueue;
 
     public GyroIO_ADIS() {
+        ADIS_Gyro = new ADIS16470_IMU();
         ADIS_Gyro.calibrate();
+        ADIS_Gyro.reset();
         ADIS_Gyro.setGyroAngle(IMUAxis.kYaw, 0.0);
         yawTimestampQueue = SparkOdometryThread.getInstance().makeTimestampQueue();
         yawPositionQueue = SparkOdometryThread.getInstance().registerSignal(ADIS_Gyro::getAngle);
+
+        yaw = () -> ADIS_Gyro.getAngle(IMUAxis.kYaw);
+        pitch = () -> ADIS_Gyro.getAngle(IMUAxis.kPitch);
+        roll = () -> ADIS_Gyro.getAngle(IMUAxis.kRoll);
+
+        yawVelocity = () -> ADIS_Gyro.getRate(IMUAxis.kYaw);
+        pitchVelocity = () -> ADIS_Gyro.getRate(IMUAxis.kPitch);
+        rollVelocity = () -> ADIS_Gyro.getRate(IMUAxis.kRoll);
+
+        yawAcceleration = () -> ADIS_Gyro.getAccelZ();
+        pitchAcceleration = () -> ADIS_Gyro.getAccelX();
+        rollAcceleration = () -> ADIS_Gyro.getAccelY();
     }
 
     @Override

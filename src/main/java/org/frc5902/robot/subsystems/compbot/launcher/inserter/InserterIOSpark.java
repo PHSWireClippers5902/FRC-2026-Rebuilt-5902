@@ -63,7 +63,7 @@ public class InserterIOSpark implements InserterIO {
     @Override
     public void updateInputs(InserterIOInputs inputs) {
         inputs.data = new InserterIOData(
-                inserterConnectedDebounce.calculate(inserter.getLastError() != REVLibError.kOk),
+                inserterConnectedDebounce.calculate(inserter.getLastError() == REVLibError.kOk),
                 Rotation2d.fromRotations(position.getAsDouble()).getRadians(),
                 Rotation2d.fromRotations(velocity.getAsDouble()).getRadians(),
                 appliedVolts.getAsDouble(),

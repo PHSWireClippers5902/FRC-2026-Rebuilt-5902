@@ -48,6 +48,7 @@ public class QuestSubsystem extends VirtualSubsystem {
                             questIOInputs.isTracking,
                             questIOInputs.questTimestamps[questIOInputs.questTimestamps.length - 1]));
         }
+
         // alert
         questDisconnectedAlert.set(!questIOInputs.connected);
         questStoppedTrackingAlert.set(!questIOInputs.isTracking);

@@ -13,7 +13,7 @@ public class SliderSystem {
     private final SliderIOInputsAutoLogged sIOInputs = new SliderIOInputsAutoLogged();
     // SHOULD BE OVEREXAGGERATED
     private final LoggedTunableNumber SLIDER_PREDICTED_LIMIT_STATE =
-            new LoggedTunableNumber("Slider/Slider_PREDICTED_FINAL_LOCATION_OVEREXAGGERATED", 120);
+            new LoggedTunableNumber("Slider/SLIDER_OVEREXXAGERATED", 3);
 
     private final Alert sliderDisconnectedAlert = new Alert(
             "The SLIDER has been disconnected. IF the SLIDER has deployed, you can still run the intake system"
@@ -24,6 +24,10 @@ public class SliderSystem {
     @Setter
     @AutoLogOutput
     private Goal goal = Goal.STOW;
+
+    @Getter
+    @AutoLogOutput
+    private State state = State.STOWED;
 
     public SliderSystem(SliderIO sIO) {
         this.sIO = sIO;
@@ -48,21 +52,13 @@ public class SliderSystem {
                 break;
             case DEPLOYED:
                 // if the motor is at its limit STOP...
-                // if (sIOInputs.data.limitSwitchActivated()) {
-                //     if (!firstLimitSwitchActivation) {
-                //         firstLimitSwitchActivation = true;
-                //         reachedPosition = Rotation2d.fromRadians(sIOInputs.data.positionRads())
-                //                 .getRotations();
-                //     }
-                //     sIO.runToPosition(reachedPosition);
-                // } else {
-                //     if (reachedPosition != Double.NaN) {
-                //         sIO.runToPosition(SLIDER_PREDICTED_LIMIT_STATE.getAsDouble());
-                //     } else {
-                //         sIO.runToPosition(reachedPosition);
-                //     }
-                // }
-                sIO.runToPosition(SLIDER_PREDICTED_LIMIT_STATE.getAsDouble());
+                if (sIOInputs.data.limitSwitchActivated()) {
+                    // completely deployed now
+                    this.state = SliderSystem.State.DEPLOYED;
+                    sIO.runVolts(0);
+                } else {
+                    sIO.runVolts(SLIDER_PREDICTED_LIMIT_STATE.getAsDouble());
+                }
                 break;
             default:
                 sIO.runVolts(0.0);
@@ -85,6 +81,11 @@ public class SliderSystem {
 
     public enum Goal {
         STOW,
+        DEPLOYED
+    }
+
+    public enum State {
+        STOWED,
         DEPLOYED
     }
 }

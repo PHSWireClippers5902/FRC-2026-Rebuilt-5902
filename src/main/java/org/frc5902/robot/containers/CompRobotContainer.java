@@ -5,13 +5,12 @@ import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import org.frc5902.robot.Constants.RobotConstants;
 import org.frc5902.robot.FieldConstants;
 import org.frc5902.robot.FieldConstants.AprilTagLayoutType;
-import org.frc5902.robot.commands.drive.DriveCommands;
 import org.frc5902.robot.Robot;
+import org.frc5902.robot.commands.drive.DriveCommands;
 import org.frc5902.robot.subsystems.compbot.agitator.AgitatorIO;
 import org.frc5902.robot.subsystems.compbot.agitator.AgitatorIOTalon;
 import org.frc5902.robot.subsystems.compbot.agitator.AgitatorSystem;
@@ -59,8 +58,11 @@ public class CompRobotContainer extends RobotContainer {
         switch (RobotConstants.currentMode) {
             case REAL:
                 drive = new Drive(
-                    new GyroIO_ADIS(), new ModuleIOSparkAbsolute(0), new ModuleIOSparkAbsolute(1), new
-                    ModuleIOSparkAbsolute(2), new ModuleIOSparkAbsolute(3));
+                        new GyroIO_ADIS(),
+                        new ModuleIOSparkAbsolute(0),
+                        new ModuleIOSparkAbsolute(1),
+                        new ModuleIOSparkAbsolute(2),
+                        new ModuleIOSparkAbsolute(3));
                 agitator = new AgitatorSystem(new AgitatorIOTalon());
                 launcher = new LauncherSystem(new InserterIOSpark(), new FlywheelIOSpark());
                 intake = new IntakeSystem(new IntakeIOSpark());
@@ -71,7 +73,7 @@ public class CompRobotContainer extends RobotContainer {
             case SIM:
                 // sim bot
                 drive = new Drive(
-                    new GyroIO() {}, new ModuleIOSim(), new ModuleIOSim(), new ModuleIOSim(), new ModuleIOSim());
+                        new GyroIO() {}, new ModuleIOSim(), new ModuleIOSim(), new ModuleIOSim(), new ModuleIOSim());
                 agitator = new AgitatorSystem(new AgitatorIO() {});
                 launcher = new LauncherSystem(new InserterIO() {}, new FlywheelIO() {});
                 intake = new IntakeSystem(new IntakeIO() {});
@@ -79,10 +81,10 @@ public class CompRobotContainer extends RobotContainer {
                 quest = new QuestSubsystem(new QuestIO() {});
                 superstructure = new Superstructure(agitator, intake, launcher, slider);
                 break;
-            default: 
+            default:
                 // replay
                 drive = new Drive(
-                    new GyroIO() {}, new ModuleIO(){}, new ModuleIO(){}, new ModuleIO(){}, new ModuleIO(){});
+                        new GyroIO() {}, new ModuleIO() {}, new ModuleIO() {}, new ModuleIO() {}, new ModuleIO() {});
                 agitator = new AgitatorSystem(new AgitatorIO() {});
                 launcher = new LauncherSystem(new InserterIO() {}, new FlywheelIO() {});
                 intake = new IntakeSystem(new IntakeIO() {});
@@ -119,20 +121,28 @@ public class CompRobotContainer extends RobotContainer {
                 () -> -m_XboxController.getLeftX(),
                 () -> -m_XboxController.getRightX(),
                 () -> false));
+        m_XboxController.rightBumper().onTrue(DriveCommands.resetGyroscope(drive));
 
-        
-
         m_XboxController
-                .x().onTrue(superstructure.addCommandToScheduler(SuperstructureActions.INTAKE)).onFalse(superstructure.removeCommandFromScheduler(SuperstructureActions.INTAKE));
+                .x()
+                .onTrue(superstructure.addCommandToScheduler(SuperstructureActions.INTAKE))
+                .onFalse(superstructure.removeCommandFromScheduler(SuperstructureActions.INTAKE));
         m_XboxController
-                .a().onTrue(superstructure.addCommandToScheduler(SuperstructureActions.OUTTAKE)).onFalse(superstructure.removeCommandFromScheduler(SuperstructureActions.OUTTAKE));
+                .a()
+                .onTrue(superstructure.addCommandToScheduler(SuperstructureActions.OUTTAKE))
+                .onFalse(superstructure.removeCommandFromScheduler(SuperstructureActions.OUTTAKE));
         m_XboxController
-                .b().onTrue(superstructure.addCommandToScheduler(SuperstructureActions.READY_LAUNCHER)).onFalse(superstructure.removeCommandFromScheduler(SuperstructureActions.READY_LAUNCHER));
+                .b()
+                .onTrue(superstructure.addCommandToScheduler(SuperstructureActions.READY_LAUNCHER_STUPID))
+                .onFalse(superstructure.removeCommandFromScheduler(SuperstructureActions.READY_LAUNCHER_STUPID));
         m_XboxController
-                .y().onTrue(superstructure.addCommandToScheduler(SuperstructureActions.CLEAR_FLYWHEEL_JAM)).onFalse(superstructure.removeCommandFromScheduler(SuperstructureActions.CLEAR_FLYWHEEL_JAM));
-
-        
-       
+                .leftBumper()
+                .onTrue(superstructure.addCommandToScheduler(SuperstructureActions.LAUNCH_STUPID))
+                .onFalse(superstructure.removeCommandFromScheduler(SuperstructureActions.LAUNCH_STUPID));
+        m_XboxController
+                .y()
+                .onTrue(superstructure.addCommandToScheduler(SuperstructureActions.CLEAR_FLYWHEEL_JAM))
+                .onFalse(superstructure.removeCommandFromScheduler(SuperstructureActions.CLEAR_FLYWHEEL_JAM));
     }
 
     public AprilTagLayoutType getSelectedAprilTagLayout() {

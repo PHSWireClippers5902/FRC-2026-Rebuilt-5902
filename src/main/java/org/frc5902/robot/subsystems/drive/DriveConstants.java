@@ -37,12 +37,14 @@ public class DriveConstants {
     public class ModuleConfigurations {
         public static double driveBaseWidthSQUARE = 24; // in // change
         public static double driveBaseRadius = (Units.inchesToMeters(driveBaseWidthSQUARE) / 2) * Math.sqrt(2);
+        // WHEN I TUNE THIS, ALL WHEELS POINTING LEFT
+        // THEN, USE VALUES FROM PHOENIX TUNER
         // Front Left Module
         public static ModuleConfiguration FrontLeftModule = ModuleConfiguration.builder()
                 .DrivingID(10)
                 .TurningID(20)
                 .TurningEncoderID(30)
-                .MagnetOffset(-0.081298828125)
+                .MagnetOffset(-0.07275390625)
                 .DrivingMotorInverted(true)
                 .TurningMotorInverted(false)
                 .ModuleOffset(new Translation2d(driveBaseRadius, driveBaseRadius))
@@ -53,7 +55,7 @@ public class DriveConstants {
                 .DrivingID(11)
                 .TurningID(21)
                 .TurningEncoderID(31)
-                .MagnetOffset(0.3935546875)
+                .MagnetOffset(-0.07763671875)
                 .DrivingMotorInverted(true)
                 .TurningMotorInverted(false)
                 .ModuleOffset(new Translation2d(driveBaseRadius, -driveBaseRadius))
@@ -63,7 +65,7 @@ public class DriveConstants {
                 .DrivingID(12)
                 .TurningID(22)
                 .TurningEncoderID(32)
-                .MagnetOffset(0.18359375)
+                .MagnetOffset(-0.09130859375)
                 .DrivingMotorInverted(true)
                 .TurningMotorInverted(false)
                 .ModuleOffset(new Translation2d(-driveBaseRadius, driveBaseRadius))
@@ -73,7 +75,7 @@ public class DriveConstants {
                 .DrivingID(13)
                 .TurningID(23)
                 .TurningEncoderID(33)
-                .MagnetOffset(-0.311767578125)
+                .MagnetOffset(0.41162109375)
                 .DrivingMotorInverted(true)
                 .TurningMotorInverted(false)
                 .ModuleOffset(new Translation2d(-driveBaseRadius, -driveBaseRadius))

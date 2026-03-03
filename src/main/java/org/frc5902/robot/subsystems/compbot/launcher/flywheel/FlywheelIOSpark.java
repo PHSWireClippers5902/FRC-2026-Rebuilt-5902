@@ -62,7 +62,7 @@ public class FlywheelIOSpark implements FlywheelIO {
     @Override
     public void updateInputs(FlywheelIOInputs inputs) {
         inputs.data = new FlywheelIOData(
-                flywheelConnectedDebounce.calculate(flywheel.getLastError() != REVLibError.kOk),
+                flywheelConnectedDebounce.calculate(flywheel.getLastError() == REVLibError.kOk),
                 Rotation2d.fromRotations(position.getAsDouble()).getRadians(),
                 Rotation2d.fromRotations(velocity.getAsDouble()).getRadians(),
                 appliedVolts.getAsDouble(),

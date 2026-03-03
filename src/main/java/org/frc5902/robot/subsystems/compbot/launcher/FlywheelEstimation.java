@@ -14,7 +14,7 @@ public class FlywheelEstimation {
     @Getter
     @Setter
     @AutoLogOutput
-    public Goal goal;
+    public Goal goal = Goal.HUB;
 
     public static FlywheelEstimation getInstance() {
         if (instance == null) {

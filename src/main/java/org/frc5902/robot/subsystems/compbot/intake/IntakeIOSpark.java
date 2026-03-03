@@ -37,6 +37,7 @@ public class IntakeIOSpark implements IntakeIO {
         Intake = new SparkMax(IntakeConstants.IntakeCANID, MotorType.kBrushless);
         var config = new SparkMaxConfig();
         config.encoder.positionConversionFactor(IntakeConstants.IntakePositionConversionFactor);
+        config.encoder.velocityConversionFactor(IntakeConstants.IntakeVelocityConversionFactor);
         config.closedLoop.positionWrappingEnabled(false);
         config.inverted(IntakeConstants.inverted)
                 .idleMode(IntakeConstants.idleMode)
@@ -63,7 +64,7 @@ public class IntakeIOSpark implements IntakeIO {
     @Override
     public void updateInputs(IntakeIOInputs inputs) {
         inputs.data = new IntakeIOData(
-                IntakeConnectedDebounce.calculate(Intake.getLastError() != REVLibError.kOk),
+                IntakeConnectedDebounce.calculate(Intake.getLastError() == REVLibError.kOk),
                 Rotation2d.fromRotations(position.getAsDouble()).getRadians(),
                 Rotation2d.fromRotations(velocity.getAsDouble()).getRadians(),
                 appliedVolts.getAsDouble(),

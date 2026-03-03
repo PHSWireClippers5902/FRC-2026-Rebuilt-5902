@@ -8,11 +8,12 @@ import org.frc5902.robot.subsystems.drive.SparkOdometryThread;
 import java.util.Queue;
 
 public class GyroIO_ADXRS implements GyroIO {
-    public final ADXRS450_Gyro ADXRS_Gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
+    public final ADXRS450_Gyro ADXRS_Gyro;
     private final Queue<Double> yawPositionQueue;
     private final Queue<Double> yawTimestampQueue;
 
     public GyroIO_ADXRS() {
+        ADXRS_Gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
         ADXRS_Gyro.reset();
         yawTimestampQueue = SparkOdometryThread.getInstance().makeTimestampQueue();
         yawPositionQueue = SparkOdometryThread.getInstance().registerSignal(ADXRS_Gyro::getAngle);

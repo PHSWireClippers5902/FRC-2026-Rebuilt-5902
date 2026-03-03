@@ -51,7 +51,7 @@ public class LauncherSystem {
                 break;
             }
             case READY -> {
-
+                estimation.setGoal(FlywheelEstimation.Goal.HUB);
                 // run top motor at flywheel velocity
                 runLaunchVelocities(0, estimation.getTotalFlywheelVelocity());
                 break;
@@ -63,6 +63,14 @@ public class LauncherSystem {
             }
             case CLEAR_JAM -> {
                 runLaunchVolts(jam_volts.getAsDouble(), jam_volts.getAsDouble());
+                break;
+            }
+            case LAUNCH_STUPID -> {
+                runLaunchVelocities(500, 500);
+                break;
+            }
+            case READY_STUPID -> {
+                fIO.runRadiansPerSecond(500);
                 break;
             }
             default -> {
@@ -101,6 +109,8 @@ public class LauncherSystem {
         IDLE,
         READY,
         LAUNCH,
-        CLEAR_JAM
+        CLEAR_JAM,
+        READY_STUPID,
+        LAUNCH_STUPID
     }
 }

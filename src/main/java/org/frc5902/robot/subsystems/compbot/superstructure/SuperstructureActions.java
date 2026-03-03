@@ -2,22 +2,24 @@ package org.frc5902.robot.subsystems.compbot.superstructure;
 
 import lombok.Builder;
 import lombok.Getter;
-
+import lombok.ToString;
 import org.frc5902.robot.subsystems.compbot.agitator.AgitatorSystem;
 import org.frc5902.robot.subsystems.compbot.intake.IntakeSystem;
 import org.frc5902.robot.subsystems.compbot.launcher.LauncherSystem;
 import org.frc5902.robot.subsystems.compbot.slider.SliderSystem;
-import org.frc5902.robot.subsystems.compbot.superstructure.SuperstructureActions.SuperstructureAction;
 
 public class SuperstructureActions {
 
-
     // STOW: Maintain defaults BUT have STOW
-    public static SuperstructureAction STOW =
-            SuperstructureAction.builder().sliderGoal(SliderSystem.Goal.STOW).priority(-1).build();
+    public static SuperstructureAction STOW = SuperstructureAction.builder()
+            .sliderGoal(SliderSystem.Goal.STOW)
+            .priority(-1)
+            .build();
     // DEPLOY_IDLE: Maintain all defaults
-    public static SuperstructureAction DEPLOY_IDLE =
-            SuperstructureAction.builder().priority(0).build();
+    public static SuperstructureAction DEPLOY_IDLE = SuperstructureAction.builder()
+            .intakeGoal(IntakeSystem.Goal.DEPLOY)
+            .priority(0)
+            .build();
     // INTAKE: Run Intake and Agitate Out
     public static SuperstructureAction INTAKE = SuperstructureAction.builder()
             .intakeGoal(IntakeSystem.Goal.INTAKE)
@@ -57,8 +59,21 @@ public class SuperstructureActions {
             .priority(4)
             .build();
 
+    // READY_LAUNCHER: Runs launcher at ready state.
+    public static SuperstructureAction READY_LAUNCHER_STUPID = SuperstructureAction.builder()
+            .launcherGoal(LauncherSystem.Goal.READY_STUPID)
+            .priority(2)
+            .build();
+    // LAUNCH: Run agitate in, intake at low to keep fuel in, and launch system
+    public static SuperstructureAction LAUNCH_STUPID = SuperstructureAction.builder()
+            .agitatorGoal(AgitatorSystem.Goal.AGITATE_INTAKE)
+            .intakeGoal(IntakeSystem.Goal.INTAKE_LOW)
+            .launcherGoal(LauncherSystem.Goal.LAUNCH_STUPID)
+            .priority(3)
+            .build();
 
     @Builder
+    @ToString
     public static class SuperstructureAction {
         // Defaults for all actions
         @Builder.Default
@@ -73,15 +88,15 @@ public class SuperstructureActions {
         @Builder.Default
         private IntakeSystem.Goal intakeGoal = IntakeSystem.Goal.STOP;
 
-        @Builder.Default @Getter
+        @Builder.Default
+        @Getter
         private int priority = 1;
-
 
         private static LauncherSystem launcherSystem = null;
         private static AgitatorSystem agitatorSystem = null;
         private static SliderSystem sliderSystem = null;
         private static IntakeSystem intakeSystem = null;
-        
+
         /* REQUIRED */
         public static void setStaticSubsystems(LauncherSystem ls, AgitatorSystem as, SliderSystem ss, IntakeSystem is) {
             launcherSystem = ls;

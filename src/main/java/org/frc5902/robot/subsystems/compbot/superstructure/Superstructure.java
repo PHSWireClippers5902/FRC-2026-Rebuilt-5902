@@ -3,26 +3,32 @@ package org.frc5902.robot.subsystems.compbot.superstructure;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import lombok.Getter;
-import lombok.Setter;
 import org.frc5902.robot.subsystems.compbot.agitator.AgitatorSystem;
 import org.frc5902.robot.subsystems.compbot.intake.IntakeSystem;
 import org.frc5902.robot.subsystems.compbot.launcher.LauncherSystem;
 import org.frc5902.robot.subsystems.compbot.slider.SliderSystem;
-import org.frc5902.robot.subsystems.compbot.superstructure.SuperstructureActions;
 import org.frc5902.robot.subsystems.compbot.superstructure.SuperstructureActions.SuperstructureAction;
-import org.littletonrobotics.junction.AutoLogOutput;
+import org.littletonrobotics.junction.Logger;
 
 import java.util.ArrayList;
 
 public class Superstructure extends SubsystemBase {
+    @Getter
     private final AgitatorSystem agitator;
+
+    @Getter
     private final IntakeSystem intake;
+
+    @Getter
     private final LauncherSystem launch;
+
+    @Getter
     private final SliderSystem slide;
 
     @Getter
-    @Setter
-    @AutoLogOutput
+    private static Superstructure instance = null;
+
+    @Getter
     private SuperstructureAction goal = SuperstructureActions.DEPLOY_IDLE;
 
     private ArrayList<SuperstructureAction> scheduled_goals = new ArrayList<SuperstructureAction>();
@@ -33,13 +39,16 @@ public class Superstructure extends SubsystemBase {
         this.launch = launch;
         this.slide = slide;
         // schedule the default command, deploy & idle
-        SuperstructureAction.setStaticSubsystems(launch,agitator,slide,intake);
+        SuperstructureAction.setStaticSubsystems(launch, agitator, slide, intake);
+        scheduled_goals.add(SuperstructureActions.DEPLOY_IDLE);
+        instance = this;
     }
 
     @Override
     public void periodic() {
         prioritizeGoals();
         goal.set();
+        Logger.recordOutput("Superstructure/Goal", goal.toString());
     }
 
     public void prioritizeGoals() {
@@ -60,6 +69,4 @@ public class Superstructure extends SubsystemBase {
     public InstantCommand removeCommandFromScheduler(SuperstructureAction g) {
         return new InstantCommand(() -> scheduled_goals.remove(g), this);
     }
-
-    
 }

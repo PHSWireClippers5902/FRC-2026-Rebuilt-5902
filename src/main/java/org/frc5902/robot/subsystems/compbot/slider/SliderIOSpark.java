@@ -70,17 +70,15 @@ public class SliderIOSpark implements SliderIO {
     @Override
     public void updateInputs(SliderIOInputs inputs) {
         inputs.data = new SliderIOData(
-                sliderConnectedDebounce.calculate(slider.getLastError() != REVLibError.kOk),
+                sliderConnectedDebounce.calculate(slider.getLastError() == REVLibError.kOk),
                 position.getAsDouble(),
                 velocity.getAsDouble(),
                 appliedVolts.getAsDouble(),
                 temp.getAsDouble(),
-                sliderConnectedDebounce.calculate(limitSwitchValue.getAsBoolean()));
+                limitSwitchDebouncer.calculate(!limitSwitchValue.getAsBoolean()));
     }
 
     public void runToPosition(double position) {
-        System.out.println("position" + position);
-        System.out.println("Slider Controller: " + sliderEncoder.getPosition());
         sliderController.setSetpoint(position, ControlType.kPosition);
     }
 

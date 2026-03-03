@@ -13,7 +13,7 @@ public class IntakeSystemConstants {
         public static PID IntakePID =
                 PID.builder().proportional(0.1).deriviative(0.1).build();
         public static double IntakePositionConversionFactor = 1.0;
-
+        public static double IntakeVelocityConversionFactor = IntakePositionConversionFactor/60;
         public static IdleMode idleMode = IdleMode.kBrake;
     }
 }

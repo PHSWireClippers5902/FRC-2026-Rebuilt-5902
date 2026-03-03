@@ -2,6 +2,8 @@ package org.frc5902.robot.subsystems.questnav;
 
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Translation3d;
 import gg.questnav.questnav.PoseFrame;
 import gg.questnav.questnav.QuestNav;
 import org.frc5902.robot.Constants.QuestConstants;
@@ -19,7 +21,7 @@ public class QuestIOReal implements QuestIO {
 
     public QuestIOReal() {
         questNav = new QuestNav();
-
+        questNav.setPose(new Pose3d(new Translation3d(0, 15, 0), new Rotation3d()));
         timestampQueue = QuestThread.getInstance().makeTimestampQueue();
         poseQueue = QuestThread.getInstance().registerSignal(() -> latestPose);
     }
