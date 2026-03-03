@@ -37,6 +37,7 @@ public class InserterIOSpark implements InserterIO {
         inserter = new SparkMax(InserterConstants.InserterCANID, MotorType.kBrushless);
         var config = new SparkMaxConfig();
         config.encoder.positionConversionFactor(InserterConstants.inserterPositionConversionFactor);
+        config.encoder.velocityConversionFactor(InserterConstants.inserterVelocityConversionFactor);
         config.closedLoop.positionWrappingEnabled(false);
         config.inverted(InserterConstants.inverted)
                 .idleMode(InserterConstants.idleMode)

@@ -13,5 +13,6 @@ public class SliderConstants {
     public static PID SliderPID =
             PID.builder().proportional(0.03).deriviative(0.1).build();
     public static double SliderPositionConversionFactor = 1.0;
+    public static double SliderVelocityConversionFactor = SliderPositionConversionFactor / 60;
     public static IdleMode idleMode = IdleMode.kBrake;
 }

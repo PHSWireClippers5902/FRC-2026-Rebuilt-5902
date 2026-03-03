@@ -41,6 +41,7 @@ public class SliderIOSpark implements SliderIO {
         slider = new SparkMax(SliderConstants.SliderCANID, MotorType.kBrushless);
         var config = new SparkMaxConfig();
         config.encoder.positionConversionFactor(SliderConstants.SliderPositionConversionFactor);
+        config.encoder.velocityConversionFactor(SliderConstants.SliderVelocityConversionFactor);
         config.closedLoop.positionWrappingEnabled(false);
         config.inverted(SliderConstants.inverted)
                 .idleMode(SliderConstants.idleMode)

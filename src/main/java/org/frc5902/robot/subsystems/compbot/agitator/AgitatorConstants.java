@@ -12,6 +12,6 @@ public class AgitatorConstants {
     public static PID agitatorPID =
             PID.builder().proportional(0.1).deriviative(0.1).build();
     public static double agitatorPositionConversionFactor = 1.0;
-
+    public static double agitatorVelocityConversionFactor = agitatorPositionConversionFactor / 60;
     public static IdleMode idleMode = IdleMode.kCoast;
 }

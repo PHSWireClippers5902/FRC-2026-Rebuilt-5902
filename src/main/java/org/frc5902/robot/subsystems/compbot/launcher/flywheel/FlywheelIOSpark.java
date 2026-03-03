@@ -37,6 +37,7 @@ public class FlywheelIOSpark implements FlywheelIO {
         flywheel = new SparkMax(FlywheelConstants.FlywheelCANID, MotorType.kBrushless);
         var config = new SparkMaxConfig();
         config.encoder.positionConversionFactor(FlywheelConstants.flywheelPositionConversionFactor);
+        config.encoder.velocityConversionFactor(FlywheelConstants.flywheelVelocityConversionFactor);
         config.closedLoop.positionWrappingEnabled(false);
         config.inverted(FlywheelConstants.inverted)
                 .idleMode(FlywheelConstants.idleMode)
