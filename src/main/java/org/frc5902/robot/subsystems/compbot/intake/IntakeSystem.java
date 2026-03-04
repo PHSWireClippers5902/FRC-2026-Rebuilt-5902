@@ -42,16 +42,17 @@ public class IntakeSystem {
         switch (goal) {
             case INTAKE:
                 // iIO.runVolts(intakeVolts.getAsDouble());
-                iIO.runRadiansPerSecond(300);
+                iIO.runRadiansPerSecond(30);
                 break;
             case INTAKE_LOW:
                 // iIO.runVolts(intakeLowVolts.getAsDouble());
-                iIO.runRadiansPerSecond(100);
-
+                // iIO.runRadiansPerSecond(12);
+                // for now run nothing
+                iIO.runVolts(0);
                 break;
             case OUTTAKE:
                 // iIO.runVolts(outtakeVolts.getAsDouble());
-                iIO.runRadiansPerSecond(300);
+                iIO.runRadiansPerSecond(-30);
                 break;
             case STOP:
                 iIO.runVolts(0);

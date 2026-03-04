@@ -11,8 +11,8 @@ import org.littletonrobotics.junction.Logger;
 
 public class AgitatorSystem extends SubsystemBase {
     private static final LoggedTunableNumber agitatorAgitateVolts =
-            new LoggedTunableNumber("Agitator/AgitateVolts", 4.0);
-    private static final LoggedTunableNumber agitatorKickVolts = new LoggedTunableNumber("Agitator/AgitateVolts", -4.0);
+            new LoggedTunableNumber("Agitator/AgitateVolts", -9.0);
+    private static final LoggedTunableNumber agitatorKickVolts = new LoggedTunableNumber("Agitator/AgitateKick", 4.0);
 
     private final AgitatorIO io;
     private final AgitatorIOInputsAutoLogged inputs = new AgitatorIOInputsAutoLogged();

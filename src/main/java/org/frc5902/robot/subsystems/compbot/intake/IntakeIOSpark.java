@@ -9,10 +9,10 @@ import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.filter.Debouncer.DebounceType;
-import edu.wpi.first.math.geometry.Rotation2d;
 import org.frc5902.robot.subsystems.compbot.intake.IntakeSystemConstants.IntakeConstants;
 
 import java.util.function.DoubleSupplier;
@@ -29,7 +29,7 @@ public class IntakeIOSpark implements IntakeIO {
     public final DoubleSupplier velocity;
     public final DoubleSupplier appliedVolts;
     public final DoubleSupplier temp;
-
+    public final DoubleSupplier current;
     // outputs
     public final Debouncer IntakeConnectedDebounce = new Debouncer(0.5, DebounceType.kFalling);
 
@@ -40,7 +40,7 @@ public class IntakeIOSpark implements IntakeIO {
         config.encoder.velocityConversionFactor(IntakeConstants.IntakeVelocityConversionFactor);
         config.closedLoop.positionWrappingEnabled(false);
         config.inverted(IntakeConstants.inverted)
-                .idleMode(IntakeConstants.idleMode)
+                .idleMode(IdleMode.kCoast)
                 .smartCurrentLimit(IntakeConstants.StallLimit, IntakeConstants.FreeLimit);
         config.closedLoop.pid(
                 IntakeConstants.IntakePID.getProportional(),
@@ -59,16 +59,18 @@ public class IntakeIOSpark implements IntakeIO {
         velocity = () -> IntakeEncoder.getVelocity();
         appliedVolts = () -> Intake.getAppliedOutput();
         temp = () -> Intake.getMotorTemperature();
+        current = () -> Intake.getOutputCurrent();
     }
 
     @Override
     public void updateInputs(IntakeIOInputs inputs) {
         inputs.data = new IntakeIOData(
                 IntakeConnectedDebounce.calculate(Intake.getLastError() == REVLibError.kOk),
-                Rotation2d.fromRotations(position.getAsDouble()).getRadians(),
-                Rotation2d.fromRotations(velocity.getAsDouble()).getRadians(),
+                position.getAsDouble(),
+                velocity.getAsDouble(),
                 appliedVolts.getAsDouble(),
-                temp.getAsDouble());
+                temp.getAsDouble(),
+                current.getAsDouble());
     }
 
     @Override

@@ -5,7 +5,7 @@ import org.littletonrobotics.junction.AutoLog;
 public interface IntakeIO {
     @AutoLog
     class IntakeIOInputs {
-        public IntakeIOData data = new IntakeIOData(false, 0.0, 0.0, 0.0, 0.0);
+        public IntakeIOData data = new IntakeIOData(false, 0.0, 0.0, 0.0, 0.0, 0.0);
     }
 
     record IntakeIOData(
@@ -13,7 +13,8 @@ public interface IntakeIO {
             double positionRads,
             double velocityRadsPerSec,
             double appliedVoltage,
-            double tempCelsius) {}
+            double tempCelsius,
+            double current) {}
 
     default void updateInputs(IntakeIOInputs inputs) {}
 

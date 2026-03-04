@@ -119,7 +119,7 @@ public class CompRobotContainer extends RobotContainer {
                 drive,
                 () -> -m_XboxController.getLeftY(),
                 () -> -m_XboxController.getLeftX(),
-                () -> -m_XboxController.getRightX(),
+                () -> m_XboxController.getRightX(),
                 () -> false));
         m_XboxController.rightBumper().onTrue(DriveCommands.resetGyroscope(drive));
 
