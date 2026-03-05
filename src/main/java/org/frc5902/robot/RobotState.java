@@ -137,7 +137,7 @@ public class RobotState {
         // if gyroscope is connected
         observation.gyroAngle.ifPresent(gyroAngle -> {
             // add offset to angle
-            Rotation2d angle = gyroAngle.plus(gyroAngle);
+            Rotation2d angle = gyroAngle.plus(gyroOffset);
             odometryPose = new Pose2d(odometryPose.getTranslation(), angle);
         });
 

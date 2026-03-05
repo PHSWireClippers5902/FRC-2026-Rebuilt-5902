@@ -62,6 +62,7 @@ public class DriveCommands {
     }
 
     public static Command resetGyroscope(Drive drive) {
+        System.out.println("TEST");
         return Commands.runOnce(
                 () -> {
                     drive.resetGyroscope();

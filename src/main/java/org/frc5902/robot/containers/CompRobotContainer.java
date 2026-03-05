@@ -45,6 +45,8 @@ public class CompRobotContainer extends RobotContainer {
     private final LauncherSystem launcher;
     private final IntakeSystem intake;
     private final SliderSystem slider;
+
+    @SuppressWarnings("unused")
     private final QuestSubsystem quest;
     // vision? implement later, pah-lease!
     // command xbox
@@ -121,6 +123,7 @@ public class CompRobotContainer extends RobotContainer {
                 () -> -m_XboxController.getLeftX(),
                 () -> m_XboxController.getRightX(),
                 () -> false));
+
         m_XboxController.rightBumper().onTrue(DriveCommands.resetGyroscope(drive));
 
         m_XboxController
