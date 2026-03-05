@@ -8,8 +8,8 @@ public class LauncherConstants {
         public static int FlywheelCANID = 50;
         public static boolean inverted = true;
         public static final double reduction = 1;
-        public static int StallLimit = 60;
-        public static int FreeLimit = 60;
+        public static int StallLimit = 70;
+        public static int FreeLimit = 45;
         public static PID flywheelPID =
                 PID.builder().proportional(0.1).deriviative(0.1).build();
         public static double flywheelPositionConversionFactor = 1.0;
@@ -21,8 +21,8 @@ public class LauncherConstants {
         public static int InserterCANID = 51;
         public static boolean inverted = false;
         public static final double reduction = 1;
-        public static int StallLimit = 60;
-        public static int FreeLimit = 60;
+        public static int StallLimit = 60; // can go with less bcz doesnt need same speeds - BigD
+        public static int FreeLimit = 45;
         public static PID inserterPID =
                 PID.builder().proportional(0.1).deriviative(0.1).build();
         public static double inserterPositionConversionFactor = 1.0;
