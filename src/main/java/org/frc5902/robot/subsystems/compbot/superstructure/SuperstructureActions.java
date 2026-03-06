@@ -13,7 +13,7 @@ public class SuperstructureActions {
     // STOW: Maintain defaults BUT have STOW
     public static SuperstructureAction STOW = SuperstructureAction.builder()
             .sliderGoal(SliderSystem.Goal.STOW)
-            .priority(-1)
+            .priority(0)
             .build();
     // DEPLOY_IDLE: Maintain all defaults
     public static SuperstructureAction DEPLOY_IDLE = SuperstructureAction.builder()

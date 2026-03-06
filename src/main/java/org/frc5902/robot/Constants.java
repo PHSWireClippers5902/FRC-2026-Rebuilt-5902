@@ -45,10 +45,10 @@ public class Constants {
         public static double loopPeriodSeconds = 1.0 / (double) periodMs;
         public static int DEFAULT_CURRENT_LIMIT = 60;
 
-        public static final double robotMasskg = 100; // change
+        public static final double robotMasskg = 48.5344;
         public static final double robotMOI = 7; // change  (sysid)
         public static final double wheelCOF = 1.2; // change (sysid)
-        public static double MAX_SPEED_METERS_PER_SECOND = 4.0; // change
+        public static double MAX_SPEED_METERS_PER_SECOND = 3.0; // change
 
         public static final boolean SHOOTER_OVERRIDE = true;
 
@@ -73,7 +73,7 @@ public class Constants {
                         Units.inchesToMeters(DriveConstants.DriveMotorConstants.driveWheelRadiusInches),
                         RobotConstants.MAX_SPEED_METERS_PER_SECOND,
                         RobotConstants.wheelCOF,
-                        gearbox.withReduction(DriveConstants.DriveMotorConstants.driveGearReduction),
+                        gearbox.withReduction(1.0 / DriveConstants.DriveMotorConstants.driveGearReduction),
                         RobotConstants.DEFAULT_CURRENT_LIMIT,
                         1),
                 ModuleConfigurations.moduleTranslations);

@@ -8,12 +8,14 @@
 package org.frc5902.robot.commands.drive;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -32,14 +34,15 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
+import java.util.function.Supplier;
 
 public class DriveCommands {
 
     private static final double DEADBAND = 0.1;
-    private static final double ANGLE_KP = 0.0005;
-    private static final double ANGLE_KD = 0.0001;
-    private static final double ANGLE_MAX_VELOCITY = 8.0;
-    private static final double ANGLE_MAX_ACCELERATION = 20.0;
+    private static final double ANGLE_KP = 0.3;
+    private static final double ANGLE_KD = 0.15;
+    private static final double ANGLE_MAX_VELOCITY = 2.0;
+    private static final double ANGLE_MAX_ACCELERATION = 8.0;
     private static final double FF_START_DELAY = 2.0; // Secs
     private static final double FF_RAMP_RATE = 0.1; // Volts/Sec
     private static final double WHEEL_RADIUS_MAX_VELOCITY = 0.25; // Rad/Sec
@@ -62,12 +65,56 @@ public class DriveCommands {
     }
 
     public static Command resetGyroscope(Drive drive) {
-        System.out.println("TEST");
         return Commands.runOnce(
                 () -> {
                     drive.resetGyroscope();
                 },
                 drive);
+    }
+
+    /**
+     * Field relative drive command using joystick for linear control and PID for angular control.
+     * Possible use cases include snapping to an angle, aiming at a vision target, or controlling
+     * absolute rotation with a joystick.
+     */
+    public static Command joystickDriveAtAngle(
+            Drive drive, DoubleSupplier xSupplier, DoubleSupplier ySupplier, Supplier<Rotation2d> rotationSupplier) {
+
+        // Create PID controller
+        ProfiledPIDController angleController = new ProfiledPIDController(
+                ANGLE_KP, 0.0, ANGLE_KD, new TrapezoidProfile.Constraints(ANGLE_MAX_VELOCITY, ANGLE_MAX_ACCELERATION));
+        angleController.enableContinuousInput(-Math.PI, Math.PI);
+
+        // Construct command
+        return Commands.run(
+                        () -> {
+                            // Get linear velocity
+                            Translation2d linearVelocity =
+                                    getLinearVelocityFromJoysticks(xSupplier.getAsDouble(), ySupplier.getAsDouble());
+
+                            // Calculate angular speed
+                            double omega = angleController.calculate(
+                                    drive.getGyroRotation().getRadians(),
+                                    rotationSupplier.get().getRadians());
+
+                            // Convert to field relative speeds & send command
+                            ChassisSpeeds speeds = new ChassisSpeeds(
+                                    linearVelocity.getX() * drive.getMaxLinearSpeedMetersPerSecond(),
+                                    linearVelocity.getY() * drive.getMaxLinearSpeedMetersPerSecond(),
+                                    omega);
+                            boolean isFlipped = DriverStation.getAlliance().isPresent()
+                                    && DriverStation.getAlliance().get() == Alliance.Red;
+                            drive.runVelocity(ChassisSpeeds.fromFieldRelativeSpeeds(
+                                    speeds,
+                                    isFlipped
+                                            ? drive.getGyroRotation().plus(new Rotation2d(Math.PI))
+                                            : drive.getGyroRotation()));
+                        },
+                        drive)
+
+                // Reset PID controller when command starts
+                .beforeStarting(
+                        () -> angleController.reset(drive.getGyroRotation().getRadians()));
     }
 
     public static Command resetSwerveAbsolutePositions(Drive drive) {

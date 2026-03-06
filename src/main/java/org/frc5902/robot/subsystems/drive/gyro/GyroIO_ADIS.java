@@ -69,4 +69,9 @@ public class GyroIO_ADIS implements GyroIO {
         yawTimestampQueue.clear();
         yawPositionQueue.clear();
     }
+
+    @Override
+    public void resetGyro() {
+        ADIS_Gyro.reset();
+    }
 }

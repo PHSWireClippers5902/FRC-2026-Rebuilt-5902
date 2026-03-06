@@ -11,7 +11,7 @@ public class IntakeSystemConstants {
         public static int StallLimit = 70;
         public static int FreeLimit = 45;
         public static PID IntakePID =
-                PID.builder().proportional(0.04).deriviative(0.002).build();
+                PID.builder().proportional(0.035).deriviative(0.002).build();
         public static double IntakePositionConversionFactor = 1.0;
         public static double IntakeVelocityConversionFactor = IntakePositionConversionFactor / 60;
         public static IdleMode idleMode = IdleMode.kBrake;

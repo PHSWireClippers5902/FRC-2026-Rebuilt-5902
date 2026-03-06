@@ -10,6 +10,8 @@ import org.frc5902.robot.util.buildutil.LoggedTunableNumber;
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 
+import java.util.function.DoubleSupplier;
+
 public class LauncherSystem {
     private final InserterIO iIO;
     private final FlywheelIO fIO;
@@ -31,9 +33,12 @@ public class LauncherSystem {
             "The FLYWHEEL has been disconnected. Recommended to coordinate with Alliance Partners and swap to defence.",
             AlertType.kError);
 
-    public LauncherSystem(InserterIO iIO, FlywheelIO fIO) {
+    private final DoubleSupplier spinsupplier;
+
+    public LauncherSystem(InserterIO iIO, FlywheelIO fIO, DoubleSupplier spinsup) {
         this.iIO = iIO;
         this.fIO = fIO;
+        this.spinsupplier = spinsup;
     }
 
     public void periodic() {
@@ -66,7 +71,7 @@ public class LauncherSystem {
                 break;
             }
             case LAUNCH_STUPID -> {
-                runLaunchVelocities(500, 500);
+                runLaunchVelocities(500 * spinsupplier.getAsDouble(), 500 * spinsupplier.getAsDouble());
                 break;
             }
             case READY_STUPID -> {

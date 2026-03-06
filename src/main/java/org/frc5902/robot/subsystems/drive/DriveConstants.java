@@ -17,8 +17,8 @@ public class DriveConstants {
         public static DCMotor turnGearbox = DCMotor.getNeo550(1);
         public static final double driveKp = 0.0;
         public static final double driveKd = 0.0;
-        public static final double driveKs = 0.0;
-        public static final double driveKv = 0.1;
+        public static final double driveKs = 0.15;
+        public static final double driveKv = 0.12;
         public static final double driveSimP = 0.05;
         public static final double driveSimD = 0.0;
         public static final double driveSimKs = 0.0;
@@ -26,8 +26,8 @@ public class DriveConstants {
     }
 
     public class PhysicalConstraints {
-        public static final double maxLinearSpeed = 4.69;
-        public static final double maxAngularSpeed = 4.69 / ModuleConfigurations.driveBaseRadius;
+        public static final double maxLinearSpeed = 2.0;
+        public static final double maxAngularSpeed = 2.0 / ModuleConfigurations.driveBaseRadius;
         public static final double maxLinearAcceleration = 22.0;
         public static final double turnDeadbandDegrees = 0.3;
         public static final ModuleLimits moduleLimitsFree =
@@ -90,7 +90,7 @@ public class DriveConstants {
     }
 
     public static class DriveMotorConstants {
-        public static double driveWheelRadiusInches = 1.5; // in inches // change
+        public static double driveWheelRadiusInches = 1.422; // in inches // change
         // TODO CONVERT
         public static double driveGearReduction = 1.0 / 5.54; // change
         // First, convert to radians (2pi/5.54). Then, divide by drive train radius
@@ -107,9 +107,8 @@ public class DriveConstants {
         public static IdleMode driveIdleMode = IdleMode.kBrake;
 
         // kS: volt to overcome static friction; kV: voltage to hold cruise velocity
-        // TODO IMPLEMENT
-        public static double kV = 0.0; // aka velocity
-        public static double kS = 0.0; // aka static
+        public static double kV = 0.12; // aka velocity
+        public static double kS = 0.15; // aka static
     }
 
     public static class TurnMotorConstants {

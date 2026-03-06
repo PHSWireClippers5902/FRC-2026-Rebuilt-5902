@@ -21,7 +21,6 @@ public class IntakeSystem {
     private final LoggedTunableNumber intakeLowRPS = new LoggedTunableNumber("Intake/Tuneable/IntakeLowRPS", 12);
     private final LoggedTunableNumber outtakeRPS = new LoggedTunableNumber("Intake/Tuneable/outtakeRPS", -30);
     private final LoggedTunableNumber outtakeVolts = new LoggedTunableNumber("Intake/Tuneable/OuttakeVolts", -3.0);
-
     private final Alert intakeDisconnectedAlert = new Alert(
             "The INTAKE has been disconnected. Recommended to coordinate with Alliance Partners and swap to defence.",
             AlertType.kError);
@@ -50,7 +49,7 @@ public class IntakeSystem {
                 // iIO.runVolts(intakeLowVolts.getAsDouble());
                 // iIO.runRadiansPerSecond(intakeLowRPS.getAsDouble());
                 // for now run nothing
-                iIO.runVolts(0);
+                iIO.runRadiansPerSecond(intakeRPS.getAsDouble() * 0.2);
                 break;
             case OUTTAKE:
                 // iIO.runVolts(outtakeVolts.getAsDouble());

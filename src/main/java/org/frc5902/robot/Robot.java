@@ -17,6 +17,8 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import org.frc5902.robot.Constants.RobotConstants;
 import org.frc5902.robot.containers.CompRobotContainer;
 import org.frc5902.robot.containers.RobotContainer;
+import org.frc5902.robot.subsystems.compbot.superstructure.Superstructure;
+import org.frc5902.robot.subsystems.compbot.superstructure.SuperstructureActions;
 import org.frc5902.robot.util.buildutil.BuildInfo;
 import org.frc5902.robot.util.buildutil.SystemTimeValidReader;
 import org.frc5902.robot.util.buildutil.VirtualSubsystem;
@@ -214,6 +216,7 @@ public class Robot extends LoggedRobot {
         }
         // notify phases that autonomous has ended
         Phases.getInstance().teleopInit();
+        Superstructure.getInstance().removeCommandFromScheduler(SuperstructureActions.STOW);
     }
 
     @Override
