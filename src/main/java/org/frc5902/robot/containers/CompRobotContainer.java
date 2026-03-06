@@ -2,6 +2,7 @@ package org.frc5902.robot.containers;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -31,6 +32,7 @@ import org.frc5902.robot.subsystems.compbot.slider.SliderSystem;
 import org.frc5902.robot.subsystems.compbot.superstructure.Superstructure;
 import org.frc5902.robot.subsystems.compbot.superstructure.SuperstructureActions;
 import org.frc5902.robot.subsystems.drive.Drive;
+import org.frc5902.robot.subsystems.drive.DriveConstants;
 import org.frc5902.robot.subsystems.drive.gyro.GyroIO;
 import org.frc5902.robot.subsystems.drive.gyro.GyroIO_ADIS;
 import org.frc5902.robot.subsystems.drive.modules.ModuleIO;
@@ -128,7 +130,7 @@ public class CompRobotContainer extends RobotContainer {
                 () -> m_XboxController.getRightX(),
                 () -> false));
 
-        m_XboxController.povDown().onTrue(DriveCommands.resetGyroscope(drive));
+        m_XboxController.rightStick().onTrue(DriveCommands.resetGyroscope(drive));
 
         m_XboxController
                 .rightTrigger(0.2)
@@ -158,6 +160,54 @@ public class CompRobotContainer extends RobotContainer {
                         () -> -m_XboxController.getLeftY(),
                         () -> -m_XboxController.getLeftX(),
                         () -> Rotation2d.fromDegrees(90)));
+
+        m_XboxController
+                .povLeft()
+                .whileTrue(DriveCommands.joystickDriveAround(
+                        drive,
+                        () -> -m_XboxController.getLeftY(),
+                        () -> -m_XboxController.getLeftX(),
+                        () -> m_XboxController.getRightX(),
+                        () -> false,
+                        new Translation2d(
+                                DriveConstants.ModuleConfigurations.driveBaseRadius,
+                                DriveConstants.ModuleConfigurations.driveBaseRadius)));
+
+        m_XboxController
+                .povRight()
+                .whileTrue(DriveCommands.joystickDriveAround(
+                        drive,
+                        () -> -m_XboxController.getLeftY(),
+                        () -> -m_XboxController.getLeftX(),
+                        () -> m_XboxController.getRightX(),
+                        () -> false,
+                        new Translation2d(
+                                -DriveConstants.ModuleConfigurations.driveBaseRadius,
+                                -DriveConstants.ModuleConfigurations.driveBaseRadius)));
+
+        m_XboxController
+                .povUp()
+                .whileTrue(DriveCommands.joystickDriveAround(
+                        drive,
+                        () -> -m_XboxController.getLeftY(),
+                        () -> -m_XboxController.getLeftX(),
+                        () -> m_XboxController.getRightX(),
+                        () -> false,
+                        new Translation2d(
+                                DriveConstants.ModuleConfigurations.driveBaseRadius,
+                                -DriveConstants.ModuleConfigurations.driveBaseRadius)));
+
+        m_XboxController
+                .povDown()
+                .whileTrue(DriveCommands.joystickDriveAround(
+                        drive,
+                        () -> -m_XboxController.getLeftY(),
+                        () -> -m_XboxController.getLeftX(),
+                        () -> m_XboxController.getRightX(),
+                        () -> false,
+                        new Translation2d(
+                                -DriveConstants.ModuleConfigurations.driveBaseRadius,
+                                DriveConstants.ModuleConfigurations.driveBaseRadius)));
 
         m_XboxController.x().onTrue(DriveCommands.defenceGoal(drive));
     }

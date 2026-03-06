@@ -3,6 +3,7 @@ package org.frc5902.robot.subsystems.drive;
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Twist3d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
@@ -163,6 +164,33 @@ public class Drive extends SubsystemBase {
             setpointStates[i].optimize(wheelAngle);
             setpointStates[i].cosineScale(wheelAngle);
             modules[i].runSetpoint(setpointStates[i]);
+        }
+    }
+
+    public void runVelocity(ChassisSpeeds speeds, Translation2d customcenter) {
+        velocityMode = true;
+
+        ChassisSpeeds discreteSpeeds = ChassisSpeeds.discretize(speeds, 0.02);
+        SwerveModuleState[] setpointStatesUnoptimized = kinematics.toSwerveModuleStates(discreteSpeeds, customcenter);
+        currentSetpoint = swerveSetpointGenerator.generateSetpoint(
+                PhysicalConstraints.moduleLimitsFree,
+                currentSetpoint,
+                discreteSpeeds,
+                RobotConstants.loopPeriodSeconds);
+        SwerveModuleState[] setpointStates = currentSetpoint.moduleStates();
+
+        // Log unoptimized setpoints and setpoint speeds
+        Logger.recordOutput("Drive/SwerveStates/SetpointsUnoptimized", setpointStatesUnoptimized);
+        Logger.recordOutput("Drive/SwerveStates/Setpoints", setpointStates);
+        Logger.recordOutput("Drive/SwerveChassisSpeeds/Setpoints", currentSetpoint.chassisSpeeds());
+
+        SwerveModuleState[] moduleStates = getModuleStates();
+        for (int i = 0; i < 4; i++) {
+            // Optimize state
+            Rotation2d wheelAngle = moduleStates[i].angle;
+            setpointStates[i].optimize(wheelAngle);
+            setpointStates[i].cosineScale(wheelAngle);
+            modules[i].runSetpoint(setpointStatesUnoptimized[i]);
         }
     }
 

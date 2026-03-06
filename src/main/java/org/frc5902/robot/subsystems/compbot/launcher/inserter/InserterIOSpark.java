@@ -29,7 +29,7 @@ public class InserterIOSpark implements InserterIO {
     public final DoubleSupplier velocity;
     public final DoubleSupplier appliedVolts;
     public final DoubleSupplier temp;
-
+    public final DoubleSupplier current;
     // outputs
     public final Debouncer inserterConnectedDebounce = new Debouncer(0.5, DebounceType.kFalling);
 
@@ -59,6 +59,7 @@ public class InserterIOSpark implements InserterIO {
         velocity = () -> inserterencoder.getVelocity();
         appliedVolts = () -> inserter.getAppliedOutput();
         temp = () -> inserter.getMotorTemperature();
+        current = () -> inserter.getOutputCurrent();
     }
 
     @Override
@@ -68,6 +69,7 @@ public class InserterIOSpark implements InserterIO {
                 Rotation2d.fromRotations(position.getAsDouble()).getRadians(),
                 Rotation2d.fromRotations(velocity.getAsDouble()).getRadians(),
                 appliedVolts.getAsDouble(),
+                current.getAsDouble(),
                 temp.getAsDouble());
     }
 

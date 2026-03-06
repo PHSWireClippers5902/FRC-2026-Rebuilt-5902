@@ -5,7 +5,7 @@ import org.littletonrobotics.junction.AutoLog;
 public interface FlywheelIO {
     @AutoLog
     class FlywheelIOInputs {
-        public FlywheelIOData data = new FlywheelIOData(false, 0.0, 0.0, 0.0, 0.0);
+        public FlywheelIOData data = new FlywheelIOData(false, 0.0, 0.0, 0.0, 0.0, 0.0);
     }
 
     record FlywheelIOData(
@@ -13,6 +13,7 @@ public interface FlywheelIO {
             double positionRads,
             double velocityRadsPerSec,
             double appliedVoltage,
+            double current,
             double tempCelsius) {}
 
     default void updateInputs(FlywheelIOInputs inputs) {}

@@ -35,7 +35,7 @@ public class DriveConstants {
     }
 
     public class ModuleConfigurations {
-        public static double driveBaseWidthSQUARE = 24; // in // change
+        public static double driveBaseWidthSQUARE = 27.125; // in // change
         public static double driveBaseRadius = (Units.inchesToMeters(driveBaseWidthSQUARE) / 2) * Math.sqrt(2);
         // WHEN I TUNE THIS, ALL WHEELS POINTING LEFT
         // THEN, USE VALUES FROM PHOENIX TUNER

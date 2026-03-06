@@ -29,7 +29,7 @@ public class FlywheelIOSpark implements FlywheelIO {
     public final DoubleSupplier velocity;
     public final DoubleSupplier appliedVolts;
     public final DoubleSupplier temp;
-
+    public final DoubleSupplier current;
     // outputs
     public final Debouncer flywheelConnectedDebounce = new Debouncer(0.5, DebounceType.kFalling);
 
@@ -58,6 +58,7 @@ public class FlywheelIOSpark implements FlywheelIO {
         velocity = () -> flywheelencoder.getVelocity();
         appliedVolts = () -> flywheel.getAppliedOutput();
         temp = () -> flywheel.getMotorTemperature();
+        current = () -> flywheel.getOutputCurrent();
     }
 
     @Override
@@ -67,6 +68,7 @@ public class FlywheelIOSpark implements FlywheelIO {
                 Rotation2d.fromRotations(position.getAsDouble()).getRadians(),
                 Rotation2d.fromRotations(velocity.getAsDouble()).getRadians(),
                 appliedVolts.getAsDouble(),
+                current.getAsDouble(),
                 temp.getAsDouble());
     }
 

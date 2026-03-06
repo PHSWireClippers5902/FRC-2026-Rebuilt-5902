@@ -102,8 +102,9 @@ public class DriveCommands {
                                     linearVelocity.getX() * drive.getMaxLinearSpeedMetersPerSecond(),
                                     linearVelocity.getY() * drive.getMaxLinearSpeedMetersPerSecond(),
                                     omega);
-                            boolean isFlipped = DriverStation.getAlliance().isPresent()
-                                    && DriverStation.getAlliance().get() == Alliance.Red;
+                            // boolean isFlipped = DriverStation.getAlliance().isPresent()
+                            //         && DriverStation.getAlliance().get() == Alliance.Red;
+                            boolean isFlipped = false;
                             drive.runVelocity(ChassisSpeeds.fromFieldRelativeSpeeds(
                                     speeds,
                                     isFlipped
@@ -150,6 +151,7 @@ public class DriveCommands {
             DoubleSupplier ySupplier,
             DoubleSupplier omegaSupplier,
             BooleanSupplier robotRelative) {
+        boolean falsevarREMOVE = true;
         return Commands.run(
                 () -> {
                     ChassisSpeeds speeds = getSpeedsFromJoysticks(
@@ -159,10 +161,11 @@ public class DriveCommands {
                                     ? speeds
                                     : ChassisSpeeds.fromFieldRelativeSpeeds(
                                             speeds,
-                                            DriverStation.getAlliance().isPresent()
-                                                            && DriverStation.getAlliance()
-                                                                            .get()
-                                                                    == Alliance.Red
+                                            (DriverStation.getAlliance().isPresent()
+                                                                    && DriverStation.getAlliance()
+                                                                                    .get()
+                                                                            == Alliance.Red)
+                                                            || falsevarREMOVE
                                                     ? RobotState.getInstance()
                                                             .getRotation()
                                                             .plus(Rotation2d.kPi)
@@ -175,6 +178,40 @@ public class DriveCommands {
         return Commands.runOnce(
                 () -> {
                     drive.stopWithX();
+                },
+                drive);
+    }
+
+    /**
+     * Field relative drive command using two joysticks (controlling linear and angular velocities). AND TRANSLATION
+     */
+    public static Command joystickDriveAround(
+            Drive drive,
+            DoubleSupplier xSupplier,
+            DoubleSupplier ySupplier,
+            DoubleSupplier omegaSupplier,
+            BooleanSupplier robotRelative,
+            Translation2d translation) {
+        boolean falsevarREMOVE = true;
+        return Commands.run(
+                () -> {
+                    ChassisSpeeds speeds = getSpeedsFromJoysticks(
+                            xSupplier.getAsDouble(), ySupplier.getAsDouble(), omegaSupplier.getAsDouble());
+                    drive.runVelocity(
+                            robotRelative.getAsBoolean()
+                                    ? speeds
+                                    : ChassisSpeeds.fromFieldRelativeSpeeds(
+                                            speeds,
+                                            (DriverStation.getAlliance().isPresent()
+                                                                    && DriverStation.getAlliance()
+                                                                                    .get()
+                                                                            == Alliance.Red)
+                                                            || falsevarREMOVE
+                                                    ? RobotState.getInstance()
+                                                            .getRotation()
+                                                            .plus(Rotation2d.kPi)
+                                                    : RobotState.getInstance().getRotation()),
+                            translation);
                 },
                 drive);
     }

@@ -5,7 +5,7 @@ import org.littletonrobotics.junction.AutoLog;
 public interface InserterIO {
     @AutoLog
     class InserterIOInputs {
-        public InserterIOData data = new InserterIOData(false, 0.0, 0.0, 0.0, 0.0);
+        public InserterIOData data = new InserterIOData(false, 0.0, 0.0, 0.0, 0.0, 0.0);
     }
 
     record InserterIOData(
@@ -13,6 +13,7 @@ public interface InserterIO {
             double positionRads,
             double velocityRadsPerSec,
             double appliedVoltage,
+            double current,
             double tempCelsius) {}
 
     default void updateInputs(InserterIOInputs inputs) {}
