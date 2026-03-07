@@ -21,4 +21,25 @@ public class AutoPlease {
                 Commands.runOnce(() -> supersupplier.get().removeCommandFromScheduler(SuperstructureActions.STOW))
                         .withTimeout(5));
     }
+
+
+
+    public static Command dumbRightAuto(Supplier<Drive> drive, Supplier<Superstructure> supersupplier) {
+        Drive d = drive.get();
+        Superstructure s = supersupplier.get();
+        return Commands.sequence(
+                Commands.parallel(
+                        Commands.run(() -> drive.get().runVelocity(new ChassisSpeeds(0.3, 0, 0.0)), drive.get())
+                                .withTimeout(1),
+                        Commands.run(() -> s.addCommandToScheduler(SuperstructureActions.READY_LAUNCHER_STUPID).withTimeout(3))),
+                Commands.runOnce(() -> supersupplier.get().removeCommandFromScheduler(SuperstructureActions.STOW))
+                        .withTimeout(5)
+
+        );
+
+    }
+
+
+
+
 }

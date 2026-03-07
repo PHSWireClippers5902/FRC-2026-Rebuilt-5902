@@ -22,6 +22,8 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+
 import org.frc5902.robot.RobotState;
 import org.frc5902.robot.subsystems.drive.Drive;
 import org.frc5902.robot.subsystems.drive.DriveConstants.ModuleConfigurations;
@@ -49,6 +51,21 @@ public class DriveCommands {
     private static final double WHEEL_RADIUS_RAMP_RATE = 0.05; // Rad/Sec^2
 
     private DriveCommands() {}
+
+
+
+    public static Command stupidTurnCommand(Drive drive, double referenceRADIANS) {
+        return Commands.run(() -> {
+            double targetRADIANS = drive.getGyroRotation().getRadians();
+            double difference = referenceRADIANS - targetRADIANS;
+            drive.runVelocity(
+                new ChassisSpeeds(0, 0, difference * 0.05)
+            );
+        }, drive);
+    }
+
+
+
 
     private static Translation2d getLinearVelocityFromJoysticks(double x, double y) {
         // Apply deadband

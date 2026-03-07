@@ -33,7 +33,7 @@ public class Superstructure extends SubsystemBase {
     @Getter
     @Setter
     @AutoLogOutput
-    private boolean KILL_SYSTEMS = false;
+    private boolean KILL_SYSTEMS = true;
 
     @Getter
     private SuperstructureAction goal = SuperstructureActions.DEPLOY_IDLE;
