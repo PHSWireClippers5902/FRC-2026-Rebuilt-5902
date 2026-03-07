@@ -13,7 +13,7 @@ public class SliderSystem {
     private final SliderIOInputsAutoLogged sIOInputs = new SliderIOInputsAutoLogged();
     // SHOULD BE OVEREXAGGERATED
     private final LoggedTunableNumber SLIDER_PREDICTED_LIMIT_STATE =
-            new LoggedTunableNumber("Slider/SLIDER_OVEREXXAGERATED", 3);
+            new LoggedTunableNumber("Slider/SLIDER_OVEREXXAGERATED", 4);
 
     private final Alert sliderDisconnectedAlert = new Alert(
             "The SLIDER has been disconnected. IF the SLIDER has deployed, you can still run the intake system"
@@ -26,6 +26,12 @@ public class SliderSystem {
     private Goal goal = Goal.STOW;
 
     @Getter
+    @Setter
+    @AutoLogOutput
+    private boolean EMERGENCY_OVERRIDE = false;
+
+    @Getter
+    @Setter
     @AutoLogOutput
     private State state = State.STOWED;
 
@@ -42,9 +48,7 @@ public class SliderSystem {
     public void periodic() {
         sIO.updateInputs(sIOInputs);
         Logger.processInputs("Slider/Inputs", sIOInputs);
-
         sliderDisconnectedAlert.set(sIOInputs.data.motorConnected());
-        // TODO IMPLEMENT
         switch (goal) {
             case STOW:
                 // run 0 volts. we should NEVER stow in this case until climbing is figured out.
@@ -59,6 +63,9 @@ public class SliderSystem {
                 } else {
                     sIO.runVolts(SLIDER_PREDICTED_LIMIT_STATE.getAsDouble());
                 }
+                break;
+            case STOP:
+                sIO.runVolts(0);
                 break;
             default:
                 sIO.runVolts(0.0);
@@ -81,7 +88,8 @@ public class SliderSystem {
 
     public enum Goal {
         STOW,
-        DEPLOYED
+        DEPLOYED,
+        STOP
     }
 
     public enum State {

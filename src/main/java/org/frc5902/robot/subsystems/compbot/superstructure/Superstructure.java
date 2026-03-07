@@ -3,11 +3,13 @@ package org.frc5902.robot.subsystems.compbot.superstructure;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import lombok.Getter;
+import lombok.Setter;
 import org.frc5902.robot.subsystems.compbot.agitator.AgitatorSystem;
 import org.frc5902.robot.subsystems.compbot.intake.IntakeSystem;
 import org.frc5902.robot.subsystems.compbot.launcher.LauncherSystem;
 import org.frc5902.robot.subsystems.compbot.slider.SliderSystem;
 import org.frc5902.robot.subsystems.compbot.superstructure.SuperstructureActions.SuperstructureAction;
+import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 
 import java.util.ArrayList;
@@ -29,6 +31,11 @@ public class Superstructure extends SubsystemBase {
     private static Superstructure instance = null;
 
     @Getter
+    @Setter
+    @AutoLogOutput
+    private boolean KILL_SYSTEMS = false;
+
+    @Getter
     private SuperstructureAction goal = SuperstructureActions.DEPLOY_IDLE;
 
     private ArrayList<SuperstructureAction> scheduled_goals = new ArrayList<SuperstructureAction>();
@@ -47,6 +54,9 @@ public class Superstructure extends SubsystemBase {
     @Override
     public void periodic() {
         prioritizeGoals();
+        if (KILL_SYSTEMS) {
+            goal = SuperstructureActions.EMERGENCY;
+        }
         goal.set();
         Logger.recordOutput("Superstructure/Goal", goal.toString());
     }
@@ -68,5 +78,9 @@ public class Superstructure extends SubsystemBase {
 
     public InstantCommand removeCommandFromScheduler(SuperstructureAction g) {
         return new InstantCommand(() -> scheduled_goals.remove(g), this);
+    }
+
+    public InstantCommand SWAP_KILL_SYSTEMS() {
+        return new InstantCommand(() -> this.KILL_SYSTEMS = !this.KILL_SYSTEMS);
     }
 }

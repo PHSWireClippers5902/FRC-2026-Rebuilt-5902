@@ -16,7 +16,7 @@ public class IntakeSystem {
 
     private final LoggedTunableNumber intakeVolts = new LoggedTunableNumber("Intake/Tuneable/IntakeVolts", 3.0);
     private final LoggedTunableNumber intakeLowVolts = new LoggedTunableNumber("Intake/Tuneable/IntakeLowVolts", 2.0);
-    private final LoggedTunableNumber deployVolts = new LoggedTunableNumber("Intake/Tuneable/DeployVolts", 9.0);
+    private final LoggedTunableNumber deployVolts = new LoggedTunableNumber("Intake/Tuneable/DeployVolts", 7.0);
     private final LoggedTunableNumber intakeRPS = new LoggedTunableNumber("Intake/Tuneable/IntakeRPS", 90);
     private final LoggedTunableNumber intakeLowRPS = new LoggedTunableNumber("Intake/Tuneable/IntakeLowRPS", 12);
     private final LoggedTunableNumber outtakeRPS = new LoggedTunableNumber("Intake/Tuneable/outtakeRPS", -30);
@@ -39,7 +39,6 @@ public class IntakeSystem {
         Logger.processInputs("Intake/Inputs", iIOInputs);
 
         intakeDisconnectedAlert.set(iIOInputs.data.motorConnected());
-        // TODO IMPLEMENT
         switch (goal) {
             case INTAKE:
                 // iIO.runVolts(intakeVolts.getAsDouble());

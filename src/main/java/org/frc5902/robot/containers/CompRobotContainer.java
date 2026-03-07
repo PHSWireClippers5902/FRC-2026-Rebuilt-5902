@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import org.frc5902.robot.Constants.RobotConstants;
 import org.frc5902.robot.FieldConstants;
@@ -128,9 +129,18 @@ public class CompRobotContainer extends RobotContainer {
                 () -> -m_XboxController.getLeftY(),
                 () -> -m_XboxController.getLeftX(),
                 () -> m_XboxController.getRightX(),
-                () -> false));
+                () -> false,
+                0.3,
+                0.2));
 
         m_XboxController.rightStick().onTrue(DriveCommands.resetGyroscope(drive));
+
+        m_XboxController.button(8).toggleOnTrue(Superstructure.getInstance().SWAP_KILL_SYSTEMS());
+        // really technically want to override state...
+        m_XboxController
+                .button(7)
+                .onTrue(new InstantCommand(
+                        () -> superstructure.getSlide().setState(SliderSystem.State.DEPLOYED), superstructure));
 
         m_XboxController
                 .rightTrigger(0.2)
@@ -208,6 +218,17 @@ public class CompRobotContainer extends RobotContainer {
                         new Translation2d(
                                 -DriveConstants.ModuleConfigurations.driveBaseRadius,
                                 DriveConstants.ModuleConfigurations.driveBaseRadius)));
+
+        m_XboxController
+                .leftBumper()
+                .whileTrue(DriveCommands.joystickDrive(
+                        drive,
+                        () -> -m_XboxController.getLeftY(),
+                        () -> -m_XboxController.getLeftX(),
+                        () -> m_XboxController.getRightX(),
+                        () -> false,
+                        1.0,
+                        1.0));
 
         m_XboxController.x().onTrue(DriveCommands.defenceGoal(drive));
     }

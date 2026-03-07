@@ -16,7 +16,7 @@ public class Phases {
     // assume we lost auto unless we update it.
     @Getter
     @Setter
-    private Boolean autonomousWin = null;
+    private Boolean autonomousWin = false;
 
     @Getter
     private double timeUntilNextPhase = 0.0;

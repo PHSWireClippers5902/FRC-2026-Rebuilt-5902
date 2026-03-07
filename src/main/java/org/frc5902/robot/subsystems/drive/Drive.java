@@ -212,7 +212,6 @@ public class Drive extends SubsystemBase {
             headings[i] = ModuleConfigurations.moduleTranslations[i].getAngle();
         }
         kinematics.resetHeadings(headings);
-        stop();
     }
 
     // // gets quasistatic test in direction (for constant determination)

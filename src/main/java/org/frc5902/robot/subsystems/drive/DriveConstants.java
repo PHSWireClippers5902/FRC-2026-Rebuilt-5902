@@ -26,7 +26,7 @@ public class DriveConstants {
     }
 
     public class PhysicalConstraints {
-        public static final double maxLinearSpeed = 2.0;
+        public static final double maxLinearSpeed = 6.0;
         public static final double maxAngularSpeed = 2.0 / ModuleConfigurations.driveBaseRadius;
         public static final double maxLinearAcceleration = 22.0;
         public static final double turnDeadbandDegrees = 0.3;
@@ -97,11 +97,12 @@ public class DriveConstants {
         // Units.inchesToMeters(driveWheelRadiusInches)
         public static double drivePositionConversionFactor = 2 * Math.PI / 5.54; // // change
         public static double driveVelocityConversionFactor = drivePositionConversionFactor / 60; // change
-        public static int driveCurrentLimit = 40;
+        public static int driveFreeLimit = 50;
+        public static int driveStallLimit = 70;
         public static double driveVoltageCompensation = 12;
         public static FeedbackSensor driveFeedbackSensor = FeedbackSensor.kPrimaryEncoder;
         public static PID driveClosedLoop =
-                PID.builder().proportional(0.005).deriviative(0.002).build();
+                PID.builder().proportional(0.0075).deriviative(0.002).build();
         public static ResetMode driveResetMode = ResetMode.kNoResetSafeParameters;
         public static PersistMode drivePersistMode = PersistMode.kPersistParameters;
         public static IdleMode driveIdleMode = IdleMode.kBrake;

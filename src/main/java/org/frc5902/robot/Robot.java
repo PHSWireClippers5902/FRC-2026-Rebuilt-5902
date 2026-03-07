@@ -176,6 +176,7 @@ public class Robot extends LoggedRobot {
 
         jitAlert.set(isJITing());
         LEDManager.getInstance().periodic();
+        Phases.getInstance().canScore();
     }
 
     @Override

@@ -142,6 +142,32 @@ public class DriveCommands {
                 linearVelocity.getX(), linearVelocity.getY(), omega * PhysicalConstraints.maxAngularSpeed);
     }
 
+    public static ChassisSpeeds getSpeedsFromJoysticks(
+            double driverX,
+            double driverY,
+            double driverOmega,
+            double multiplierTRANSLATION,
+            double multiplierROTATION) {
+        // Get linear velocity
+        Translation2d linearVelocity = getLinearVelocityFromJoysticks(driverX, driverY)
+                .times(PhysicalConstraints.maxLinearSpeed)
+                .times(multiplierTRANSLATION);
+        // Calculate angular velocity
+        double omega = getOmegaFromJoysticks(driverOmega) * multiplierROTATION;
+
+        return new ChassisSpeeds(
+                linearVelocity.getX(), linearVelocity.getY(), omega * PhysicalConstraints.maxAngularSpeed);
+    }
+
+    public static Command joystickDrive(
+            Drive drive,
+            DoubleSupplier xSupplier,
+            DoubleSupplier ySupplier,
+            DoubleSupplier omegaSupplier,
+            BooleanSupplier robotRelative) {
+        return joystickDrive(drive, xSupplier, ySupplier, omegaSupplier, robotRelative, 1.0, 1.0);
+    }
+
     /**
      * Field relative drive command using two joysticks (controlling linear and angular velocities).
      */
@@ -150,12 +176,18 @@ public class DriveCommands {
             DoubleSupplier xSupplier,
             DoubleSupplier ySupplier,
             DoubleSupplier omegaSupplier,
-            BooleanSupplier robotRelative) {
+            BooleanSupplier robotRelative,
+            double multiplierTRANSLATION,
+            double multiplierROTATION) {
         boolean falsevarREMOVE = true;
         return Commands.run(
                 () -> {
                     ChassisSpeeds speeds = getSpeedsFromJoysticks(
-                            xSupplier.getAsDouble(), ySupplier.getAsDouble(), omegaSupplier.getAsDouble());
+                            xSupplier.getAsDouble(),
+                            ySupplier.getAsDouble(),
+                            omegaSupplier.getAsDouble(),
+                            multiplierTRANSLATION,
+                            multiplierROTATION);
                     drive.runVelocity(
                             robotRelative.getAsBoolean()
                                     ? speeds

@@ -87,7 +87,7 @@ public class ModuleIOSparkAbsolute implements ModuleIO {
         driveConfig
                 .inverted(MODULE_INFORMATION.DrivingMotorInverted)
                 .idleMode(DriveMotorConstants.driveIdleMode)
-                .smartCurrentLimit(DriveMotorConstants.driveCurrentLimit)
+                .smartCurrentLimit(DriveMotorConstants.driveStallLimit, DriveMotorConstants.driveFreeLimit)
                 .voltageCompensation(DriveMotorConstants.driveVoltageCompensation);
         driveConfig
                 .encoder
