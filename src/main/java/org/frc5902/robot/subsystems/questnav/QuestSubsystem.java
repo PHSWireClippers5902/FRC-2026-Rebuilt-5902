@@ -43,10 +43,7 @@ public class QuestSubsystem extends VirtualSubsystem {
                 && questIOInputs.readPoses.length > 1) {
             RobotState.getInstance()
                     .addQuestObservation(new QuestObservation(
-                            getLatestPose(),
-                            getLatestTwist3d(),
-                            questIOInputs.isTracking,
-                            questIOInputs.questTimestamps[questIOInputs.questTimestamps.length - 1]));
+                            getLatestPose(), questIOInputs.questTimestamps[questIOInputs.questTimestamps.length - 1]));
         }
 
         // alert

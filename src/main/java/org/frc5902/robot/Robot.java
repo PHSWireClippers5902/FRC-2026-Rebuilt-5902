@@ -19,6 +19,7 @@ import org.frc5902.robot.containers.CompRobotContainer;
 import org.frc5902.robot.containers.RobotContainer;
 import org.frc5902.robot.subsystems.compbot.superstructure.Superstructure;
 import org.frc5902.robot.subsystems.compbot.superstructure.SuperstructureActions;
+import org.frc5902.robot.subsystems.led.LEDManager;
 import org.frc5902.robot.util.buildutil.BuildInfo;
 import org.frc5902.robot.util.buildutil.SystemTimeValidReader;
 import org.frc5902.robot.util.buildutil.VirtualSubsystem;
@@ -133,7 +134,6 @@ public class Robot extends LoggedRobot {
         disabledTimer.restart();
 
         RobotController.setBrownoutVoltage(6.0);
-
         robotContainer = new CompRobotContainer();
     }
 
@@ -175,8 +175,7 @@ public class Robot extends LoggedRobot {
         }
 
         jitAlert.set(isJITing());
-
-        RobotState.getInstance().periodic();
+        LEDManager.getInstance().periodic();
     }
 
     @Override

@@ -100,8 +100,9 @@ public class Drive extends SubsystemBase {
             RobotState.getInstance()
                     .addOdometryObservation(new RobotState.OdometryObservation(
                             modulePositions,
-                            Optional.ofNullable(
-                                    gyroInputs.data.connected() ? gyroInputs.odometryYawPositions[i] : null),
+                            Optional.ofNullable(gyroInputs.data.connected() ? gyroInputs.data.rollPosition() : null),
+                            Optional.ofNullable(gyroInputs.data.connected() ? gyroInputs.data.pitchPosition() : null),
+                            Optional.ofNullable(gyroInputs.data.connected() ? gyroInputs.data.yawPosition() : null),
                             sampleTimestamps[i]));
             // log 3d robot
             Logger.recordOutput(
