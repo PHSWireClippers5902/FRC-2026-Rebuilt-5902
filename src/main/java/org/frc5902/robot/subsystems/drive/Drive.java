@@ -285,4 +285,9 @@ public class Drive extends SubsystemBase {
             modules[i].resetSwerveAbsolutePositions();
         }
     }
+
+
+    public void resetGyroToRotation(Rotation2d rotation) {
+        gyroIO.resetGyro();
+    }
 }

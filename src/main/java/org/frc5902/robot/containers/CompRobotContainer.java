@@ -13,7 +13,6 @@ import org.frc5902.robot.Constants.RobotConstants;
 import org.frc5902.robot.FieldConstants;
 import org.frc5902.robot.FieldConstants.AprilTagLayoutType;
 import org.frc5902.robot.Robot;
-import org.frc5902.robot.commands.auto.AutoBuilder;
 import org.frc5902.robot.commands.auto.AutoPlease;
 import org.frc5902.robot.commands.drive.DriveCommands;
 import org.frc5902.robot.subsystems.compbot.agitator.AgitatorIO;
@@ -47,11 +46,11 @@ import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 public class CompRobotContainer extends RobotContainer {
     // init subsystems here
     private final Drive drive;
-    private final Superstructure superstructure;
-    private final AgitatorSystem agitator;
-    private final LauncherSystem launcher;
-    private final IntakeSystem intake;
-    private final SliderSystem slider;
+        private final Superstructure superstructure;
+        private final AgitatorSystem agitator;
+        private final LauncherSystem launcher;
+        private final IntakeSystem intake;
+        private final SliderSystem slider;
 
     @SuppressWarnings("unused")
     private final QuestSubsystem quest;
@@ -60,7 +59,7 @@ public class CompRobotContainer extends RobotContainer {
     private final CommandXboxController m_XboxController = new CommandXboxController(0);
 
     private final LoggedDashboardChooser<Command> autoChooser;
-
+    private final LoggedDashboardChooser<Pose2d> initialPositionChooser;
     private final Alert primaryDisconnected = new Alert("Primary controller disconnected.", AlertType.kWarning);
 
     public CompRobotContainer() {
@@ -102,19 +101,23 @@ public class CompRobotContainer extends RobotContainer {
                 superstructure = new Superstructure(agitator, intake, launcher, slider);
                 break;
         }
-        var autoBuilder = new AutoBuilder(drive, superstructure);
+        // var autoBuilder = new AutoBuilder(drive, superstructure);
         autoChooser = new LoggedDashboardChooser<>("Auto Choices");
-
+        initialPositionChooser = new LoggedDashboardChooser<>("Initial Positions");
         // sysid routines
         autoChooser.addOption("Drive Wheel Radius Characterization", DriveCommands.wheelRadiusCharacterization(drive));
         autoChooser.addOption("Drive Simple FF Characterization", DriveCommands.feedforwardCharacterization(drive));
-        autoChooser.addOption("Auto pls work", AutoPlease.extendAndMoveAuto(() -> drive, () -> superstructure));
+        autoChooser.addOption("FORWARD PLEASE", AutoPlease.forwardAuto(() -> drive));
+        // autoChooser.addOption("Auto pls work", AutoPlease.extendAndMoveAuto(() -> drive, () -> superstructure));
         // autoChooser.addOption(
         //         "Drive SysId (Quasistatic Forward)", drive.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
         // autoChooser.addOption(
         //         "Drive SysId (Quasistatic Reverse)", drive.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
         // autoChooser.addOption("Drive SysId (Dynamic Forward)", drive.sysIdDynamic(SysIdRoutine.Direction.kForward));
         // autoChooser.addOption("Drive SysId (Dynamic Reverse)", drive.sysIdDynamic(SysIdRoutine.Direction.kReverse));
+
+        initialPositionChooser.addDefaultOption("default (0,0)", new Pose2d());
+
 
         configureBindings();
     }
@@ -130,13 +133,13 @@ public class CompRobotContainer extends RobotContainer {
                 () -> -m_XboxController.getLeftX(),
                 () -> m_XboxController.getRightX(),
                 () -> false,
-                0.3,
+                0.23,
                 1.0));
 
         m_XboxController.rightStick().onTrue(DriveCommands.resetGyroscope(drive));
 
         m_XboxController.button(8).toggleOnTrue(Superstructure.getInstance().SWAP_KILL_SYSTEMS());
-        // really technically want to override state...
+        // // really technically want to override state...
         m_XboxController
                 .button(7)
                 .onTrue(new InstantCommand(
@@ -230,7 +233,7 @@ public class CompRobotContainer extends RobotContainer {
                         1.0,
                         1.0));
 
-        m_XboxController.x().onTrue(DriveCommands.defenceGoal(drive));
+        m_XboxController.x().whileTrue(DriveCommands.defenceGoal(drive));
     }
 
     public AprilTagLayoutType getSelectedAprilTagLayout() {
@@ -260,6 +263,7 @@ public class CompRobotContainer extends RobotContainer {
     @Override
     public Pose2d getInitialPose() {
         // fake it till u make it
-        return new Pose2d();
+        // depends on where you are....
+        return initialPositionChooser.get();
     }
 }

@@ -22,8 +22,6 @@ public class AutoPlease {
                         .withTimeout(5));
     }
 
-
-
     public static Command dumbRightAuto(Supplier<Drive> drive, Supplier<Superstructure> supersupplier) {
         Drive d = drive.get();
         Superstructure s = supersupplier.get();
@@ -31,15 +29,16 @@ public class AutoPlease {
                 Commands.parallel(
                         Commands.run(() -> drive.get().runVelocity(new ChassisSpeeds(0.3, 0, 0.0)), drive.get())
                                 .withTimeout(1),
-                        Commands.run(() -> s.addCommandToScheduler(SuperstructureActions.READY_LAUNCHER_STUPID).withTimeout(3))),
+                        Commands.run(() -> s.addCommandToScheduler(SuperstructureActions.READY_LAUNCHER_STUPID)
+                                .withTimeout(3))),
                 Commands.runOnce(() -> supersupplier.get().removeCommandFromScheduler(SuperstructureActions.STOW))
-                        .withTimeout(5)
-
-        );
-
+                        .withTimeout(5));
     }
 
-
-
-
+    public static Command forwardAuto(Supplier<Drive> drive) {
+        return Commands.sequence(
+                Commands.run(() -> drive.get().runVelocity(new ChassisSpeeds(-4, 0, 0)), drive.get())
+                        .withTimeout(4),
+                Commands.run(() -> drive.get().stop(), drive.get()).withTimeout(1));
+    }
 }

@@ -82,8 +82,5 @@ public class Constants {
 
     public static class QuestConstants {
         public static double questFrequency = 100.0;
-        public static Transform3d ROBOT_TO_QUEST = new Transform3d(
-                new Translation3d(Units.inchesToMeters(-2), Units.inchesToMeters(12), Units.inchesToMeters(15)),
-                new Rotation3d(0, 0, Units.degreesToRadians(-90)));
     }
 }

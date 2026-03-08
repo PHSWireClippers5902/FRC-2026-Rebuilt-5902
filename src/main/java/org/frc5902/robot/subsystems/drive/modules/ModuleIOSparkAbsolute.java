@@ -182,6 +182,7 @@ public class ModuleIOSparkAbsolute implements ModuleIO {
                 (values) -> inputs.driveAppliedVolts = values[0] * values[1]);
         // amperage update
         ifOk(driveSpark, driveSpark::getOutputCurrent, (value) -> inputs.driveCurrentAmps = value);
+        ifOk(driveSpark, driveSpark::getMotorTemperature, (value) -> inputs.driveTempCelsius = value);
         inputs.driveConnected = driveConnectedDebounce.calculate(!sparkStickyFault);
 
         // turn inputs
@@ -195,8 +196,8 @@ public class ModuleIOSparkAbsolute implements ModuleIO {
                 new DoubleSupplier[] {turnSpark::getAppliedOutput, turnSpark::getBusVoltage},
                 (values) -> inputs.turnAppliedVolts = values[0] * values[1]);
         ifOk(turnSpark, turnSpark::getOutputCurrent, (value) -> inputs.turnCurrentAmps = value);
-        inputs.turnConnected = turnConnectedDebounce.calculate(!sparkStickyFault);
 
+        inputs.turnConnected = turnConnectedDebounce.calculate(!sparkStickyFault);
         // odometry
         inputs.odometryTimestamps =
                 timestampQueue.stream().mapToDouble((Double value) -> value).toArray();

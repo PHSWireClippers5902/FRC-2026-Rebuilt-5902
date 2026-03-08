@@ -1,10 +1,12 @@
 package org.frc5902.robot.subsystems.questnav;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Twist3d;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import org.frc5902.robot.Constants.QuestConstants;
+import org.frc5902.robot.CompbotConstants;
 import org.frc5902.robot.RobotState;
 import org.frc5902.robot.RobotState.QuestObservation;
 import org.frc5902.robot.util.buildutil.GeoUtil;
@@ -78,7 +80,7 @@ public class QuestSubsystem extends VirtualSubsystem {
     public Pose3d getLatestPoseRobotRelative() {
         if (questIOInputs.readPoses.length < 1) return new Pose3d();
         return (questIOInputs.readPoses[questIOInputs.readPoses.length - 1])
-                .transformBy(QuestConstants.ROBOT_TO_QUEST.inverse());
+                .transformBy(CompbotConstants.questOffset.inverse());
     }
 
     @AutoLogOutput(key = "QuestNav/Twist/ROBOT")
@@ -91,8 +93,8 @@ public class QuestSubsystem extends VirtualSubsystem {
         }
         int i = Math.min(poseCount, timeCount);
         // avoid out of bounds errors people!
-        Pose3d oldPose = questIOInputs.readPoses[i - 2].transformBy(QuestConstants.ROBOT_TO_QUEST.inverse());
-        Pose3d newPose = questIOInputs.readPoses[i - 1].transformBy(QuestConstants.ROBOT_TO_QUEST.inverse());
+        Pose3d oldPose = questIOInputs.readPoses[i - 2].transformBy(CompbotConstants.questOffset.inverse());
+        Pose3d newPose = questIOInputs.readPoses[i - 1].transformBy(CompbotConstants.questOffset.inverse());
         double oldTimestamp = questIOInputs.questTimestamps[i - 2];
         double newTimestamp = questIOInputs.questTimestamps[i - 1];
         return GeoUtil.calculateTwist3d(oldPose, newPose, oldTimestamp, newTimestamp);
@@ -100,4 +102,13 @@ public class QuestSubsystem extends VirtualSubsystem {
 
     @Override
     public void periodicAfterScheduler() {}
+
+
+    public void resetPose(Pose2d pose) {
+        questIO.setPose(new Pose3d(pose));
+    }
+    public void resetPose(Pose3d pose) {
+        questIO.setPose(pose);
+    }
+
 }

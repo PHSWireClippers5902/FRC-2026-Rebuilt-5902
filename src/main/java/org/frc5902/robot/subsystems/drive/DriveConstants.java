@@ -26,7 +26,7 @@ public class DriveConstants {
     }
 
     public class PhysicalConstraints {
-        public static final double maxLinearSpeed = 6.0;
+        public static final double maxLinearSpeed = 9.0;
         public static final double maxAngularSpeed = 2.0 / ModuleConfigurations.driveBaseRadius;
         public static final double maxLinearAcceleration = 22.0;
         public static final double turnDeadbandDegrees = 0.3;
