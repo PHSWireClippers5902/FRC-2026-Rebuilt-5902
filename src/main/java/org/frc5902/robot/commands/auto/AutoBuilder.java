@@ -36,10 +36,10 @@ public class AutoBuilder {
             () -> new Pose2d(quest.getLatestPose().getTranslation().toTranslation2d(), drive.getGyroRotation()),
             (pose) -> {
                 quest.resetPose(pose);
-                drive.resetGyroscope();
+                drive.resetGyroscope(pose.getRotation());
             },
             null, 
-            (speeds, feedfowards) -> System.out.println("TEST"), 
+            (speeds, feedfowards) -> drive.runVelocity(speeds), 
             new PPHolonomicDriveController(new PIDConstants(5.0,0.0,0.0), new PIDConstants(5.0, 0.0, 0.0)), 
             config, 
             () -> {

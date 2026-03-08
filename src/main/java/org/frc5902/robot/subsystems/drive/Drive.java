@@ -279,6 +279,10 @@ public class Drive extends SubsystemBase {
         gyroIO.resetGyro();
     }
 
+    public void resetGyroscope(Rotation2d rotation) {
+        gyroIO.resetGyro(rotation);
+    }
+
     // reset Absolute Positions
     public void resetSwerveAbsolutePositions() {
         for (int i = 0; i < 4; i++) {
@@ -290,4 +294,11 @@ public class Drive extends SubsystemBase {
     public void resetGyroToRotation(Rotation2d rotation) {
         gyroIO.resetGyro();
     }
+
+
+
+    public ChassisSpeeds getRobotRelativeSpeeds() {
+        return kinematics.toChassisSpeeds(getModuleStates());
+    }
+
 }
