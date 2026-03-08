@@ -74,8 +74,8 @@ public class AutoPlease {
 
                 }, superstructure).withTimeout(2),
                 Commands.run(() -> {
-                        
-                }, superstructure).withTimeout(10);
+
+                }, superstructure).withTimeout(10)
         );
 
     }
