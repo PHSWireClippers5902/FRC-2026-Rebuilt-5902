@@ -290,15 +290,11 @@ public class Drive extends SubsystemBase {
         }
     }
 
-
     public void resetGyroToRotation(Rotation2d rotation) {
         gyroIO.resetGyro();
     }
 
-
-
     public ChassisSpeeds getRobotRelativeSpeeds() {
         return kinematics.toChassisSpeeds(getModuleStates());
     }
-
 }

@@ -1,5 +1,6 @@
 package org.frc5902.robot.commands.auto;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -40,5 +41,42 @@ public class AutoPlease {
                 Commands.run(() -> drive.get().runVelocity(new ChassisSpeeds(-4, 0, 0)), drive.get())
                         .withTimeout(4),
                 Commands.run(() -> drive.get().stop(), drive.get()).withTimeout(1));
+    }
+
+    public static Command doNothingAuto(Supplier<Drive> drive) {
+        return Commands.waitSeconds(5);
+    }
+
+
+    
+
+    public static Command turnCommand(Supplier<Drive> drive, Rotation2d targetRotation) {
+        return Commands.run(() -> {
+            if (Math.abs(drive.get().getGyroRotation().minus(targetRotation).getDegrees()) > 5){
+                drive.get().runVelocity(new ChassisSpeeds(0,0,Math.signum(targetRotation.minus(drive.get().getGyroRotation()).getRadians()) * 0.3));
+            } else {
+                drive.get().stop();
+            }
+        }
+        , drive.get()).withTimeout(5);
+    }
+
+
+
+    public static Command shootSequence(Supplier<Superstructure> superstructuresupplier) {
+        Superstructure superstructure = superstructuresupplier.get();
+        // extend, charge, launch!
+        return Commands.sequence(
+                Commands.run(() -> {
+
+                }, superstructure).withTimeout(7),
+                Commands.run(() -> {
+
+                }, superstructure).withTimeout(2),
+                Commands.run(() -> {
+                        
+                }, superstructure).withTimeout(10);
+        );
+
     }
 }

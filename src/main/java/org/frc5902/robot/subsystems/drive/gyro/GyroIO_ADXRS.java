@@ -45,5 +45,4 @@ public class GyroIO_ADXRS implements GyroIO {
     public void resetGyroscope() {
         ADXRS_Gyro.reset();
     }
-    
 }

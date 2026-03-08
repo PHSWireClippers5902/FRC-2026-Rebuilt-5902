@@ -1,6 +1,5 @@
 package org.frc5902.robot.subsystems.drive.gyro;
 
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.ADIS16470_IMU;
@@ -80,5 +79,4 @@ public class GyroIO_ADIS implements GyroIO {
     public void resetGyro(Rotation2d pose) {
         ADIS_Gyro.setGyroAngle(IMUAxis.kYaw, pose.getDegrees());
     }
-
 }

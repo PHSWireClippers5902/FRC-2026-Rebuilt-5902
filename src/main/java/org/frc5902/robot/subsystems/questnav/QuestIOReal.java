@@ -6,9 +6,7 @@ import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import gg.questnav.questnav.PoseFrame;
 import gg.questnav.questnav.QuestNav;
-
 import org.frc5902.robot.CompbotConstants;
-import org.frc5902.robot.Constants.QuestConstants;
 
 import java.util.Queue;
 

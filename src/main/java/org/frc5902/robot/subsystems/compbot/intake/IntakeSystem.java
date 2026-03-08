@@ -39,6 +39,7 @@ public class IntakeSystem {
         Logger.processInputs("Intake/Inputs", iIOInputs);
 
         intakeDisconnectedAlert.set(iIOInputs.data.motorConnected());
+
         switch (goal) {
             case INTAKE:
                 // iIO.runVolts(intakeVolts.getAsDouble());

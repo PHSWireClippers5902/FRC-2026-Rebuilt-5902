@@ -1,6 +1,5 @@
 package org.frc5902.robot.subsystems.drive.gyro;
 
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import org.littletonrobotics.junction.AutoLog;
 

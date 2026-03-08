@@ -46,11 +46,11 @@ import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 public class CompRobotContainer extends RobotContainer {
     // init subsystems here
     private final Drive drive;
-        private final Superstructure superstructure;
-        private final AgitatorSystem agitator;
-        private final LauncherSystem launcher;
-        private final IntakeSystem intake;
-        private final SliderSystem slider;
+    private final Superstructure superstructure;
+    private final AgitatorSystem agitator;
+    private final LauncherSystem launcher;
+    private final IntakeSystem intake;
+    private final SliderSystem slider;
 
     @SuppressWarnings("unused")
     private final QuestSubsystem quest;
@@ -104,10 +104,19 @@ public class CompRobotContainer extends RobotContainer {
         // var autoBuilder = new AutoBuilder(drive, superstructure);
         autoChooser = new LoggedDashboardChooser<>("Auto Choices");
         initialPositionChooser = new LoggedDashboardChooser<>("Initial Positions");
+        initialPositionChooser.addOption("BLUE_LEFT_BUMP", new Pose2d(3.56, 5.024, Rotation2d.kZero));
+        initialPositionChooser.addOption("BLUE_RIGHT_BUMP", new Pose2d(3.56, 3.035, Rotation2d.kZero));
+        initialPositionChooser.addOption("BLUE_CENTER", new Pose2d(3.56, 4.056, Rotation2d.k180deg));
+
+        initialPositionChooser.addOption("RED_LEFT_BUMP", new Pose2d(13, 5.024, Rotation2d.k180deg));
+        initialPositionChooser.addOption("RED_RIGHT_BUMP", new Pose2d(13, 3.035, Rotation2d.k180deg));
+        initialPositionChooser.addOption("RED_CENTER", new Pose2d(13, 4.056, Rotation2d.kZero));
+
         // sysid routines
         autoChooser.addOption("Drive Wheel Radius Characterization", DriveCommands.wheelRadiusCharacterization(drive));
         autoChooser.addOption("Drive Simple FF Characterization", DriveCommands.feedforwardCharacterization(drive));
         autoChooser.addOption("FORWARD PLEASE", AutoPlease.forwardAuto(() -> drive));
+        autoChooser.addOption("DO NOTHING", AutoPlease.doNothingAuto(() -> drive));
         // autoChooser.addOption("Auto pls work", AutoPlease.extendAndMoveAuto(() -> drive, () -> superstructure));
         // autoChooser.addOption(
         //         "Drive SysId (Quasistatic Forward)", drive.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
@@ -117,7 +126,6 @@ public class CompRobotContainer extends RobotContainer {
         // autoChooser.addOption("Drive SysId (Dynamic Reverse)", drive.sysIdDynamic(SysIdRoutine.Direction.kReverse));
 
         initialPositionChooser.addDefaultOption("default (0,0)", new Pose2d());
-
 
         configureBindings();
     }
@@ -264,6 +272,7 @@ public class CompRobotContainer extends RobotContainer {
     public Pose2d getInitialPose() {
         // fake it till u make it
         // depends on where you are....
+
         return initialPositionChooser.get();
     }
 }
