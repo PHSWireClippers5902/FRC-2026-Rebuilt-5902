@@ -27,4 +27,6 @@ public interface GyroIO {
             Rotation2d rollPosition,
             double rollVelocityRadPerSec,
             double rollAccelerationRadPerSec) {}
+
+    public default void resetGyro(Rotation2d pose) {}
 }

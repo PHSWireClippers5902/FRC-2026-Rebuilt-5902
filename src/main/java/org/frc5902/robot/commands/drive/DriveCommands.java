@@ -50,6 +50,16 @@ public class DriveCommands {
 
     private DriveCommands() {}
 
+    public static Command stupidTurnCommand(Drive drive, double referenceRADIANS) {
+        return Commands.run(
+                () -> {
+                    double targetRADIANS = drive.getGyroRotation().getRadians();
+                    double difference = referenceRADIANS - targetRADIANS;
+                    drive.runVelocity(new ChassisSpeeds(0, 0, difference * 0.05));
+                },
+                drive);
+    }
+
     private static Translation2d getLinearVelocityFromJoysticks(double x, double y) {
         // Apply deadband
         double linearMagnitude = MathUtil.applyDeadband(Math.hypot(x, y), DEADBAND);
@@ -142,6 +152,32 @@ public class DriveCommands {
                 linearVelocity.getX(), linearVelocity.getY(), omega * PhysicalConstraints.maxAngularSpeed);
     }
 
+    public static ChassisSpeeds getSpeedsFromJoysticks(
+            double driverX,
+            double driverY,
+            double driverOmega,
+            double multiplierTRANSLATION,
+            double multiplierROTATION) {
+        // Get linear velocity
+        Translation2d linearVelocity = getLinearVelocityFromJoysticks(driverX, driverY)
+                .times(PhysicalConstraints.maxLinearSpeed)
+                .times(multiplierTRANSLATION);
+        // Calculate angular velocity
+        double omega = getOmegaFromJoysticks(driverOmega) * multiplierROTATION;
+
+        return new ChassisSpeeds(
+                linearVelocity.getX(), linearVelocity.getY(), omega * PhysicalConstraints.maxAngularSpeed);
+    }
+
+    public static Command joystickDrive(
+            Drive drive,
+            DoubleSupplier xSupplier,
+            DoubleSupplier ySupplier,
+            DoubleSupplier omegaSupplier,
+            BooleanSupplier robotRelative) {
+        return joystickDrive(drive, xSupplier, ySupplier, omegaSupplier, robotRelative, 1.0, 1.0);
+    }
+
     /**
      * Field relative drive command using two joysticks (controlling linear and angular velocities).
      */
@@ -150,12 +186,18 @@ public class DriveCommands {
             DoubleSupplier xSupplier,
             DoubleSupplier ySupplier,
             DoubleSupplier omegaSupplier,
-            BooleanSupplier robotRelative) {
+            BooleanSupplier robotRelative,
+            double multiplierTRANSLATION,
+            double multiplierROTATION) {
         boolean falsevarREMOVE = true;
         return Commands.run(
                 () -> {
                     ChassisSpeeds speeds = getSpeedsFromJoysticks(
-                            xSupplier.getAsDouble(), ySupplier.getAsDouble(), omegaSupplier.getAsDouble());
+                            xSupplier.getAsDouble(),
+                            ySupplier.getAsDouble(),
+                            omegaSupplier.getAsDouble(),
+                            multiplierTRANSLATION,
+                            multiplierROTATION);
                     drive.runVelocity(
                             robotRelative.getAsBoolean()
                                     ? speeds
@@ -175,7 +217,7 @@ public class DriveCommands {
     }
 
     public static Command defenceGoal(Drive drive) {
-        return Commands.runOnce(
+        return Commands.run(
                 () -> {
                     drive.stopWithX();
                 },

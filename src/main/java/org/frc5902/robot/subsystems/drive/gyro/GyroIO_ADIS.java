@@ -74,4 +74,9 @@ public class GyroIO_ADIS implements GyroIO {
     public void resetGyro() {
         ADIS_Gyro.reset();
     }
+
+    @Override
+    public void resetGyro(Rotation2d pose) {
+        ADIS_Gyro.setGyroAngle(IMUAxis.kYaw, pose.getDegrees());
+    }
 }

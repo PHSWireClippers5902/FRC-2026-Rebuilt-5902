@@ -72,6 +72,13 @@ public class SuperstructureActions {
             .priority(3)
             .build();
 
+    public static SuperstructureAction EMERGENCY = SuperstructureAction.builder()
+            .agitatorGoal(AgitatorSystem.Goal.STOP)
+            .intakeGoal(IntakeSystem.Goal.STOP)
+            .launcherGoal(LauncherSystem.Goal.IDLE)
+            .sliderGoal(SliderSystem.Goal.STOP)
+            .build();
+
     @Builder
     @ToString
     public static class SuperstructureAction {

@@ -6,7 +6,7 @@ import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import gg.questnav.questnav.PoseFrame;
 import gg.questnav.questnav.QuestNav;
-import org.frc5902.robot.Constants.QuestConstants;
+import org.frc5902.robot.CompbotConstants;
 
 import java.util.Queue;
 
@@ -52,6 +52,6 @@ public class QuestIOReal implements QuestIO {
     }
 
     public void setPose(Pose3d pose) {
-        questNav.setPose(pose.transformBy(QuestConstants.ROBOT_TO_QUEST));
+        questNav.setPose(pose.transformBy(CompbotConstants.questOffset));
     }
 }
