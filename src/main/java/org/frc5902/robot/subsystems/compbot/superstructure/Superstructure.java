@@ -1,5 +1,7 @@
 package org.frc5902.robot.subsystems.compbot.superstructure;
 
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import lombok.Getter;
@@ -33,7 +35,7 @@ public class Superstructure extends SubsystemBase {
     @Getter
     @Setter
     @AutoLogOutput
-    private boolean KILL_SYSTEMS = false;
+    private boolean KILL_SYSTEMS = true;
 
     @Getter
     private SuperstructureAction goal = SuperstructureActions.DEPLOY_IDLE;
@@ -82,5 +84,12 @@ public class Superstructure extends SubsystemBase {
 
     public InstantCommand SWAP_KILL_SYSTEMS() {
         return new InstantCommand(() -> this.KILL_SYSTEMS = !this.KILL_SYSTEMS);
+    }
+
+    public static Command AutonomousSuperstructureGoalCommand(
+            SuperstructureAction actionGoal, double timeout, Superstructure superinstance) {
+        return Commands.run(() -> superinstance.addCommandToScheduler(actionGoal), superinstance)
+                .withTimeout(timeout)
+                .finallyDo(() -> superinstance.removeCommandFromScheduler(actionGoal));
     }
 }

@@ -47,36 +47,40 @@ public class AutoPlease {
         return Commands.waitSeconds(5);
     }
 
-
-    
-
     public static Command turnCommand(Supplier<Drive> drive, Rotation2d targetRotation) {
-        return Commands.run(() -> {
-            if (Math.abs(drive.get().getGyroRotation().minus(targetRotation).getDegrees()) > 5){
-                drive.get().runVelocity(new ChassisSpeeds(0,0,Math.signum(targetRotation.minus(drive.get().getGyroRotation()).getRadians()) * 0.3));
-            } else {
-                drive.get().stop();
-            }
-        }
-        , drive.get()).withTimeout(5);
+        return Commands.run(
+                        () -> {
+                            if (Math.abs(drive.get()
+                                            .getGyroRotation()
+                                            .minus(targetRotation)
+                                            .getDegrees())
+                                    > 5) {
+                                drive.get()
+                                        .runVelocity(new ChassisSpeeds(
+                                                0,
+                                                0,
+                                                Math.signum(targetRotation
+                                                                .minus(drive.get()
+                                                                        .getGyroRotation())
+                                                                .getRadians())
+                                                        * 0.3));
+                            } else {
+                                drive.get().stop();
+                            }
+                        },
+                        drive.get())
+                .withTimeout(5);
     }
-
-
 
     public static Command shootSequence(Supplier<Superstructure> superstructuresupplier) {
         Superstructure superstructure = superstructuresupplier.get();
         // extend, charge, launch!
         return Commands.sequence(
-                Commands.run(() -> {
-
-                }, superstructure).withTimeout(7),
-                Commands.run(() -> {
-
-                }, superstructure).withTimeout(2),
-                Commands.run(() -> {
-
-                }, superstructure).withTimeout(10)
-        );
-
+                Superstructure.AutonomousSuperstructureGoalCommand(
+                        SuperstructureActions.DEPLOY_IDLE, 5.0, superstructure),
+                Superstructure.AutonomousSuperstructureGoalCommand(
+                        SuperstructureActions.READY_LAUNCHER_STUPID, 2.0, superstructure),
+                Superstructure.AutonomousSuperstructureGoalCommand(
+                        SuperstructureActions.LAUNCH_STUPID, 8.0, superstructure));
     }
 }
