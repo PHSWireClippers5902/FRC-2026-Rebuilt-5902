@@ -100,8 +100,9 @@ public class Drive extends SubsystemBase {
             RobotState.getInstance()
                     .addOdometryObservation(new RobotState.OdometryObservation(
                             modulePositions,
-                            Optional.ofNullable(
-                                    gyroInputs.data.connected() ? gyroInputs.odometryYawPositions[i] : null),
+                            Optional.ofNullable(gyroInputs.data.connected() ? gyroInputs.data.rollPosition() : null),
+                            Optional.ofNullable(gyroInputs.data.connected() ? gyroInputs.data.pitchPosition() : null),
+                            Optional.ofNullable(gyroInputs.data.connected() ? gyroInputs.data.yawPosition() : null),
                             sampleTimestamps[i]));
             // log 3d robot
             Logger.recordOutput(
@@ -211,7 +212,6 @@ public class Drive extends SubsystemBase {
             headings[i] = ModuleConfigurations.moduleTranslations[i].getAngle();
         }
         kinematics.resetHeadings(headings);
-        stop();
     }
 
     // // gets quasistatic test in direction (for constant determination)
@@ -279,10 +279,22 @@ public class Drive extends SubsystemBase {
         gyroIO.resetGyro();
     }
 
+    public void resetGyroscope(Rotation2d rotation) {
+        gyroIO.resetGyro(rotation);
+    }
+
     // reset Absolute Positions
     public void resetSwerveAbsolutePositions() {
         for (int i = 0; i < 4; i++) {
             modules[i].resetSwerveAbsolutePositions();
         }
+    }
+
+    public void resetGyroToRotation(Rotation2d rotation) {
+        gyroIO.resetGyro();
+    }
+
+    public ChassisSpeeds getRobotRelativeSpeeds() {
+        return kinematics.toChassisSpeeds(getModuleStates());
     }
 }
