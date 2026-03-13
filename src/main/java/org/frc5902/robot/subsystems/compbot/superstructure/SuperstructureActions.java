@@ -3,7 +3,6 @@ package org.frc5902.robot.subsystems.compbot.superstructure;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
-import org.frc5902.robot.subsystems.compbot.agitator.AgitatorSystem;
 import org.frc5902.robot.subsystems.compbot.intake.IntakeSystem;
 import org.frc5902.robot.subsystems.compbot.launcher.LauncherSystem;
 import org.frc5902.robot.subsystems.compbot.slider.SliderSystem;
@@ -23,19 +22,16 @@ public class SuperstructureActions {
     // INTAKE: Run Intake and Agitate Out
     public static SuperstructureAction INTAKE = SuperstructureAction.builder()
             .intakeGoal(IntakeSystem.Goal.INTAKE)
-            .agitatorGoal(AgitatorSystem.Goal.AGITATE_KICK)
             .priority(1)
             .build();
     // INTAKE AND PASS: Run intake, flywheel, and agitator in
     public static SuperstructureAction INTAKE_AND_PASS = SuperstructureAction.builder()
             .intakeGoal(IntakeSystem.Goal.INTAKE)
-            .agitatorGoal(AgitatorSystem.Goal.AGITATE_INTAKE)
             .launcherGoal(LauncherSystem.Goal.LAUNCH)
             .priority(2)
             .build();
     // OUTTAKE: Clear by kicking agitator AND running Outtake
     public static SuperstructureAction OUTTAKE = SuperstructureAction.builder()
-            .agitatorGoal(AgitatorSystem.Goal.AGITATE_KICK)
             .intakeGoal(IntakeSystem.Goal.OUTTAKE)
             .priority(1)
             .build();
@@ -46,14 +42,12 @@ public class SuperstructureActions {
             .build();
     // LAUNCH: Run agitate in, intake at low to keep fuel in, and launch system
     public static SuperstructureAction LAUNCH = SuperstructureAction.builder()
-            .agitatorGoal(AgitatorSystem.Goal.AGITATE_INTAKE)
             .intakeGoal(IntakeSystem.Goal.INTAKE_LOW)
             .launcherGoal(LauncherSystem.Goal.LAUNCH)
             .priority(3)
             .build();
     // CLEAR_FLYWHEEL_JAM: Run agitator to kick fuel out, run intake in, and run launcher system to clear jam
     public static SuperstructureAction CLEAR_FLYWHEEL_JAM = SuperstructureAction.builder()
-            .agitatorGoal(AgitatorSystem.Goal.AGITATE_KICK)
             .intakeGoal(IntakeSystem.Goal.INTAKE_LOW)
             .launcherGoal(LauncherSystem.Goal.CLEAR_JAM)
             .priority(4)
@@ -66,14 +60,12 @@ public class SuperstructureActions {
             .build();
     // LAUNCH: Run agitate in, intake at low to keep fuel in, and launch system
     public static SuperstructureAction LAUNCH_STUPID = SuperstructureAction.builder()
-            .agitatorGoal(AgitatorSystem.Goal.AGITATE_INTAKE)
             .intakeGoal(IntakeSystem.Goal.INTAKE_LOW)
             .launcherGoal(LauncherSystem.Goal.LAUNCH_STUPID)
             .priority(3)
             .build();
 
     public static SuperstructureAction EMERGENCY = SuperstructureAction.builder()
-            .agitatorGoal(AgitatorSystem.Goal.STOP)
             .intakeGoal(IntakeSystem.Goal.STOP)
             .launcherGoal(LauncherSystem.Goal.IDLE)
             .sliderGoal(SliderSystem.Goal.STOP)
@@ -87,9 +79,6 @@ public class SuperstructureActions {
         private LauncherSystem.Goal launcherGoal = LauncherSystem.Goal.IDLE;
 
         @Builder.Default
-        private AgitatorSystem.Goal agitatorGoal = AgitatorSystem.Goal.STOP;
-
-        @Builder.Default
         private SliderSystem.Goal sliderGoal = SliderSystem.Goal.DEPLOYED;
 
         @Builder.Default
@@ -100,14 +89,12 @@ public class SuperstructureActions {
         private int priority = 1;
 
         private static LauncherSystem launcherSystem = null;
-        private static AgitatorSystem agitatorSystem = null;
         private static SliderSystem sliderSystem = null;
         private static IntakeSystem intakeSystem = null;
 
         /* REQUIRED */
-        public static void setStaticSubsystems(LauncherSystem ls, AgitatorSystem as, SliderSystem ss, IntakeSystem is) {
+        public static void setStaticSubsystems(LauncherSystem ls, SliderSystem ss, IntakeSystem is) {
             launcherSystem = ls;
-            agitatorSystem = as;
             sliderSystem = ss;
             intakeSystem = is;
         }
@@ -115,13 +102,11 @@ public class SuperstructureActions {
         public void set() {
             // set goals
             launcherSystem.setGoal(launcherGoal);
-            agitatorSystem.setGoal(agitatorGoal);
             sliderSystem.setGoal(sliderGoal);
             intakeSystem.setGoal(intakeGoal);
 
             // run periodic()
             launcherSystem.periodic();
-            agitatorSystem.periodic();
             sliderSystem.periodic();
             intakeSystem.periodic();
         }

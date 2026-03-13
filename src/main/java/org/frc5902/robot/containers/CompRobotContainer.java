@@ -15,9 +15,6 @@ import org.frc5902.robot.FieldConstants.AprilTagLayoutType;
 import org.frc5902.robot.Robot;
 import org.frc5902.robot.commands.auto.AutoPlease;
 import org.frc5902.robot.commands.drive.DriveCommands;
-import org.frc5902.robot.subsystems.compbot.agitator.AgitatorIO;
-import org.frc5902.robot.subsystems.compbot.agitator.AgitatorIOTalon;
-import org.frc5902.robot.subsystems.compbot.agitator.AgitatorSystem;
 import org.frc5902.robot.subsystems.compbot.intake.IntakeIO;
 import org.frc5902.robot.subsystems.compbot.intake.IntakeIOSpark;
 import org.frc5902.robot.subsystems.compbot.intake.IntakeSystem;
@@ -47,7 +44,6 @@ public class CompRobotContainer extends RobotContainer {
     // init subsystems here
     private final Drive drive;
     private final Superstructure superstructure;
-    private final AgitatorSystem agitator;
     private final LauncherSystem launcher;
     private final IntakeSystem intake;
     private final SliderSystem slider;
@@ -71,34 +67,31 @@ public class CompRobotContainer extends RobotContainer {
                         new ModuleIOSparkAbsolute(1),
                         new ModuleIOSparkAbsolute(2),
                         new ModuleIOSparkAbsolute(3));
-                agitator = new AgitatorSystem(new AgitatorIOTalon());
                 launcher = new LauncherSystem(new InserterIOSpark(), new FlywheelIOSpark(), this::getidealspin);
                 intake = new IntakeSystem(new IntakeIOSpark());
                 slider = new SliderSystem(new SliderIOSpark());
                 quest = new QuestSubsystem(new QuestIOReal());
-                superstructure = new Superstructure(agitator, intake, launcher, slider);
+                superstructure = new Superstructure(intake, launcher, slider);
                 break;
             case SIM:
                 // sim bot
                 drive = new Drive(
                         new GyroIO() {}, new ModuleIOSim(), new ModuleIOSim(), new ModuleIOSim(), new ModuleIOSim());
-                agitator = new AgitatorSystem(new AgitatorIO() {});
                 launcher = new LauncherSystem(new InserterIO() {}, new FlywheelIO() {}, this::getidealspin);
                 intake = new IntakeSystem(new IntakeIO() {});
                 slider = new SliderSystem(new SliderIO() {});
                 quest = new QuestSubsystem(new QuestIO() {});
-                superstructure = new Superstructure(agitator, intake, launcher, slider);
+                superstructure = new Superstructure(intake, launcher, slider);
                 break;
             default:
                 // replay
                 drive = new Drive(
                         new GyroIO() {}, new ModuleIO() {}, new ModuleIO() {}, new ModuleIO() {}, new ModuleIO() {});
-                agitator = new AgitatorSystem(new AgitatorIO() {});
                 launcher = new LauncherSystem(new InserterIO() {}, new FlywheelIO() {}, this::getidealspin);
                 intake = new IntakeSystem(new IntakeIO() {});
                 slider = new SliderSystem(new SliderIO() {});
                 quest = new QuestSubsystem(new QuestIO() {});
-                superstructure = new Superstructure(agitator, intake, launcher, slider);
+                superstructure = new Superstructure(intake, launcher, slider);
                 break;
         }
         // var autoBuilder = new AutoBuilder(drive, superstructure);

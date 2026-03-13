@@ -6,7 +6,6 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import lombok.Getter;
 import lombok.Setter;
-import org.frc5902.robot.subsystems.compbot.agitator.AgitatorSystem;
 import org.frc5902.robot.subsystems.compbot.intake.IntakeSystem;
 import org.frc5902.robot.subsystems.compbot.launcher.LauncherSystem;
 import org.frc5902.robot.subsystems.compbot.slider.SliderSystem;
@@ -17,8 +16,7 @@ import org.littletonrobotics.junction.Logger;
 import java.util.ArrayList;
 
 public class Superstructure extends SubsystemBase {
-    @Getter
-    private final AgitatorSystem agitator;
+    
 
     @Getter
     private final IntakeSystem intake;
@@ -42,13 +40,12 @@ public class Superstructure extends SubsystemBase {
 
     private ArrayList<SuperstructureAction> scheduled_goals = new ArrayList<SuperstructureAction>();
 
-    public Superstructure(AgitatorSystem agitator, IntakeSystem intake, LauncherSystem launch, SliderSystem slide) {
+    public Superstructure( IntakeSystem intake, LauncherSystem launch, SliderSystem slide) {
         // schedule the default command, deploy & idle
-        this.agitator = agitator;
         this.intake = intake;
         this.launch = launch;
         this.slide = slide;
-        SuperstructureAction.setStaticSubsystems(launch, agitator, slide, intake);
+        SuperstructureAction.setStaticSubsystems(launch, slide, intake);
         scheduled_goals.add(SuperstructureActions.DEPLOY_IDLE);
         instance = this;
     }
