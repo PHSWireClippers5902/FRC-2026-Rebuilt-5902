@@ -14,9 +14,11 @@ import java.util.function.DoubleSupplier;
 
 public class LauncherSystem {
     private final InserterIO iIO;
-    private final FlywheelIO fIO;
+    private final FlywheelIO fIOL;
+    private final FlywheelIO fIOR;
     private final InserterIOInputsAutoLogged iIOInputs = new InserterIOInputsAutoLogged();
-    private final FlywheelIOInputsAutoLogged fIOInputs = new FlywheelIOInputsAutoLogged();
+    private final FlywheelIOInputsAutoLogged fIOLInputs = new FlywheelIOInputsAutoLogged();
+    private final FlywheelIOInputsAutoLogged fIORInputs = new FlywheelIOInputsAutoLogged();
     private final FlywheelEstimation estimation = FlywheelEstimation.getInstance();
     private final LoggedTunableNumber flywheel_velocity = new LoggedTunableNumber("Launcher/Flywheel_Velocity", 1000);
     private final LoggedTunableNumber jam_volts = new LoggedTunableNumber("Launcher/Jam_Volts", -4.0);
@@ -29,26 +31,33 @@ public class LauncherSystem {
     private final Alert inserterDisconnectedAlert = new Alert(
             "The INSERTER has been disconnected. Recommended to coordinate with Alliance Partners and swap to defence.",
             AlertType.kError);
-    private final Alert flywheelDisconnectedAlert = new Alert(
-            "The FLYWHEEL has been disconnected. Recommended to coordinate with Alliance Partners and swap to defence.",
+    private final Alert flywheelLDisconnectedAlert = new Alert(
+            "The LEFT FLYWHEEL has been disconnected. Recommended to coordinate with Alliance Partners and swap to defence.",
+            AlertType.kError);
+    private final Alert flywheelRDisconnectedAlert = new Alert(
+            "The RIGHT FLYWHEEL has been disconnected. Recommended to coordinate with Alliance Partners and swap to defence.",
             AlertType.kError);
 
-    private final DoubleSupplier spinsupplier;
 
-    public LauncherSystem(InserterIO iIO, FlywheelIO fIO, DoubleSupplier spinsup) {
+
+    public LauncherSystem(InserterIO iIO, FlywheelIO fIOL, FlywheelIO fIOR) {
         this.iIO = iIO;
-        this.fIO = fIO;
-        this.spinsupplier = spinsup;
+        this.fIOL = fIOL;
+        this.fIOR = fIOR;
     }
 
     public void periodic() {
         iIO.updateInputs(iIOInputs);
-        fIO.updateInputs(fIOInputs);
+        fIOL.updateInputs(fIOLInputs);
+        fIOR.updateInputs(fIORInputs);
         Logger.processInputs("Launcher/Inserter/Inputs", iIOInputs);
-        Logger.processInputs("Launcher/Flywheel/Inputs", fIOInputs);
+        Logger.processInputs("Launcher/Flywheel/Inputs/Left", fIOLInputs);
+        Logger.processInputs("Launcher/Flywheel/Inputs/Right", fIORInputs);
 
         inserterDisconnectedAlert.set(iIOInputs.data.motorConnected());
-        flywheelDisconnectedAlert.set(fIOInputs.data.motorConnected());
+        flywheelLDisconnectedAlert.set(fIOLInputs.data.motorConnected());
+        flywheelRDisconnectedAlert.set(fIORInputs.data.motorConnected());
+
 
         switch (goal) {
             case IDLE -> {
@@ -72,12 +81,13 @@ public class LauncherSystem {
             }
             case LAUNCH_STUPID -> {
                 runLaunchVelocities(
-                        flywheel_velocity.getAsDouble() * spinsupplier.getAsDouble(),
-                        flywheel_velocity.getAsDouble() * spinsupplier.getAsDouble());
+                        flywheel_velocity.getAsDouble(),
+                        flywheel_velocity.getAsDouble());
                 break;
             }
             case READY_STUPID -> {
-                fIO.runRadiansPerSecond(flywheel_velocity.getAsDouble());
+                fIOL.runRadiansPerSecond(flywheel_velocity.getAsDouble());
+                fIOR.runRadiansPerSecond(flywheel_velocity.getAsDouble());
                 break;
             }
             default -> {
@@ -97,19 +107,22 @@ public class LauncherSystem {
 
     public void runLaunchVolts(double insertVolts, double launchVolts) {
         iIO.runVolts(insertVolts);
-        fIO.runVolts(launchVolts);
+        fIOL.runVolts(launchVolts);
+        fIOR.runVolts(launchVolts);
     }
 
     public void runLaunchVelocities(double insertVelocityPerSecond, double flywheelVelocityPerSecond) {
         Logger.recordOutput("Outputs/Launcher/Inserter/InsertVelocityPerSecond", insertVelocityPerSecond);
         Logger.recordOutput("Outputs/Launcher/Flywheel/FlywheelVelocityPerSecond", flywheelVelocityPerSecond);
         iIO.runRadiansPerSecond(insertVelocityPerSecond);
-        fIO.runRadiansPerSecond(flywheelVelocityPerSecond);
+        fIOL.runRadiansPerSecond(flywheelVelocityPerSecond);
+        fIOR.runRadiansPerSecond(flywheelVelocityPerSecond);
     }
 
     public void stop() {
         iIO.stop();
-        fIO.stop();
+        fIOL.stop();
+        fIOR.stop();
     }
 
     public enum Goal {

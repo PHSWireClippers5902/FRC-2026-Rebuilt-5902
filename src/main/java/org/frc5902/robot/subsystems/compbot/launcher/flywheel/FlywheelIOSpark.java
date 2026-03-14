@@ -13,6 +13,8 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.math.geometry.Rotation2d;
+
+import org.frc5902.robot.subsystems.compbot.launcher.LauncherConstants;
 import org.frc5902.robot.subsystems.compbot.launcher.LauncherConstants.FlywheelConstants;
 
 import java.util.function.DoubleSupplier;
@@ -33,19 +35,36 @@ public class FlywheelIOSpark implements FlywheelIO {
     // outputs
     public final Debouncer flywheelConnectedDebounce = new Debouncer(0.5, DebounceType.kFalling);
 
-    public FlywheelIOSpark() {
-        flywheel = new SparkMax(FlywheelConstants.FlywheelCANID, MotorType.kBrushless);
+    public FlywheelIOSpark(int index) {
+        FlywheelConstants constants;
+        switch (index) {
+            case 0: {
+                constants = LauncherConstants.FlywheelLeftConstants;
+                break;
+            }
+            case 1: {
+                constants = LauncherConstants.FlywheelRightConstants;
+                break;
+            }
+            default: {
+                constants = LauncherConstants.FlywheelLeftConstants;
+                break;
+            }
+        }
+
+
+        flywheel = new SparkMax(constants.FlywheelCANID, MotorType.kBrushless);
         var config = new SparkMaxConfig();
-        config.encoder.positionConversionFactor(FlywheelConstants.flywheelPositionConversionFactor);
-        config.encoder.velocityConversionFactor(FlywheelConstants.flywheelVelocityConversionFactor);
+        config.encoder.positionConversionFactor(constants.flywheelPositionConversionFactor);
+        config.encoder.velocityConversionFactor(constants.flywheelVelocityConversionFactor);
         config.closedLoop.positionWrappingEnabled(false);
-        config.inverted(FlywheelConstants.inverted)
-                .idleMode(FlywheelConstants.idleMode)
-                .smartCurrentLimit(FlywheelConstants.StallLimit, FlywheelConstants.FreeLimit);
+        config.inverted(constants.inverted)
+                .idleMode(constants.idleMode)
+                .smartCurrentLimit(constants.StallLimit, constants.FreeLimit);
         config.closedLoop.pid(
-                FlywheelConstants.flywheelPID.getProportional(),
-                FlywheelConstants.flywheelPID.getIntegral(),
-                FlywheelConstants.flywheelPID.getDeriviative());
+                constants.flywheelPID.getProportional(),
+                constants.flywheelPID.getIntegral(),
+                constants.flywheelPID.getDeriviative());
         tryUntilOk(
                 flywheel,
                 5,

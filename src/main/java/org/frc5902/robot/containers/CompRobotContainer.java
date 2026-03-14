@@ -67,7 +67,7 @@ public class CompRobotContainer extends RobotContainer {
                         new ModuleIOSparkAbsolute(1),
                         new ModuleIOSparkAbsolute(2),
                         new ModuleIOSparkAbsolute(3));
-                launcher = new LauncherSystem(new InserterIOSpark(), new FlywheelIOSpark(), this::getidealspin);
+                launcher = new LauncherSystem(new InserterIOSpark(), new FlywheelIOSpark(0), new FlywheelIOSpark(1));
                 intake = new IntakeSystem(new IntakeIOSpark());
                 slider = new SliderSystem(new SliderIOSpark());
                 quest = new QuestSubsystem(new QuestIOReal());
@@ -77,7 +77,7 @@ public class CompRobotContainer extends RobotContainer {
                 // sim bot
                 drive = new Drive(
                         new GyroIO() {}, new ModuleIOSim(), new ModuleIOSim(), new ModuleIOSim(), new ModuleIOSim());
-                launcher = new LauncherSystem(new InserterIO() {}, new FlywheelIO() {}, this::getidealspin);
+                launcher = new LauncherSystem(new InserterIO() {}, new FlywheelIO() {}, new FlywheelIO() {});
                 intake = new IntakeSystem(new IntakeIO() {});
                 slider = new SliderSystem(new SliderIO() {});
                 quest = new QuestSubsystem(new QuestIO() {});
@@ -87,7 +87,7 @@ public class CompRobotContainer extends RobotContainer {
                 // replay
                 drive = new Drive(
                         new GyroIO() {}, new ModuleIO() {}, new ModuleIO() {}, new ModuleIO() {}, new ModuleIO() {});
-                launcher = new LauncherSystem(new InserterIO() {}, new FlywheelIO() {}, this::getidealspin);
+                launcher = new LauncherSystem(new InserterIO() {}, new FlywheelIO() {}, new FlywheelIO() {});
                 intake = new IntakeSystem(new IntakeIO() {});
                 slider = new SliderSystem(new SliderIO() {});
                 quest = new QuestSubsystem(new QuestIO() {});
@@ -241,9 +241,6 @@ public class CompRobotContainer extends RobotContainer {
         return FieldConstants.defaultAprilTagType;
     }
 
-    public double getidealspin() {
-        return m_XboxController.getLeftTriggerAxis();
-    }
 
     @Override
     public void updateDashboardOutputs() {
