@@ -17,9 +17,10 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import org.frc5902.robot.Constants.RobotConstants;
 import org.frc5902.robot.containers.CompRobotContainer;
 import org.frc5902.robot.containers.RobotContainer;
-import org.frc5902.robot.subsystems.compbot.superstructure.Superstructure;
-import org.frc5902.robot.subsystems.compbot.superstructure.SuperstructureActions;
 import org.frc5902.robot.subsystems.led.LEDManager;
+import org.frc5902.robot.subsystems.rumble.Rumble;
+import org.frc5902.robot.subsystems.superstructure.Superstructure;
+import org.frc5902.robot.subsystems.superstructure.SuperstructureActions;
 import org.frc5902.robot.util.buildutil.BuildInfo;
 import org.frc5902.robot.util.buildutil.SystemTimeValidReader;
 import org.frc5902.robot.util.buildutil.VirtualSubsystem;
@@ -177,6 +178,7 @@ public class Robot extends LoggedRobot {
         jitAlert.set(isJITing());
         LEDManager.getInstance().periodic();
         Phases.getInstance().canScore();
+        Rumble.getInstance().periodic();
     }
 
     @Override
@@ -185,7 +187,9 @@ public class Robot extends LoggedRobot {
     }
 
     @Override
-    public void disabledInit() {}
+    public void disabledInit() {
+        Rumble.getInstance().RUMBLE_OFF_FORCED();
+    }
 
     @Override
     public void disabledPeriodic() {}

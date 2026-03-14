@@ -216,7 +216,7 @@ public class DriveCommands {
                 drive);
     }
 
-    public static Command defenceGoal(Drive drive) {
+    public static Command defenseGoal(Drive drive) {
         return Commands.run(
                 () -> {
                     drive.stopWithX();

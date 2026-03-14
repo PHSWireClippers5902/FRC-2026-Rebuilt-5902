@@ -13,24 +13,8 @@ import org.frc5902.robot.Constants.RobotConstants;
 import org.frc5902.robot.FieldConstants;
 import org.frc5902.robot.FieldConstants.AprilTagLayoutType;
 import org.frc5902.robot.Robot;
-import org.frc5902.robot.commands.auto.AutoPlease;
+import org.frc5902.robot.commands.auto.EasyAutonomousCommandFactory;
 import org.frc5902.robot.commands.drive.DriveCommands;
-import org.frc5902.robot.subsystems.compbot.agitator.AgitatorIO;
-import org.frc5902.robot.subsystems.compbot.agitator.AgitatorIOTalon;
-import org.frc5902.robot.subsystems.compbot.agitator.AgitatorSystem;
-import org.frc5902.robot.subsystems.compbot.intake.IntakeIO;
-import org.frc5902.robot.subsystems.compbot.intake.IntakeIOSpark;
-import org.frc5902.robot.subsystems.compbot.intake.IntakeSystem;
-import org.frc5902.robot.subsystems.compbot.launcher.LauncherSystem;
-import org.frc5902.robot.subsystems.compbot.launcher.flywheel.FlywheelIO;
-import org.frc5902.robot.subsystems.compbot.launcher.flywheel.FlywheelIOSpark;
-import org.frc5902.robot.subsystems.compbot.launcher.inserter.InserterIO;
-import org.frc5902.robot.subsystems.compbot.launcher.inserter.InserterIOSpark;
-import org.frc5902.robot.subsystems.compbot.slider.SliderIO;
-import org.frc5902.robot.subsystems.compbot.slider.SliderIOSpark;
-import org.frc5902.robot.subsystems.compbot.slider.SliderSystem;
-import org.frc5902.robot.subsystems.compbot.superstructure.Superstructure;
-import org.frc5902.robot.subsystems.compbot.superstructure.SuperstructureActions;
 import org.frc5902.robot.subsystems.drive.Drive;
 import org.frc5902.robot.subsystems.drive.DriveConstants;
 import org.frc5902.robot.subsystems.drive.gyro.GyroIO;
@@ -38,16 +22,31 @@ import org.frc5902.robot.subsystems.drive.gyro.GyroIO_ADIS;
 import org.frc5902.robot.subsystems.drive.modules.ModuleIO;
 import org.frc5902.robot.subsystems.drive.modules.ModuleIOSim;
 import org.frc5902.robot.subsystems.drive.modules.ModuleIOSparkAbsolute;
+import org.frc5902.robot.subsystems.intake.IntakeIO;
+import org.frc5902.robot.subsystems.intake.IntakeIOSpark;
+import org.frc5902.robot.subsystems.intake.IntakeSystem;
+import org.frc5902.robot.subsystems.launcher.LauncherSystem;
+import org.frc5902.robot.subsystems.launcher.flywheel.FlywheelIO;
+import org.frc5902.robot.subsystems.launcher.flywheel.FlywheelIOSpark;
+import org.frc5902.robot.subsystems.launcher.inserter.InserterIO;
+import org.frc5902.robot.subsystems.launcher.inserter.InserterIOSpark;
 import org.frc5902.robot.subsystems.questnav.QuestIO;
 import org.frc5902.robot.subsystems.questnav.QuestIOReal;
 import org.frc5902.robot.subsystems.questnav.QuestSubsystem;
+import org.frc5902.robot.subsystems.rumble.Rumble;
+import org.frc5902.robot.subsystems.slider.SliderIO;
+import org.frc5902.robot.subsystems.slider.SliderIOSpark;
+import org.frc5902.robot.subsystems.slider.SliderSystem;
+import org.frc5902.robot.subsystems.superstructure.Superstructure;
+import org.frc5902.robot.subsystems.superstructure.SuperstructureActions;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
+
+import java.util.Optional;
 
 public class CompRobotContainer extends RobotContainer {
     // init subsystems here
     private final Drive drive;
     private final Superstructure superstructure;
-    private final AgitatorSystem agitator;
     private final LauncherSystem launcher;
     private final IntakeSystem intake;
     private final SliderSystem slider;
@@ -71,34 +70,31 @@ public class CompRobotContainer extends RobotContainer {
                         new ModuleIOSparkAbsolute(1),
                         new ModuleIOSparkAbsolute(2),
                         new ModuleIOSparkAbsolute(3));
-                agitator = new AgitatorSystem(new AgitatorIOTalon());
-                launcher = new LauncherSystem(new InserterIOSpark(), new FlywheelIOSpark(), this::getidealspin);
+                launcher = new LauncherSystem(new InserterIOSpark(), new FlywheelIOSpark(0), new FlywheelIOSpark(1));
                 intake = new IntakeSystem(new IntakeIOSpark());
                 slider = new SliderSystem(new SliderIOSpark());
                 quest = new QuestSubsystem(new QuestIOReal());
-                superstructure = new Superstructure(agitator, intake, launcher, slider);
+                superstructure = new Superstructure(intake, launcher, slider);
                 break;
             case SIM:
                 // sim bot
                 drive = new Drive(
                         new GyroIO() {}, new ModuleIOSim(), new ModuleIOSim(), new ModuleIOSim(), new ModuleIOSim());
-                agitator = new AgitatorSystem(new AgitatorIO() {});
-                launcher = new LauncherSystem(new InserterIO() {}, new FlywheelIO() {}, this::getidealspin);
+                launcher = new LauncherSystem(new InserterIO() {}, new FlywheelIO() {}, new FlywheelIO() {});
                 intake = new IntakeSystem(new IntakeIO() {});
                 slider = new SliderSystem(new SliderIO() {});
                 quest = new QuestSubsystem(new QuestIO() {});
-                superstructure = new Superstructure(agitator, intake, launcher, slider);
+                superstructure = new Superstructure(intake, launcher, slider);
                 break;
             default:
                 // replay
                 drive = new Drive(
                         new GyroIO() {}, new ModuleIO() {}, new ModuleIO() {}, new ModuleIO() {}, new ModuleIO() {});
-                agitator = new AgitatorSystem(new AgitatorIO() {});
-                launcher = new LauncherSystem(new InserterIO() {}, new FlywheelIO() {}, this::getidealspin);
+                launcher = new LauncherSystem(new InserterIO() {}, new FlywheelIO() {}, new FlywheelIO() {});
                 intake = new IntakeSystem(new IntakeIO() {});
                 slider = new SliderSystem(new SliderIO() {});
                 quest = new QuestSubsystem(new QuestIO() {});
-                superstructure = new Superstructure(agitator, intake, launcher, slider);
+                superstructure = new Superstructure(intake, launcher, slider);
                 break;
         }
         // var autoBuilder = new AutoBuilder(drive, superstructure);
@@ -115,8 +111,8 @@ public class CompRobotContainer extends RobotContainer {
         // sysid routines
         autoChooser.addOption("Drive Wheel Radius Characterization", DriveCommands.wheelRadiusCharacterization(drive));
         autoChooser.addOption("Drive Simple FF Characterization", DriveCommands.feedforwardCharacterization(drive));
-        autoChooser.addOption("FORWARD PLEASE", AutoPlease.forwardAuto(() -> drive));
-        autoChooser.addOption("DO NOTHING", AutoPlease.doNothingAuto(() -> drive));
+        autoChooser.addOption("FORWARD PLEASE", EasyAutonomousCommandFactory.forwardAuto(() -> drive));
+        autoChooser.addOption("DO NOTHING", EasyAutonomousCommandFactory.doNothingAuto(() -> drive));
         // autoChooser.addOption("Auto pls work", AutoPlease.extendAndMoveAuto(() -> drive, () -> superstructure));
         // autoChooser.addOption(
         //         "Drive SysId (Quasistatic Forward)", drive.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
@@ -126,6 +122,8 @@ public class CompRobotContainer extends RobotContainer {
         // autoChooser.addOption("Drive SysId (Dynamic Reverse)", drive.sysIdDynamic(SysIdRoutine.Direction.kReverse));
 
         initialPositionChooser.addDefaultOption("default (0,0)", new Pose2d());
+
+        Rumble.getInstance(Optional.of(m_XboxController));
 
         configureBindings();
     }
@@ -241,15 +239,11 @@ public class CompRobotContainer extends RobotContainer {
                         1.0,
                         1.0));
 
-        m_XboxController.x().whileTrue(DriveCommands.defenceGoal(drive));
+        m_XboxController.x().whileTrue(DriveCommands.defenseGoal(drive));
     }
 
     public AprilTagLayoutType getSelectedAprilTagLayout() {
         return FieldConstants.defaultAprilTagType;
-    }
-
-    public double getidealspin() {
-        return m_XboxController.getLeftTriggerAxis();
     }
 
     @Override
