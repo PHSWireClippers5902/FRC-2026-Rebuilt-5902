@@ -10,7 +10,6 @@ import org.frc5902.robot.util.buildutil.LoggedTunableNumber;
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 
-import java.util.function.DoubleSupplier;
 
 public class LauncherSystem {
     private final InserterIO iIO;

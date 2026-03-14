@@ -191,7 +191,7 @@ public class Drive extends SubsystemBase {
             Rotation2d wheelAngle = moduleStates[i].angle;
             setpointStates[i].optimize(wheelAngle);
             setpointStates[i].cosineScale(wheelAngle);
-            modules[i].runSetpoint(setpointStatesUnoptimized[i]);
+            modules[i].runSetpoint(setpointStates[i]);
         }
     }
 
@@ -212,18 +212,15 @@ public class Drive extends SubsystemBase {
             headings[i] = ModuleConfigurations.moduleTranslations[i].getAngle();
         }
         kinematics.resetHeadings(headings);
+        SwerveModuleState[] states = kinematics.toSwerveModuleStates(getChassisSpeeds());
+        for (int i = 0; i < 4; i++) {
+            Rotation2d wheelAngle = states[i].angle;
+            states[i].optimize(wheelAngle);
+            states[i].cosineScale(wheelAngle);
+            modules[i].runSetpoint(states[i]);
+        }
     }
 
-    // // gets quasistatic test in direction (for constant determination)
-    // public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
-    //     // run 0.0 characterization THEN go to direction
-    //     return run(() -> runCharacterization(0.0)).withTimeout(1.0).andThen(sysId.quasistatic(direction));
-    // }
-
-    // // runs dynamic test in direction
-    // public Command sysIdDynamic(SysIdRoutine.Direction direction) {
-    //     return run(() -> runCharacterization(0.0)).withTimeout(1.0).andThen(sysId.dynamic(direction));
-    // }
 
     // get module states and log
     @AutoLogOutput(key = "SwerveStates/Measured")

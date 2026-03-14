@@ -10,7 +10,7 @@ import org.frc5902.robot.subsystems.drive.Drive;
 
 import java.util.function.Supplier;
 
-public class AutoPlease {
+public class EasyAutonomousCommandFactory {
 
     public static Command extendAndMoveAuto(Supplier<Drive> drive, Supplier<Superstructure> supersupplier) {
         return Commands.sequence(
