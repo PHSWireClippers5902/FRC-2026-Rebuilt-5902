@@ -82,6 +82,37 @@ public class DriveCommands {
                 drive);
     }
 
+
+    public static Command aimAtAngle(Drive drive, Supplier<Rotation2d> rotationSupplier) {
+        // configure (kP, kI, kD, -zoid: max_velocity, max_acceleration)
+        ProfiledPIDController angleController = new ProfiledPIDController(
+                0.0,0.0,0.0, new TrapezoidProfile.Constraints(0.0,0.0));
+        angleController.enableContinuousInput(-Math.PI, Math.PI);
+        return Commands.run(
+                () -> {
+					// Calculate angular speed
+					double omega = angleController.calculate(
+							drive.getGyroRotation().getRadians(),
+							rotationSupplier.get().getRadians());
+
+					// Convert to field relative speeds & send command
+					ChassisSpeeds speeds = new ChassisSpeeds(
+							0.0,
+							0.0,
+							omega);
+					boolean isFlipped = DriverStation.getAlliance().isPresent()
+							&& DriverStation.getAlliance().get() == Alliance.Red;
+					drive.runVelocity(ChassisSpeeds.fromFieldRelativeSpeeds(
+							speeds,
+							isFlipped
+									? drive.getGyroRotation().plus(new Rotation2d(Math.PI))
+									: drive.getGyroRotation()));  
+                },
+                drive
+        ).beforeStarting(
+                        () -> angleController.reset(drive.getGyroRotation().getRadians()));
+    }
+
     /**
      * Field relative drive command using joystick for linear control and PID for angular control.
      * Possible use cases include snapping to an angle, aiming at a vision target, or controlling
@@ -112,9 +143,8 @@ public class DriveCommands {
                                     linearVelocity.getX() * drive.getMaxLinearSpeedMetersPerSecond(),
                                     linearVelocity.getY() * drive.getMaxLinearSpeedMetersPerSecond(),
                                     omega);
-                            // boolean isFlipped = DriverStation.getAlliance().isPresent()
-                            //         && DriverStation.getAlliance().get() == Alliance.Red;
-                            boolean isFlipped = false;
+                            boolean isFlipped = DriverStation.getAlliance().isPresent()
+                                    && DriverStation.getAlliance().get() == Alliance.Red;
                             drive.runVelocity(ChassisSpeeds.fromFieldRelativeSpeeds(
                                     speeds,
                                     isFlipped
@@ -189,7 +219,6 @@ public class DriveCommands {
             BooleanSupplier robotRelative,
             double multiplierTRANSLATION,
             double multiplierROTATION) {
-        boolean falsevarREMOVE = true;
         return Commands.run(
                 () -> {
                     ChassisSpeeds speeds = getSpeedsFromJoysticks(
@@ -207,7 +236,6 @@ public class DriveCommands {
                                                                     && DriverStation.getAlliance()
                                                                                     .get()
                                                                             == Alliance.Red)
-                                                            || falsevarREMOVE
                                                     ? RobotState.getInstance()
                                                             .getRotation()
                                                             .plus(Rotation2d.kPi)
@@ -234,7 +262,6 @@ public class DriveCommands {
             DoubleSupplier omegaSupplier,
             BooleanSupplier robotRelative,
             Translation2d translation) {
-        boolean falsevarREMOVE = true;
         return Commands.run(
                 () -> {
                     ChassisSpeeds speeds = getSpeedsFromJoysticks(
@@ -248,7 +275,6 @@ public class DriveCommands {
                                                                     && DriverStation.getAlliance()
                                                                                     .get()
                                                                             == Alliance.Red)
-                                                            || falsevarREMOVE
                                                     ? RobotState.getInstance()
                                                             .getRotation()
                                                             .plus(Rotation2d.kPi)
