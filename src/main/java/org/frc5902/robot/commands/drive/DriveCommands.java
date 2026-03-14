@@ -82,6 +82,17 @@ public class DriveCommands {
                 drive);
     }
 
+	public static Command pointAtPose(Drive drive, Pose2d pose) {
+		return aimAtAngle(drive, () -> {
+			return pose.minus(RobotState.getInstance().getEstimatedPose()).getRotation();
+		});
+	}
+
+	public static Command pointAtPoseWhileMoving(Drive drive, DoubleSupplier xSupplier, DoubleSupplier ySupplier, Pose2d pose) {
+		return joystickDriveAtAngle(drive, xSupplier, ySupplier, () -> pose.minus(RobotState.getInstance().getEstimatedPose()).getRotation());
+	}
+	
+	
 
     public static Command aimAtAngle(Drive drive, Supplier<Rotation2d> rotationSupplier) {
         // configure (kP, kI, kD, -zoid: max_velocity, max_acceleration)
