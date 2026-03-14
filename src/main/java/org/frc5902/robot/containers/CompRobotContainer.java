@@ -10,27 +10,11 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import org.frc5902.robot.Constants.RobotConstants;
-
-import java.util.Optional;
-
 import org.frc5902.robot.FieldConstants;
 import org.frc5902.robot.FieldConstants.AprilTagLayoutType;
 import org.frc5902.robot.Robot;
 import org.frc5902.robot.commands.auto.EasyAutonomousCommandFactory;
 import org.frc5902.robot.commands.drive.DriveCommands;
-import org.frc5902.robot.subsystems.compbot.intake.IntakeIO;
-import org.frc5902.robot.subsystems.compbot.intake.IntakeIOSpark;
-import org.frc5902.robot.subsystems.compbot.intake.IntakeSystem;
-import org.frc5902.robot.subsystems.compbot.launcher.LauncherSystem;
-import org.frc5902.robot.subsystems.compbot.launcher.flywheel.FlywheelIO;
-import org.frc5902.robot.subsystems.compbot.launcher.flywheel.FlywheelIOSpark;
-import org.frc5902.robot.subsystems.compbot.launcher.inserter.InserterIO;
-import org.frc5902.robot.subsystems.compbot.launcher.inserter.InserterIOSpark;
-import org.frc5902.robot.subsystems.compbot.slider.SliderIO;
-import org.frc5902.robot.subsystems.compbot.slider.SliderIOSpark;
-import org.frc5902.robot.subsystems.compbot.slider.SliderSystem;
-import org.frc5902.robot.subsystems.compbot.superstructure.Superstructure;
-import org.frc5902.robot.subsystems.compbot.superstructure.SuperstructureActions;
 import org.frc5902.robot.subsystems.drive.Drive;
 import org.frc5902.robot.subsystems.drive.DriveConstants;
 import org.frc5902.robot.subsystems.drive.gyro.GyroIO;
@@ -38,11 +22,26 @@ import org.frc5902.robot.subsystems.drive.gyro.GyroIO_ADIS;
 import org.frc5902.robot.subsystems.drive.modules.ModuleIO;
 import org.frc5902.robot.subsystems.drive.modules.ModuleIOSim;
 import org.frc5902.robot.subsystems.drive.modules.ModuleIOSparkAbsolute;
+import org.frc5902.robot.subsystems.intake.IntakeIO;
+import org.frc5902.robot.subsystems.intake.IntakeIOSpark;
+import org.frc5902.robot.subsystems.intake.IntakeSystem;
+import org.frc5902.robot.subsystems.launcher.LauncherSystem;
+import org.frc5902.robot.subsystems.launcher.flywheel.FlywheelIO;
+import org.frc5902.robot.subsystems.launcher.flywheel.FlywheelIOSpark;
+import org.frc5902.robot.subsystems.launcher.inserter.InserterIO;
+import org.frc5902.robot.subsystems.launcher.inserter.InserterIOSpark;
 import org.frc5902.robot.subsystems.questnav.QuestIO;
 import org.frc5902.robot.subsystems.questnav.QuestIOReal;
 import org.frc5902.robot.subsystems.questnav.QuestSubsystem;
 import org.frc5902.robot.subsystems.rumble.Rumble;
+import org.frc5902.robot.subsystems.slider.SliderIO;
+import org.frc5902.robot.subsystems.slider.SliderIOSpark;
+import org.frc5902.robot.subsystems.slider.SliderSystem;
+import org.frc5902.robot.subsystems.superstructure.Superstructure;
+import org.frc5902.robot.subsystems.superstructure.SuperstructureActions;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
+
+import java.util.Optional;
 
 public class CompRobotContainer extends RobotContainer {
     // init subsystems here
@@ -57,8 +56,6 @@ public class CompRobotContainer extends RobotContainer {
     // vision? implement later, pah-lease!
     // command xbox
     private final CommandXboxController m_XboxController = new CommandXboxController(0);
-    
-
 
     private final LoggedDashboardChooser<Command> autoChooser;
     private final LoggedDashboardChooser<Pose2d> initialPositionChooser;
@@ -127,7 +124,7 @@ public class CompRobotContainer extends RobotContainer {
         initialPositionChooser.addDefaultOption("default (0,0)", new Pose2d());
 
         Rumble.getInstance(Optional.of(m_XboxController));
-        
+
         configureBindings();
     }
 
@@ -248,7 +245,6 @@ public class CompRobotContainer extends RobotContainer {
     public AprilTagLayoutType getSelectedAprilTagLayout() {
         return FieldConstants.defaultAprilTagType;
     }
-
 
     @Override
     public void updateDashboardOutputs() {

@@ -4,9 +4,9 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import org.frc5902.robot.subsystems.compbot.superstructure.Superstructure;
-import org.frc5902.robot.subsystems.compbot.superstructure.SuperstructureActions;
 import org.frc5902.robot.subsystems.drive.Drive;
+import org.frc5902.robot.subsystems.superstructure.Superstructure;
+import org.frc5902.robot.subsystems.superstructure.SuperstructureActions;
 
 import java.util.function.Supplier;
 

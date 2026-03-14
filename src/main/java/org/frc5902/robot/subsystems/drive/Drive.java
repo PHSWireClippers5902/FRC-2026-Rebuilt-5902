@@ -221,7 +221,6 @@ public class Drive extends SubsystemBase {
         }
     }
 
-
     // get module states and log
     @AutoLogOutput(key = "SwerveStates/Measured")
     private SwerveModuleState[] getModuleStates() {
