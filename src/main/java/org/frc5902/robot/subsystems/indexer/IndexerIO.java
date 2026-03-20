@@ -20,7 +20,7 @@ public interface IndexerIO {
 
     default void runVolts(double volts) {}
 
-    default void runRadiansPerSecond(double radiansPerSecond) {}
+    default void runVelocity(double rotationsPerSecond) {}
 
     default void stop() {}
 }

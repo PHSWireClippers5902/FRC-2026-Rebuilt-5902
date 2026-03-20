@@ -26,6 +26,9 @@ import org.frc5902.robot.subsystems.drive.gyro.GyroIO_ADIS;
 import org.frc5902.robot.subsystems.drive.modules.ModuleIO;
 import org.frc5902.robot.subsystems.drive.modules.ModuleIOSim;
 import org.frc5902.robot.subsystems.drive.modules.ModuleIOSparkAbsolute;
+import org.frc5902.robot.subsystems.indexer.IndexerIO;
+import org.frc5902.robot.subsystems.indexer.IndexerIOSpark;
+import org.frc5902.robot.subsystems.indexer.IndexerSystem;
 import org.frc5902.robot.subsystems.launcher.LauncherSystem;
 import org.frc5902.robot.subsystems.launcher.flywheel.FlywheelIO;
 import org.frc5902.robot.subsystems.launcher.flywheel.FlywheelIOSpark;
@@ -46,6 +49,7 @@ public class CompRobotContainer extends RobotContainer {
     private final Drive drive;
     private final Superstructure superstructure;
     private final LauncherSystem launcher;
+	private final IndexerSystem indexer;
     private final SLAMTake slamTake;
 
     @SuppressWarnings("unused")
@@ -69,8 +73,9 @@ public class CompRobotContainer extends RobotContainer {
                         new ModuleIOSparkAbsolute(3));
                 launcher = new LauncherSystem(new InserterIOSpark(), new FlywheelIOSpark(0), new FlywheelIOSpark(1));
                 slamTake = new SLAMTake(new SlamIOSpark(), new IntakeIOSpark());
+				indexer = new IndexerSystem(new IndexerIOSpark());
                 quest = new QuestSubsystem(new QuestIOReal());
-                superstructure = new Superstructure(slamTake, launcher);
+                superstructure = new Superstructure(slamTake, launcher, indexer);
                 break;
             case SIM:
                 // sim bot
@@ -78,8 +83,9 @@ public class CompRobotContainer extends RobotContainer {
                         new GyroIO() {}, new ModuleIOSim(), new ModuleIOSim(), new ModuleIOSim(), new ModuleIOSim());
                 launcher = new LauncherSystem(new InserterIO() {}, new FlywheelIO() {}, new FlywheelIO() {});
                 slamTake = new SLAMTake(new SlamIO() {}, new IntakeIO() {});
+				indexer = new IndexerSystem(new IndexerIO(){});
                 quest = new QuestSubsystem(new QuestIO() {});
-                superstructure = new Superstructure(slamTake, launcher);
+                superstructure = new Superstructure(slamTake, launcher, indexer);
                 break;
             default:
                 // replay
@@ -87,8 +93,9 @@ public class CompRobotContainer extends RobotContainer {
                         new GyroIO() {}, new ModuleIO() {}, new ModuleIO() {}, new ModuleIO() {}, new ModuleIO() {});
                 launcher = new LauncherSystem(new InserterIO() {}, new FlywheelIO() {}, new FlywheelIO() {});
                 slamTake = new SLAMTake(new SlamIO() {}, new IntakeIO() {});
+				indexer = new IndexerSystem(new IndexerIO(){});
                 quest = new QuestSubsystem(new QuestIO() {});
-                superstructure = new Superstructure(slamTake, launcher);
+                superstructure = new Superstructure(slamTake, launcher, indexer);
                 break;
         }
         // var autoBuilder = new AutoBuilder(drive, superstructure);
@@ -138,7 +145,6 @@ public class CompRobotContainer extends RobotContainer {
 
         m_XboxController.rightStick().onTrue(DriveCommands.resetGyroscope(drive));
 
-        m_XboxController.button(8).toggleOnTrue(Superstructure.getInstance().SWAP_KILL_SYSTEMS());
 
         m_XboxController
                 .rightTrigger(0.2)
@@ -153,15 +159,28 @@ public class CompRobotContainer extends RobotContainer {
                 .leftTrigger(0.2)
                 .onTrue(superstructure.addCommandToScheduler(SuperstructureActions.LAUNCH_STUPID))
                 .onFalse(superstructure.removeCommandFromScheduler(SuperstructureActions.LAUNCH_STUPID));
-        
 
-        m_XboxController
-                .a()
-                .whileTrue(DriveCommands.joystickDriveAtAngle(
-                        drive,
-                        () -> -m_XboxController.getLeftY(),
-                        () -> -m_XboxController.getLeftX(),
-                        () -> Rotation2d.fromDegrees(90)));
+        m_XboxController.b().whileTrue(
+			superstructure.addCommandToScheduler(SuperstructureActions.MOVE_INTAKE_UP)
+		).whileFalse(
+			superstructure.addCommandToScheduler(SuperstructureActions.MOVE_INTAKE_UP)
+		);
+
+		m_XboxController.y().whileTrue(
+			superstructure.addCommandToScheduler(SuperstructureActions.MOVE_INTAKE_DOWN)
+		).whileFalse(
+			superstructure.addCommandToScheduler(SuperstructureActions.MOVE_INTAKE_DOWN)
+		);
+
+
+
+        // m_XboxController
+        //         .a()
+        //         .whileTrue(DriveCommands.joystickDriveAtAngle(
+        //                 drive,
+        //                 () -> -m_XboxController.getLeftY(),
+        //                 () -> -m_XboxController.getLeftX(),
+        //                 () -> Rotation2d.fromDegrees(90)));
 
         m_XboxController
                 .povLeft()
@@ -211,18 +230,18 @@ public class CompRobotContainer extends RobotContainer {
                                 -DriveConstants.ModuleConfigurations.driveBaseRadius,
                                 DriveConstants.ModuleConfigurations.driveBaseRadius)));
 
-        m_XboxController
-                .leftBumper()
-                .whileTrue(DriveCommands.joystickDrive(
-                        drive,
-                        () -> -m_XboxController.getLeftY(),
-                        () -> -m_XboxController.getLeftX(),
-                        () -> m_XboxController.getRightX(),
-                        () -> false,
-                        1.0,
-                        1.0));
+        // m_XboxController
+        //         .leftBumper()
+        //         .whileTrue(DriveCommands.joystickDrive(
+        //                 drive,
+        //                 () -> -m_XboxController.getLeftY(),
+        //                 () -> -m_XboxController.getLeftX(),
+        //                 () -> m_XboxController.getRightX(),
+        //                 () -> false,
+        //                 1.0,
+        //                 1.0));
 
-        m_XboxController.x().whileTrue(DriveCommands.defenseGoal(drive));
+        // m_XboxController.x().whileTrue(DriveCommands.defenseGoal(drive));
     }
 
     public AprilTagLayoutType getSelectedAprilTagLayout() {

@@ -79,8 +79,8 @@ public class IndexerIOSpark implements IndexerIO {
     }
 
     @Override
-    public void runRadiansPerSecond(double radiansPerSecond) {
-        IndexerController.setSetpoint(radiansPerSecond, ControlType.kVelocity);
+    public void runVelocity(double rotationsPerSecond) {
+        IndexerController.setSetpoint(rotationsPerSecond, ControlType.kVelocity);
     }
 
     @Override

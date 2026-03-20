@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import lombok.Getter;
 import lombok.Setter;
 import org.frc5902.robot.subsystems.SLAMtake.SLAMTake;
+import org.frc5902.robot.subsystems.indexer.IndexerSystem;
 import org.frc5902.robot.subsystems.launcher.LauncherSystem;
 import org.frc5902.robot.subsystems.superstructure.SuperstructureActions.SuperstructureAction;
 import org.littletonrobotics.junction.AutoLogOutput;
@@ -23,6 +24,9 @@ public class Superstructure extends SubsystemBase {
     private final LauncherSystem launch;
 
     @Getter
+    private final IndexerSystem indexer;
+
+    @Getter
     private static Superstructure instance = null;
 
     @Getter
@@ -35,11 +39,12 @@ public class Superstructure extends SubsystemBase {
 
     private ArrayList<SuperstructureAction> scheduled_goals = new ArrayList<SuperstructureAction>();
 
-    public Superstructure(SLAMTake slam, LauncherSystem launch) {
+    public Superstructure(SLAMTake slam, LauncherSystem launch, IndexerSystem indexer) {
         // schedule the default command, deploy & idle
         this.slam = slam;
         this.launch = launch;
-        SuperstructureAction.setStaticSubsystems(launch, slam);
+        this.indexer = indexer;
+        SuperstructureAction.setStaticSubsystems(launch, slam, indexer);
         scheduled_goals.add(SuperstructureActions.DEPLOY_IDLE);
         instance = this;
     }

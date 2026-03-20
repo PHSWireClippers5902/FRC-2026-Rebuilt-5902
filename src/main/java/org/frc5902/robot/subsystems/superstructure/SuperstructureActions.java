@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 import org.frc5902.robot.subsystems.SLAMtake.SLAMTake;
+import org.frc5902.robot.subsystems.indexer.IndexerSystem;
 import org.frc5902.robot.subsystems.launcher.LauncherSystem;
 
 public class SuperstructureActions {
@@ -70,27 +71,34 @@ public class SuperstructureActions {
         @Builder.Default
         private SLAMTake.Goal slamGoal = SLAMTake.Goal.STOP;
 
+		@Builder.Default
+		private IndexerSystem.Goal indexerGoal = IndexerSystem.Goal.STOP;
+
         @Builder.Default
         @Getter
         private int priority = 1;
 
         private static LauncherSystem launcherSystem = null;
         private static SLAMTake slamSystem = null;
+		private static IndexerSystem indexerSystem = null;
 
         /* REQUIRED */
-        public static void setStaticSubsystems(LauncherSystem ls, SLAMTake ss) {
+        public static void setStaticSubsystems(LauncherSystem ls, SLAMTake ss, IndexerSystem is) {
             launcherSystem = ls;
             slamSystem = ss;
+			indexerSystem = is;
         }
 
         public void set() {
             // set goals
             launcherSystem.setGoal(launcherGoal);
             slamSystem.setGoal(slamGoal);
+			indexerSystem.setGoal(indexerGoal);
 
             // run periodic()
             launcherSystem.periodic();
             slamSystem.periodic();
+			indexerSystem.periodic();
         }
     }
 }
