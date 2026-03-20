@@ -10,8 +10,8 @@ public interface IndexerIO {
 
     record IndexerIOData(
             boolean motorConnected,
-            double positionRads,
-            double velocityRadsPerSec,
+            double positionRotations,
+            double velocityRPS,
             double appliedVoltage,
             double tempCelsius,
             double current) {}

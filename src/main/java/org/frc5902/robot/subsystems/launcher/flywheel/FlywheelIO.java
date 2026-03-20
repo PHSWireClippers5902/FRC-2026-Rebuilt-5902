@@ -10,8 +10,8 @@ public interface FlywheelIO {
 
     record FlywheelIOData(
             boolean motorConnected,
-            double positionRads,
-            double velocityRadsPerSec,
+            double positionRotations,
+            double velocityRPS,
             double appliedVoltage,
             double current,
             double tempCelsius) {}

@@ -6,7 +6,6 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import lombok.Getter;
 import lombok.Setter;
-
 import org.frc5902.robot.subsystems.SLAMtake.SLAMTake;
 import org.frc5902.robot.subsystems.launcher.LauncherSystem;
 import org.frc5902.robot.subsystems.superstructure.SuperstructureActions.SuperstructureAction;
@@ -22,7 +21,6 @@ public class Superstructure extends SubsystemBase {
 
     @Getter
     private final LauncherSystem launch;
-
 
     @Getter
     private static Superstructure instance = null;

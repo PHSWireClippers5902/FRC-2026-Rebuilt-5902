@@ -10,7 +10,7 @@ public interface SlamIO {
 
     record SlamIOData(
             boolean motorConnected,
-            double positionRads,
+            double positionRotations,
             double velocityRadsPerSec,
             double appliedVoltage,
             double tempCelsius,

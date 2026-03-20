@@ -10,7 +10,7 @@ public interface IntakeIO {
 
     record IntakeIOData(
             boolean motorConnected,
-            double positionRads,
+            double positionRotations,
             double velocityRadsPerSec,
             double appliedVoltage,
             double tempCelsius,

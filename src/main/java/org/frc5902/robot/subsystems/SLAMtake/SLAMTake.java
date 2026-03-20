@@ -2,17 +2,14 @@ package org.frc5902.robot.subsystems.SLAMtake;
 
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import lombok.Getter;
 import lombok.Setter;
-
 import org.frc5902.robot.subsystems.SLAMtake.intake.IntakeIO;
 import org.frc5902.robot.subsystems.SLAMtake.intake.IntakeIOInputsAutoLogged;
 import org.frc5902.robot.subsystems.SLAMtake.slam.SlamIO;
 import org.frc5902.robot.subsystems.SLAMtake.slam.SlamIOInputsAutoLogged;
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
-
 
 public class SLAMTake {
 
@@ -22,11 +19,13 @@ public class SLAMTake {
     public SlamIOInputsAutoLogged sIOInputs = new SlamIOInputsAutoLogged();
     public IntakeIOInputsAutoLogged iIOInputs = new IntakeIOInputsAutoLogged();
 
-
     private final Alert SlamDisconnectedAlert = new Alert("The SLAM Motor has been disconnected. ", AlertType.kError);
-    private final Alert IntakeDisconnectedAlert = new Alert("The Intake Motor has been disconnected. ", AlertType.kError);
+    private final Alert IntakeDisconnectedAlert =
+            new Alert("The Intake Motor has been disconnected. ", AlertType.kError);
 
-    @Getter @Setter @AutoLogOutput
+    @Getter
+    @Setter
+    @AutoLogOutput
     private Goal goal = Goal.STOP;
 
     public SLAMTake(SlamIO sIO, IntakeIO iIO) {
@@ -34,7 +33,6 @@ public class SLAMTake {
         this.intakeIO = iIO;
     }
 
-    
     public void periodic() {
         slamIO.updateInputs(sIOInputs);
         intakeIO.updateInputs(iIOInputs);
@@ -46,35 +44,35 @@ public class SLAMTake {
         IntakeDisconnectedAlert.set(!sIOInputs.data.motorConnected());
 
         switch (goal) {
-            case LOWER_STUPID: 
+            case LOWER_STUPID:
                 runVelocities(0, 0.1);
                 break;
-            case RAISE_STUPID: 
+            case RAISE_STUPID:
                 runVelocities(0, -0.1);
                 break;
-            case RAISED: 
+            case RAISED:
                 stop();
                 break;
-            case LOWERED_IDLE: 
+            case LOWERED_IDLE:
                 stop();
                 break;
-            case LOWERED_INTAKE: 
+            case LOWERED_INTAKE:
+                runVelocities(0.3,0);
+                break;
+            case LOWERED_EXTAKE:
+                runVelocities(-0.3,0);
+                break;
+            case SHUFFLE:
                 stop();
                 break;
-            case LOWERED_EXTAKE: 
+            case STOP:
                 stop();
                 break;
-            case SHUFFLE: 
-                stop();
+            default: {
                 break;
-            case STOP: 
-                stop();
-                break;
-            default: {break;}
+            }
         }
     }
-
-    
 
     public enum Goal {
         RAISE_STUPID,
@@ -102,5 +100,9 @@ public class SLAMTake {
     public void stop() {
         intakeIO.stop();
         slamIO.stop();
+    }
+    
+    public double getSlamPositionRotations() {
+        return sIOInputs.data.positionRotations();
     }
 }

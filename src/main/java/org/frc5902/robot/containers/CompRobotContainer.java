@@ -7,7 +7,6 @@ import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import org.frc5902.robot.Constants.RobotConstants;
 import org.frc5902.robot.FieldConstants;
@@ -49,7 +48,6 @@ public class CompRobotContainer extends RobotContainer {
     private final LauncherSystem launcher;
     private final SLAMTake slamTake;
 
-    
     @SuppressWarnings("unused")
     private final QuestSubsystem quest;
     // vision? implement later, pah-lease!
@@ -79,7 +77,7 @@ public class CompRobotContainer extends RobotContainer {
                 drive = new Drive(
                         new GyroIO() {}, new ModuleIOSim(), new ModuleIOSim(), new ModuleIOSim(), new ModuleIOSim());
                 launcher = new LauncherSystem(new InserterIO() {}, new FlywheelIO() {}, new FlywheelIO() {});
-                slamTake = new SLAMTake(new SlamIO() {}, new IntakeIO(){});
+                slamTake = new SLAMTake(new SlamIO() {}, new IntakeIO() {});
                 quest = new QuestSubsystem(new QuestIO() {});
                 superstructure = new Superstructure(slamTake, launcher);
                 break;
@@ -88,7 +86,7 @@ public class CompRobotContainer extends RobotContainer {
                 drive = new Drive(
                         new GyroIO() {}, new ModuleIO() {}, new ModuleIO() {}, new ModuleIO() {}, new ModuleIO() {});
                 launcher = new LauncherSystem(new InserterIO() {}, new FlywheelIO() {}, new FlywheelIO() {});
-                slamTake = new SLAMTake(new SlamIO() {}, new IntakeIO(){});
+                slamTake = new SLAMTake(new SlamIO() {}, new IntakeIO() {});
                 quest = new QuestSubsystem(new QuestIO() {});
                 superstructure = new Superstructure(slamTake, launcher);
                 break;
@@ -141,16 +139,12 @@ public class CompRobotContainer extends RobotContainer {
         m_XboxController.rightStick().onTrue(DriveCommands.resetGyroscope(drive));
 
         m_XboxController.button(8).toggleOnTrue(Superstructure.getInstance().SWAP_KILL_SYSTEMS());
-        
 
         m_XboxController
                 .rightTrigger(0.2)
                 .onTrue(superstructure.addCommandToScheduler(SuperstructureActions.INTAKE))
                 .onFalse(superstructure.removeCommandFromScheduler(SuperstructureActions.INTAKE));
-        m_XboxController
-                .rightBumper()
-                .onTrue(superstructure.addCommandToScheduler(SuperstructureActions.OUTTAKE))
-                .onFalse(superstructure.removeCommandFromScheduler(SuperstructureActions.OUTTAKE));
+        
         m_XboxController
                 .b()
                 .onTrue(superstructure.addCommandToScheduler(SuperstructureActions.READY_LAUNCHER_STUPID))
@@ -159,10 +153,7 @@ public class CompRobotContainer extends RobotContainer {
                 .leftTrigger(0.2)
                 .onTrue(superstructure.addCommandToScheduler(SuperstructureActions.LAUNCH_STUPID))
                 .onFalse(superstructure.removeCommandFromScheduler(SuperstructureActions.LAUNCH_STUPID));
-        m_XboxController
-                .y()
-                .onTrue(superstructure.addCommandToScheduler(SuperstructureActions.CLEAR_FLYWHEEL_JAM))
-                .onFalse(superstructure.removeCommandFromScheduler(SuperstructureActions.CLEAR_FLYWHEEL_JAM));
+        
 
         m_XboxController
                 .a()
