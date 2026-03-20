@@ -1,4 +1,4 @@
-package org.frc5902.robot.subsystems.intake;
+package org.frc5902.robot.subsystems.SLAMtake.intake;
 
 import com.revrobotics.PersistMode;
 import com.revrobotics.REVLibError;
@@ -13,7 +13,7 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.filter.Debouncer.DebounceType;
-import org.frc5902.robot.subsystems.intake.IntakeSystemConstants.IntakeConstants;
+import org.frc5902.robot.subsystems.SLAMtake.intake.IntakeSystemConstants.IntakeConstants;
 
 import java.util.function.DoubleSupplier;
 

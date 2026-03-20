@@ -82,45 +82,43 @@ public class DriveCommands {
                 drive);
     }
 
-	public static Command pointAtPose(Drive drive, Pose2d pose) {
-		return aimAtAngle(drive, () -> {
-			return pose.minus(RobotState.getInstance().getEstimatedPose()).getRotation();
-		});
-	}
+    public static Command pointAtPose(Drive drive, Pose2d pose) {
+        return aimAtAngle(drive, () -> {
+            return pose.minus(RobotState.getInstance().getEstimatedPose()).getRotation();
+        });
+    }
 
-	public static Command pointAtPoseWhileMoving(Drive drive, DoubleSupplier xSupplier, DoubleSupplier ySupplier, Pose2d pose) {
-		return joystickDriveAtAngle(drive, xSupplier, ySupplier, () -> pose.minus(RobotState.getInstance().getEstimatedPose()).getRotation());
-	}
-	
-	
+    public static Command pointAtPoseWhileMoving(
+            Drive drive, DoubleSupplier xSupplier, DoubleSupplier ySupplier, Pose2d pose) {
+        return joystickDriveAtAngle(drive, xSupplier, ySupplier, () -> pose.minus(
+                        RobotState.getInstance().getEstimatedPose())
+                .getRotation());
+    }
 
     public static Command aimAtAngle(Drive drive, Supplier<Rotation2d> rotationSupplier) {
         // configure (kP, kI, kD, -zoid: max_velocity, max_acceleration)
-        ProfiledPIDController angleController = new ProfiledPIDController(
-                0.0,0.0,0.0, new TrapezoidProfile.Constraints(0.0,0.0));
+        ProfiledPIDController angleController =
+                new ProfiledPIDController(0.0, 0.0, 0.0, new TrapezoidProfile.Constraints(0.0, 0.0));
         angleController.enableContinuousInput(-Math.PI, Math.PI);
         return Commands.run(
-                () -> {
-					// Calculate angular speed
-					double omega = angleController.calculate(
-							drive.getGyroRotation().getRadians(),
-							rotationSupplier.get().getRadians());
+                        () -> {
+                            // Calculate angular speed
+                            double omega = angleController.calculate(
+                                    drive.getGyroRotation().getRadians(),
+                                    rotationSupplier.get().getRadians());
 
-					// Convert to field relative speeds & send command
-					ChassisSpeeds speeds = new ChassisSpeeds(
-							0.0,
-							0.0,
-							omega);
-					boolean isFlipped = DriverStation.getAlliance().isPresent()
-							&& DriverStation.getAlliance().get() == Alliance.Red;
-					drive.runVelocity(ChassisSpeeds.fromFieldRelativeSpeeds(
-							speeds,
-							isFlipped
-									? drive.getGyroRotation().plus(new Rotation2d(Math.PI))
-									: drive.getGyroRotation()));  
-                },
-                drive
-        ).beforeStarting(
+                            // Convert to field relative speeds & send command
+                            ChassisSpeeds speeds = new ChassisSpeeds(0.0, 0.0, omega);
+                            boolean isFlipped = DriverStation.getAlliance().isPresent()
+                                    && DriverStation.getAlliance().get() == Alliance.Red;
+                            drive.runVelocity(ChassisSpeeds.fromFieldRelativeSpeeds(
+                                    speeds,
+                                    isFlipped
+                                            ? drive.getGyroRotation().plus(new Rotation2d(Math.PI))
+                                            : drive.getGyroRotation()));
+                        },
+                        drive)
+                .beforeStarting(
                         () -> angleController.reset(drive.getGyroRotation().getRadians()));
     }
 
@@ -244,9 +242,9 @@ public class DriveCommands {
                                     : ChassisSpeeds.fromFieldRelativeSpeeds(
                                             speeds,
                                             (DriverStation.getAlliance().isPresent()
-                                                                    && DriverStation.getAlliance()
-                                                                                    .get()
-                                                                            == Alliance.Red)
+                                                            && DriverStation.getAlliance()
+                                                                            .get()
+                                                                    == Alliance.Red)
                                                     ? RobotState.getInstance()
                                                             .getRotation()
                                                             .plus(Rotation2d.kPi)
@@ -283,9 +281,9 @@ public class DriveCommands {
                                     : ChassisSpeeds.fromFieldRelativeSpeeds(
                                             speeds,
                                             (DriverStation.getAlliance().isPresent()
-                                                                    && DriverStation.getAlliance()
-                                                                                    .get()
-                                                                            == Alliance.Red)
+                                                            && DriverStation.getAlliance()
+                                                                            .get()
+                                                                    == Alliance.Red)
                                                     ? RobotState.getInstance()
                                                             .getRotation()
                                                             .plus(Rotation2d.kPi)

@@ -39,7 +39,7 @@ public class LauncherConstants {
     }
 
     public static FlywheelConstants FlywheelLeftConstants = FlywheelConstants.builder()
-            .FlywheelCANID(50)
+            .FlywheelCANID(52)
             .inverted(true)
             .reduction(1)
             .StallLimit(70)
@@ -70,7 +70,7 @@ public class LauncherConstants {
         public static int FreeLimit = 45;
         public static PID inserterPID =
                 PID.builder().proportional(0.2).deriviative(0.1).build();
-        public static double inserterPositionConversionFactor = 1.0;
+        public static double inserterPositionConversionFactor = 1.0 / 3.0;
         public static double inserterVelocityConversionFactor = inserterPositionConversionFactor / 60;
         public static IdleMode idleMode = IdleMode.kBrake;
     }

@@ -1,4 +1,4 @@
-package org.frc5902.robot.subsystems.intake;
+package org.frc5902.robot.subsystems.SLAMtake.intake;
 
 import org.littletonrobotics.junction.AutoLog;
 

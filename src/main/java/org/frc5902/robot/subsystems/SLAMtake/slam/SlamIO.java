@@ -1,24 +1,22 @@
-package org.frc5902.robot.subsystems.slider;
+package org.frc5902.robot.subsystems.SLAMtake.slam;
 
 import org.littletonrobotics.junction.AutoLog;
 
-public interface SliderIO {
+public interface SlamIO {
     @AutoLog
-    class SliderIOInputs {
-        public SliderIOData data = new SliderIOData(false, 0.0, 0.0, 0.0, 0.0, false);
+    class SlamIOInputs {
+        public SlamIOData data = new SlamIOData(false, 0.0, 0.0, 0.0, 0.0, 0.0);
     }
 
-    record SliderIOData(
+    record SlamIOData(
             boolean motorConnected,
             double positionRads,
             double velocityRadsPerSec,
             double appliedVoltage,
             double tempCelsius,
-            boolean limitSwitchActivated) {}
+            double current) {}
 
-    default void updateInputs(SliderIOInputs inputs) {}
-
-    default void runToPosition(double position) {}
+    default void updateInputs(SlamIOInputs inputs) {}
 
     default void runVolts(double volts) {}
 

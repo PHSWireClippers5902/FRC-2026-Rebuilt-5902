@@ -15,6 +15,11 @@ import org.frc5902.robot.FieldConstants.AprilTagLayoutType;
 import org.frc5902.robot.Robot;
 import org.frc5902.robot.commands.auto.EasyAutonomousCommandFactory;
 import org.frc5902.robot.commands.drive.DriveCommands;
+import org.frc5902.robot.subsystems.SLAMtake.SLAMTake;
+import org.frc5902.robot.subsystems.SLAMtake.intake.IntakeIO;
+import org.frc5902.robot.subsystems.SLAMtake.intake.IntakeIOSpark;
+import org.frc5902.robot.subsystems.SLAMtake.slam.SlamIO;
+import org.frc5902.robot.subsystems.SLAMtake.slam.SlamIOSpark;
 import org.frc5902.robot.subsystems.drive.Drive;
 import org.frc5902.robot.subsystems.drive.DriveConstants;
 import org.frc5902.robot.subsystems.drive.gyro.GyroIO;
@@ -22,9 +27,6 @@ import org.frc5902.robot.subsystems.drive.gyro.GyroIO_ADIS;
 import org.frc5902.robot.subsystems.drive.modules.ModuleIO;
 import org.frc5902.robot.subsystems.drive.modules.ModuleIOSim;
 import org.frc5902.robot.subsystems.drive.modules.ModuleIOSparkAbsolute;
-import org.frc5902.robot.subsystems.intake.IntakeIO;
-import org.frc5902.robot.subsystems.intake.IntakeIOSpark;
-import org.frc5902.robot.subsystems.intake.IntakeSystem;
 import org.frc5902.robot.subsystems.launcher.LauncherSystem;
 import org.frc5902.robot.subsystems.launcher.flywheel.FlywheelIO;
 import org.frc5902.robot.subsystems.launcher.flywheel.FlywheelIOSpark;
@@ -34,9 +36,6 @@ import org.frc5902.robot.subsystems.questnav.QuestIO;
 import org.frc5902.robot.subsystems.questnav.QuestIOReal;
 import org.frc5902.robot.subsystems.questnav.QuestSubsystem;
 import org.frc5902.robot.subsystems.rumble.Rumble;
-import org.frc5902.robot.subsystems.slider.SliderIO;
-import org.frc5902.robot.subsystems.slider.SliderIOSpark;
-import org.frc5902.robot.subsystems.slider.SliderSystem;
 import org.frc5902.robot.subsystems.superstructure.Superstructure;
 import org.frc5902.robot.subsystems.superstructure.SuperstructureActions;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
@@ -48,9 +47,9 @@ public class CompRobotContainer extends RobotContainer {
     private final Drive drive;
     private final Superstructure superstructure;
     private final LauncherSystem launcher;
-    private final IntakeSystem intake;
-    private final SliderSystem slider;
+    private final SLAMTake slamTake;
 
+    
     @SuppressWarnings("unused")
     private final QuestSubsystem quest;
     // vision? implement later, pah-lease!
@@ -71,30 +70,27 @@ public class CompRobotContainer extends RobotContainer {
                         new ModuleIOSparkAbsolute(2),
                         new ModuleIOSparkAbsolute(3));
                 launcher = new LauncherSystem(new InserterIOSpark(), new FlywheelIOSpark(0), new FlywheelIOSpark(1));
-                intake = new IntakeSystem(new IntakeIOSpark());
-                slider = new SliderSystem(new SliderIOSpark());
+                slamTake = new SLAMTake(new SlamIOSpark(), new IntakeIOSpark());
                 quest = new QuestSubsystem(new QuestIOReal());
-                superstructure = new Superstructure(intake, launcher, slider);
+                superstructure = new Superstructure(slamTake, launcher);
                 break;
             case SIM:
                 // sim bot
                 drive = new Drive(
                         new GyroIO() {}, new ModuleIOSim(), new ModuleIOSim(), new ModuleIOSim(), new ModuleIOSim());
                 launcher = new LauncherSystem(new InserterIO() {}, new FlywheelIO() {}, new FlywheelIO() {});
-                intake = new IntakeSystem(new IntakeIO() {});
-                slider = new SliderSystem(new SliderIO() {});
+                slamTake = new SLAMTake(new SlamIO() {}, new IntakeIO(){});
                 quest = new QuestSubsystem(new QuestIO() {});
-                superstructure = new Superstructure(intake, launcher, slider);
+                superstructure = new Superstructure(slamTake, launcher);
                 break;
             default:
                 // replay
                 drive = new Drive(
                         new GyroIO() {}, new ModuleIO() {}, new ModuleIO() {}, new ModuleIO() {}, new ModuleIO() {});
                 launcher = new LauncherSystem(new InserterIO() {}, new FlywheelIO() {}, new FlywheelIO() {});
-                intake = new IntakeSystem(new IntakeIO() {});
-                slider = new SliderSystem(new SliderIO() {});
+                slamTake = new SLAMTake(new SlamIO() {}, new IntakeIO(){});
                 quest = new QuestSubsystem(new QuestIO() {});
-                superstructure = new Superstructure(intake, launcher, slider);
+                superstructure = new Superstructure(slamTake, launcher);
                 break;
         }
         // var autoBuilder = new AutoBuilder(drive, superstructure);
@@ -145,11 +141,7 @@ public class CompRobotContainer extends RobotContainer {
         m_XboxController.rightStick().onTrue(DriveCommands.resetGyroscope(drive));
 
         m_XboxController.button(8).toggleOnTrue(Superstructure.getInstance().SWAP_KILL_SYSTEMS());
-        // // really technically want to override state...
-        m_XboxController
-                .button(7)
-                .onTrue(new InstantCommand(
-                        () -> superstructure.getSlide().setState(SliderSystem.State.DEPLOYED), superstructure));
+        
 
         m_XboxController
                 .rightTrigger(0.2)
