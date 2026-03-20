@@ -36,14 +36,35 @@ public class IndexerSystem {
         
 
         switch (goal) {
-            
-            default: break;
+            case MOVE_IN: 
+                runLaunchVelocities(0.3);
+                break;
+            case MOVE_OUT: 
+                runLaunchVelocities(0.3);
+                break;
+            case STOP: stop(); break;
+            default: stop(); break;
         }
     }
 
 
+    public void runLaunchVolts(double indexVolts) {
+        indexIO.runVolts(indexVolts);
+    }
+
+    public void runLaunchVelocities(double rotationsPerSecond) {
+        Logger.recordOutput("Outputs/Indexer/IndexVelocity", rotationsPerSecond);
+        indexIO.runVelocity(rotationsPerSecond);
+    }
+
+    public void stop() {
+        indexIO.stop();
+    }
+
 
     public enum Goal {
+        MOVE_IN,
+        MOVE_OUT,
         STOP
     }
 }
