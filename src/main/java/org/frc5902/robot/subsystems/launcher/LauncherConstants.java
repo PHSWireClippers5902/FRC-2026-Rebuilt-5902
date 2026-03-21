@@ -47,7 +47,7 @@ public class LauncherConstants {
             .flywheelPID(PID.builder().proportional(1).deriviative(0.1).build())
             .flywheelPositionConversionFactor(1.0)
             .flywheelVelocityConversionFactor(1.0 / 60)
-            .idleMode(IdleMode.kBrake)
+            .idleMode(IdleMode.kCoast)
             .build();
 
     public static FlywheelConstants FlywheelRightConstants = FlywheelConstants.builder()
@@ -59,7 +59,7 @@ public class LauncherConstants {
             .flywheelPID(PID.builder().proportional(1).deriviative(0.1).build())
             .flywheelPositionConversionFactor(1.0)
             .flywheelVelocityConversionFactor(1.0 / 60)
-            .idleMode(IdleMode.kBrake)
+            .idleMode(IdleMode.kCoast)
             .build();
 
     public class InserterConstants {

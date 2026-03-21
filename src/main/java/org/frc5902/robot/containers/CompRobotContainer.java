@@ -150,10 +150,10 @@ public class CompRobotContainer extends RobotContainer {
                 .onTrue(superstructure.addCommandToScheduler(SuperstructureActions.INTAKE))
                 .onFalse(superstructure.removeCommandFromScheduler(SuperstructureActions.INTAKE));
 
-        m_XboxController
-                .b()
-                .onTrue(superstructure.addCommandToScheduler(SuperstructureActions.READY_LAUNCHER_STUPID))
-                .onFalse(superstructure.removeCommandFromScheduler(SuperstructureActions.READY_LAUNCHER_STUPID));
+        // m_XboxController
+        //         .b()
+        //         .onTrue(superstructure.addCommandToScheduler(SuperstructureActions.READY_LAUNCHER_STUPID))
+        //         .onFalse(superstructure.removeCommandFromScheduler(SuperstructureActions.READY_LAUNCHER_STUPID));
         m_XboxController
                 .leftTrigger(0.2)
                 .onTrue(superstructure.addCommandToScheduler(SuperstructureActions.LAUNCH_STUPID))

@@ -45,10 +45,10 @@ public class SLAMTake {
 
         switch (goal) {
             case LOWER_STUPID:
-                runVelocities(0, 0.1);
+                runVelocities(0, 0.3);
                 break;
             case RAISE_STUPID:
-                runVelocities(0, -0.1);
+                runVelocities(0, -0.3);
                 break;
             case RAISED:
                 stop();
@@ -68,9 +68,10 @@ public class SLAMTake {
             case STOP:
                 stop();
                 break;
-            default: {
+            default: 
+                stop();
                 break;
-            }
+
         }
     }
 
