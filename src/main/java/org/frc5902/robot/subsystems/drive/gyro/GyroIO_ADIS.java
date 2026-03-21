@@ -6,6 +6,7 @@ import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.ADIS16470_IMU;
 import edu.wpi.first.wpilibj.ADIS16470_IMU.IMUAxis;
+import org.frc5902.robot.subsystems.drive.DriveConstants;
 import org.frc5902.robot.subsystems.drive.SparkOdometryThread;
 
 import java.util.Queue;
@@ -33,7 +34,7 @@ public class GyroIO_ADIS implements GyroIO {
         ADIS_Gyro = new ADIS16470_IMU();
         ADIS_Gyro.calibrate();
         ADIS_Gyro.reset();
-        ADIS_Gyro.setGyroAngle(IMUAxis.kYaw, 0.0);
+        resetGyro(DriveConstants.PhysicalConstraints.ROBOT_TO_GYRO_ANGLES);
         yawTimestampQueue = SparkOdometryThread.getInstance().makeTimestampQueue();
         yawPositionQueue = SparkOdometryThread.getInstance().registerSignal(ADIS_Gyro::getAngle);
 
@@ -53,11 +54,19 @@ public class GyroIO_ADIS implements GyroIO {
     @Override
     public void updateInputs(GyroIOInputs inputs) {
         inputs.data = new GyroIOData(
-            ADIS_Gyro.isConnected(),
-            new Rotation3d(Units.degreesToRadians(roll.getAsDouble()),Units.degreesToRadians(pitch.getAsDouble()), Units.degreesToRadians(yaw.getAsDouble())),
-            new Translation3d(Units.degreesToRadians(rollVelocity.getAsDouble()),Units.degreesToRadians(pitchVelocity.getAsDouble()),Units.degreesToRadians(yawVelocity.getAsDouble())),
-            new Translation3d(rollAcceleration.getAsDouble(), pitchAcceleration.getAsDouble(), yawAcceleration.getAsDouble())
-        );
+                ADIS_Gyro.isConnected(),
+                new Rotation3d(
+                        Units.degreesToRadians(roll.getAsDouble()),
+                        Units.degreesToRadians(pitch.getAsDouble()),
+                        Units.degreesToRadians(yaw.getAsDouble())),
+                new Translation3d(
+                        Units.degreesToRadians(rollVelocity.getAsDouble()),
+                        Units.degreesToRadians(pitchVelocity.getAsDouble()),
+                        Units.degreesToRadians(yawVelocity.getAsDouble())),
+                new Translation3d(
+                        rollAcceleration.getAsDouble(),
+                        pitchAcceleration.getAsDouble(),
+                        yawAcceleration.getAsDouble()));
         // inputs.data = new GyroIOData(
         //         ADIS_Gyro.isConnected(),
         //         Rotation2d.fromDegrees(yaw.getAsDouble()),

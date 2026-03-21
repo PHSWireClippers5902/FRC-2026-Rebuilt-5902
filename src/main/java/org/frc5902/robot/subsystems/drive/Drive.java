@@ -56,7 +56,7 @@ public class Drive extends SubsystemBase {
     private final SwerveSetpointGenerator swerveSetpointGenerator;
 
     public Rotation3d trueGyroPosition = new Rotation3d();
-    
+
     public Drive(GyroIO gyroIO, ModuleIO flModuleIO, ModuleIO frModuleIO, ModuleIO blModuleIO, ModuleIO brModuleIO) {
         this.gyroIO = gyroIO;
         modules[0] = new Module(flModuleIO, 0);
@@ -96,21 +96,30 @@ public class Drive extends SubsystemBase {
                 : gyroInputs.odometryYawTimestamps;
         int sampleCount = sampleTimestamps.length;
 
-
         for (int i = 0; i < sampleCount; i++) {
             SwerveModulePosition[] modulePositions = new SwerveModulePosition[4];
             for (int moduleIndex = 0; moduleIndex < 4; moduleIndex++) {
                 modulePositions[moduleIndex] = modules[moduleIndex].getOdometryPositions()[i];
             }
 
-            trueGyroPosition = gyroInputs.data.position().rotateBy(DriveConstants.PhysicalConstraints.GYRO_TO_ROBOT_ANGLES);
+            trueGyroPosition =
+                    gyroInputs.data.position().rotateBy(DriveConstants.PhysicalConstraints.GYRO_TO_ROBOT_ANGLES);
 
             RobotState.getInstance()
                     .addOdometryObservation(new RobotState.OdometryObservation(
                             modulePositions,
-                            Optional.ofNullable(gyroInputs.data.connected() ? Rotation2d.fromRadians(trueGyroPosition.getX()) : null),
-                            Optional.ofNullable(gyroInputs.data.connected() ? Rotation2d.fromRadians(trueGyroPosition.getY()) : null),
-                            Optional.ofNullable(gyroInputs.data.connected() ? Rotation2d.fromRadians(trueGyroPosition.getZ()) : null),
+                            Optional.ofNullable(
+                                    gyroInputs.data.connected()
+                                            ? Rotation2d.fromRadians(trueGyroPosition.getX())
+                                            : null),
+                            Optional.ofNullable(
+                                    gyroInputs.data.connected()
+                                            ? Rotation2d.fromRadians(trueGyroPosition.getY())
+                                            : null),
+                            Optional.ofNullable(
+                                    gyroInputs.data.connected()
+                                            ? Rotation2d.fromRadians(trueGyroPosition.getZ())
+                                            : null),
                             sampleTimestamps[i]));
             // log 3d robot
             Logger.recordOutput(
@@ -139,6 +148,10 @@ public class Drive extends SubsystemBase {
         RobotState.getInstance().addDriveSpeeds(getChassisSpeeds());
         RobotState.getInstance().setPitch(Rotation2d.fromRadians(trueGyroPosition.getY()));
         RobotState.getInstance().setRoll(Rotation2d.fromRadians(trueGyroPosition.getX()));
+
+        Logger.recordOutput("Drive/Gyro/Pitch", Rotation2d.fromRadians(trueGyroPosition.getX()));
+        Logger.recordOutput("Drive/Gyro/Roll", Rotation2d.fromRadians(trueGyroPosition.getY()));
+        Logger.recordOutput("Drive/Gyro/Yaw", Rotation2d.fromRadians(trueGyroPosition.getZ()));
 
         if (!velocityMode) {
             currentSetpoint = new SwerveSetpoint(getChassisSpeeds(), getModuleStates());
@@ -280,11 +293,15 @@ public class Drive extends SubsystemBase {
 
     // reset gyro fast commit
     public void resetGyroscope() {
-        gyroIO.resetGyro();
+        gyroIO.resetGyro(DriveConstants.PhysicalConstraints.ROBOT_TO_GYRO_ANGLES);
     }
 
     public void resetGyroscope(Rotation3d rotation) {
-        gyroIO.resetGyro(rotation);
+        gyroIO.resetGyro(rotation.rotateBy(DriveConstants.PhysicalConstraints.ROBOT_TO_GYRO_ANGLES));
+    }
+
+    public void resetGyroscope(Rotation2d rotation) {
+        gyroIO.resetGyro(new Rotation3d(rotation).rotateBy(DriveConstants.PhysicalConstraints.ROBOT_TO_GYRO_ANGLES));
     }
 
     // reset Absolute Positions
@@ -293,8 +310,6 @@ public class Drive extends SubsystemBase {
             modules[i].resetSwerveAbsolutePositions();
         }
     }
-
-    
 
     public ChassisSpeeds getRobotRelativeSpeeds() {
         return kinematics.toChassisSpeeds(getModuleStates());
