@@ -136,12 +136,12 @@ public class CompRobotContainer extends RobotContainer {
         // set default commands here.... here I say.... HERE
         drive.setDefaultCommand(DriveCommands.joystickDrive(
                 drive,
-                () -> -m_XboxController.getLeftY(),
-                () -> -m_XboxController.getLeftX(),
+                () -> m_XboxController.getLeftY(),
+                () -> m_XboxController.getLeftX(),
                 () -> m_XboxController.getRightX(),
-                () -> false,
-                0.23,
-                1.0));
+                () -> true,
+                0.1,
+                0.5));
 
         m_XboxController.rightStick().onTrue(DriveCommands.resetGyroscope(drive));
 

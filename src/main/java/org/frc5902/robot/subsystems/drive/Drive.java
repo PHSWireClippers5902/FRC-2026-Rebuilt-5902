@@ -102,8 +102,10 @@ public class Drive extends SubsystemBase {
                 modulePositions[moduleIndex] = modules[moduleIndex].getOdometryPositions()[i];
             }
 
-            trueGyroPosition =
-                    gyroInputs.data.position().rotateBy(DriveConstants.PhysicalConstraints.GYRO_TO_ROBOT_ANGLES);
+            trueGyroPosition = gyroInputs
+                    .data
+                    .position()
+                    .rotateBy(DriveConstants.PhysicalConstraints.GYRO_TO_ROBOT_ANGLES.unaryMinus());
 
             RobotState.getInstance()
                     .addOdometryObservation(new RobotState.OdometryObservation(
@@ -149,8 +151,8 @@ public class Drive extends SubsystemBase {
         RobotState.getInstance().setPitch(Rotation2d.fromRadians(trueGyroPosition.getY()));
         RobotState.getInstance().setRoll(Rotation2d.fromRadians(trueGyroPosition.getX()));
 
-        Logger.recordOutput("Drive/Gyro/Pitch", Rotation2d.fromRadians(trueGyroPosition.getX()));
-        Logger.recordOutput("Drive/Gyro/Roll", Rotation2d.fromRadians(trueGyroPosition.getY()));
+        Logger.recordOutput("Drive/Gyro/Roll", Rotation2d.fromRadians(trueGyroPosition.getX()));
+        Logger.recordOutput("Drive/Gyro/Pitch", Rotation2d.fromRadians(trueGyroPosition.getY()));
         Logger.recordOutput("Drive/Gyro/Yaw", Rotation2d.fromRadians(trueGyroPosition.getZ()));
 
         if (!velocityMode) {

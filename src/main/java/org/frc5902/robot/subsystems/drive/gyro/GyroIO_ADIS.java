@@ -90,6 +90,7 @@ public class GyroIO_ADIS implements GyroIO {
     @Override
     public void resetGyro() {
         ADIS_Gyro.reset();
+        resetGyro(DriveConstants.PhysicalConstraints.ROBOT_TO_GYRO_ANGLES);
     }
 
     @Override
