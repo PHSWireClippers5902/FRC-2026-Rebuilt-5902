@@ -57,10 +57,10 @@ public class SLAMTake {
                 stop();
                 break;
             case LOWERED_INTAKE:
-                runVelocities(0.3,0);
+                runVelocities(0.3, 0);
                 break;
             case LOWERED_EXTAKE:
-                runVelocities(-0.3,0);
+                runVelocities(-0.3, 0);
                 break;
             case SHUFFLE:
                 stop();
@@ -101,7 +101,7 @@ public class SLAMTake {
         intakeIO.stop();
         slamIO.stop();
     }
-    
+
     public double getSlamPositionRotations() {
         return sIOInputs.data.positionRotations();
     }

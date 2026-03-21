@@ -12,16 +12,22 @@ public class SuperstructureActions {
     // STOW: Maintain defaults BUT have STOW
     public static SuperstructureAction STOW =
             SuperstructureAction.builder().priority(0).build();
-	public static SuperstructureAction MOVE_INTAKE_UP = 
-			SuperstructureAction.builder().priority(1).slamGoal(SLAMTake.Goal.RAISE_STUPID).build();
-	public static SuperstructureAction MOVE_INTAKE_DOWN = 
-			SuperstructureAction.builder().priority(1).slamGoal(SLAMTake.Goal.LOWER_STUPID).build();
+    public static SuperstructureAction MOVE_INTAKE_UP = SuperstructureAction.builder()
+            .priority(1)
+            .slamGoal(SLAMTake.Goal.RAISE_STUPID)
+            .build();
+    public static SuperstructureAction MOVE_INTAKE_DOWN = SuperstructureAction.builder()
+            .priority(1)
+            .slamGoal(SLAMTake.Goal.LOWER_STUPID)
+            .build();
     // DEPLOY_IDLE: Maintain all defaults
     public static SuperstructureAction DEPLOY_IDLE =
             SuperstructureAction.builder().priority(0).build();
     // INTAKE: Run Intake and Agitate Out
-    public static SuperstructureAction INTAKE =
-            SuperstructureAction.builder().slamGoal(SLAMTake.Goal.LOWERED_INTAKE).priority(1).build();
+    public static SuperstructureAction INTAKE = SuperstructureAction.builder()
+            .slamGoal(SLAMTake.Goal.LOWERED_INTAKE)
+            .priority(1)
+            .build();
     // INTAKE AND PASS: Run intake, flywheel, and agitator in
     public static SuperstructureAction INTAKE_AND_PASS = SuperstructureAction.builder()
             .launcherGoal(LauncherSystem.Goal.LAUNCH)
@@ -71,8 +77,8 @@ public class SuperstructureActions {
         @Builder.Default
         private SLAMTake.Goal slamGoal = SLAMTake.Goal.STOP;
 
-		@Builder.Default
-		private IndexerSystem.Goal indexerGoal = IndexerSystem.Goal.STOP;
+        @Builder.Default
+        private IndexerSystem.Goal indexerGoal = IndexerSystem.Goal.STOP;
 
         @Builder.Default
         @Getter
@@ -80,25 +86,25 @@ public class SuperstructureActions {
 
         private static LauncherSystem launcherSystem = null;
         private static SLAMTake slamSystem = null;
-		private static IndexerSystem indexerSystem = null;
+        private static IndexerSystem indexerSystem = null;
 
         /* REQUIRED */
         public static void setStaticSubsystems(LauncherSystem ls, SLAMTake ss, IndexerSystem is) {
             launcherSystem = ls;
             slamSystem = ss;
-			indexerSystem = is;
+            indexerSystem = is;
         }
 
         public void set() {
             // set goals
             launcherSystem.setGoal(launcherGoal);
             slamSystem.setGoal(slamGoal);
-			indexerSystem.setGoal(indexerGoal);
+            indexerSystem.setGoal(indexerGoal);
 
             // run periodic()
             launcherSystem.periodic();
             slamSystem.periodic();
-			indexerSystem.periodic();
+            indexerSystem.periodic();
         }
     }
 }

@@ -49,7 +49,7 @@ public class CompRobotContainer extends RobotContainer {
     private final Drive drive;
     private final Superstructure superstructure;
     private final LauncherSystem launcher;
-	private final IndexerSystem indexer;
+    private final IndexerSystem indexer;
     private final SLAMTake slamTake;
 
     @SuppressWarnings("unused")
@@ -73,7 +73,7 @@ public class CompRobotContainer extends RobotContainer {
                         new ModuleIOSparkAbsolute(3));
                 launcher = new LauncherSystem(new InserterIOSpark(), new FlywheelIOSpark(0), new FlywheelIOSpark(1));
                 slamTake = new SLAMTake(new SlamIOSpark(), new IntakeIOSpark());
-				indexer = new IndexerSystem(new IndexerIOSpark());
+                indexer = new IndexerSystem(new IndexerIOSpark());
                 quest = new QuestSubsystem(new QuestIOReal());
                 superstructure = new Superstructure(slamTake, launcher, indexer);
                 break;
@@ -83,7 +83,7 @@ public class CompRobotContainer extends RobotContainer {
                         new GyroIO() {}, new ModuleIOSim(), new ModuleIOSim(), new ModuleIOSim(), new ModuleIOSim());
                 launcher = new LauncherSystem(new InserterIO() {}, new FlywheelIO() {}, new FlywheelIO() {});
                 slamTake = new SLAMTake(new SlamIO() {}, new IntakeIO() {});
-				indexer = new IndexerSystem(new IndexerIO(){});
+                indexer = new IndexerSystem(new IndexerIO() {});
                 quest = new QuestSubsystem(new QuestIO() {});
                 superstructure = new Superstructure(slamTake, launcher, indexer);
                 break;
@@ -93,7 +93,7 @@ public class CompRobotContainer extends RobotContainer {
                         new GyroIO() {}, new ModuleIO() {}, new ModuleIO() {}, new ModuleIO() {}, new ModuleIO() {});
                 launcher = new LauncherSystem(new InserterIO() {}, new FlywheelIO() {}, new FlywheelIO() {});
                 slamTake = new SLAMTake(new SlamIO() {}, new IntakeIO() {});
-				indexer = new IndexerSystem(new IndexerIO(){});
+                indexer = new IndexerSystem(new IndexerIO() {});
                 quest = new QuestSubsystem(new QuestIO() {});
                 superstructure = new Superstructure(slamTake, launcher, indexer);
                 break;
@@ -145,12 +145,11 @@ public class CompRobotContainer extends RobotContainer {
 
         m_XboxController.rightStick().onTrue(DriveCommands.resetGyroscope(drive));
 
-
         m_XboxController
                 .rightTrigger(0.2)
                 .onTrue(superstructure.addCommandToScheduler(SuperstructureActions.INTAKE))
                 .onFalse(superstructure.removeCommandFromScheduler(SuperstructureActions.INTAKE));
-        
+
         m_XboxController
                 .b()
                 .onTrue(superstructure.addCommandToScheduler(SuperstructureActions.READY_LAUNCHER_STUPID))
@@ -160,19 +159,15 @@ public class CompRobotContainer extends RobotContainer {
                 .onTrue(superstructure.addCommandToScheduler(SuperstructureActions.LAUNCH_STUPID))
                 .onFalse(superstructure.removeCommandFromScheduler(SuperstructureActions.LAUNCH_STUPID));
 
-        m_XboxController.b().whileTrue(
-			superstructure.addCommandToScheduler(SuperstructureActions.MOVE_INTAKE_UP)
-		).whileFalse(
-			superstructure.addCommandToScheduler(SuperstructureActions.MOVE_INTAKE_UP)
-		);
+        m_XboxController
+                .b()
+                .onTrue(superstructure.addCommandToScheduler(SuperstructureActions.MOVE_INTAKE_UP))
+                .onFalse(superstructure.addCommandToScheduler(SuperstructureActions.MOVE_INTAKE_UP));
 
-		m_XboxController.y().whileTrue(
-			superstructure.addCommandToScheduler(SuperstructureActions.MOVE_INTAKE_DOWN)
-		).whileFalse(
-			superstructure.addCommandToScheduler(SuperstructureActions.MOVE_INTAKE_DOWN)
-		);
-
-
+        m_XboxController
+                .y()
+                .onTrue(superstructure.addCommandToScheduler(SuperstructureActions.MOVE_INTAKE_DOWN))
+                .onFalse(superstructure.addCommandToScheduler(SuperstructureActions.MOVE_INTAKE_DOWN));
 
         // m_XboxController
         //         .a()

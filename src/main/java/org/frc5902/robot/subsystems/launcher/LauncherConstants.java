@@ -39,31 +39,31 @@ public class LauncherConstants {
     }
 
     public static FlywheelConstants FlywheelLeftConstants = FlywheelConstants.builder()
-            .FlywheelCANID(52)
+            .FlywheelCANID(51)
             .inverted(true)
             .reduction(1)
             .StallLimit(70)
             .FreeLimit(45)
-            .flywheelPID(PID.builder().proportional(0.2).deriviative(0.1).build())
+            .flywheelPID(PID.builder().proportional(1).deriviative(0.1).build())
             .flywheelPositionConversionFactor(1.0)
             .flywheelVelocityConversionFactor(1.0 / 60)
             .idleMode(IdleMode.kBrake)
             .build();
 
     public static FlywheelConstants FlywheelRightConstants = FlywheelConstants.builder()
-            .FlywheelCANID(-1)
-            .inverted(true)
+            .FlywheelCANID(50)
+            .inverted(false)
             .reduction(1)
             .StallLimit(70)
             .FreeLimit(45)
-            .flywheelPID(PID.builder().proportional(0.2).deriviative(0.1).build())
+            .flywheelPID(PID.builder().proportional(1).deriviative(0.1).build())
             .flywheelPositionConversionFactor(1.0)
             .flywheelVelocityConversionFactor(1.0 / 60)
             .idleMode(IdleMode.kBrake)
             .build();
 
     public class InserterConstants {
-        public static int InserterCANID = 51;
+        public static int InserterCANID = 55;
         public static boolean inverted = false;
         public static final double reduction = 1;
         public static int StallLimit = 70; // can go with less bcz doesnt need same speeds - BigD

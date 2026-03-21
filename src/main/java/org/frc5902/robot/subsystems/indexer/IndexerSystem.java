@@ -1,29 +1,26 @@
 package org.frc5902.robot.subsystems.indexer;
 
-import org.frc5902.robot.subsystems.SLAMtake.intake.IntakeIO;
-import org.frc5902.robot.subsystems.SLAMtake.intake.IntakeIOInputsAutoLogged;
-import org.frc5902.robot.subsystems.SLAMtake.slam.SlamIOInputsAutoLogged;
-import org.frc5902.robot.subsystems.indexer.IndexerIO.IndexerIOInputs;
-import org.littletonrobotics.junction.AutoLogOutput;
-import org.littletonrobotics.junction.Logger;
-
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import lombok.Getter;
 import lombok.Setter;
+import org.littletonrobotics.junction.AutoLogOutput;
+import org.littletonrobotics.junction.Logger;
 
 public class IndexerSystem {
     public IndexerIO indexIO;
 
     public IndexerIOInputsAutoLogged iIOInputs = new IndexerIOInputsAutoLogged();
 
-    private final Alert IndexerDisconnectedAlert = new Alert("The Indexer Motor has been disconnected. ", AlertType.kError);
-    
+    private final Alert IndexerDisconnectedAlert =
+            new Alert("The Indexer Motor has been disconnected. ", AlertType.kError);
 
-    @Getter @Setter @AutoLogOutput
+    @Getter
+    @Setter
+    @AutoLogOutput
     private Goal goal = Goal.STOP;
 
-    public IndexerSystem(IndexerIO io){
+    public IndexerSystem(IndexerIO io) {
         this.indexIO = io;
     }
 
@@ -33,20 +30,22 @@ public class IndexerSystem {
         Logger.processInputs("Indexer/Inputs", iIOInputs);
 
         IndexerDisconnectedAlert.set(!iIOInputs.data.motorConnected());
-        
 
         switch (goal) {
-            case MOVE_IN: 
+            case MOVE_IN:
                 runLaunchVelocities(0.3);
                 break;
-            case MOVE_OUT: 
+            case MOVE_OUT:
                 runLaunchVelocities(0.3);
                 break;
-            case STOP: stop(); break;
-            default: stop(); break;
+            case STOP:
+                stop();
+                break;
+            default:
+                stop();
+                break;
         }
     }
-
 
     public void runLaunchVolts(double indexVolts) {
         indexIO.runVolts(indexVolts);
@@ -60,7 +59,6 @@ public class IndexerSystem {
     public void stop() {
         indexIO.stop();
     }
-
 
     public enum Goal {
         MOVE_IN,
