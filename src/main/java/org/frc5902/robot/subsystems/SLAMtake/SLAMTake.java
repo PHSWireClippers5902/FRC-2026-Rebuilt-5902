@@ -68,10 +68,9 @@ public class SLAMTake {
             case STOP:
                 stop();
                 break;
-            default: 
+            default:
                 stop();
                 break;
-
         }
     }
 

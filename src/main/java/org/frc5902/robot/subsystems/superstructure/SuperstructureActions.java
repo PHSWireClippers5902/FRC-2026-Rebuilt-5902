@@ -60,6 +60,7 @@ public class SuperstructureActions {
     // LAUNCH: Run agitate in, intake at low to keep fuel in, and launch system
     public static SuperstructureAction LAUNCH_STUPID = SuperstructureAction.builder()
             .launcherGoal(LauncherSystem.Goal.LAUNCH_STUPID)
+            .indexerGoal(IndexerSystem.Goal.MOVE_IN)
             .priority(3)
             .build();
 

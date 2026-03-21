@@ -33,10 +33,10 @@ public class IndexerSystem {
 
         switch (goal) {
             case MOVE_IN:
-                runLaunchVelocities(0.3);
+                runLaunchVelocities(20);
                 break;
             case MOVE_OUT:
-                runLaunchVelocities(0.3);
+                runLaunchVelocities(-20);
                 break;
             case STOP:
                 stop();

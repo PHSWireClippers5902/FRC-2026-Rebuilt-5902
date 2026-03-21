@@ -162,12 +162,12 @@ public class CompRobotContainer extends RobotContainer {
         m_XboxController
                 .b()
                 .onTrue(superstructure.addCommandToScheduler(SuperstructureActions.MOVE_INTAKE_UP))
-                .onFalse(superstructure.addCommandToScheduler(SuperstructureActions.MOVE_INTAKE_UP));
+                .onFalse(superstructure.removeCommandFromScheduler(SuperstructureActions.MOVE_INTAKE_UP));
 
         m_XboxController
                 .y()
                 .onTrue(superstructure.addCommandToScheduler(SuperstructureActions.MOVE_INTAKE_DOWN))
-                .onFalse(superstructure.addCommandToScheduler(SuperstructureActions.MOVE_INTAKE_DOWN));
+                .onFalse(superstructure.removeCommandFromScheduler(SuperstructureActions.MOVE_INTAKE_DOWN));
 
         // m_XboxController
         //         .a()

@@ -40,7 +40,7 @@ public class LauncherConstants {
 
     public static FlywheelConstants FlywheelLeftConstants = FlywheelConstants.builder()
             .FlywheelCANID(51)
-            .inverted(true)
+            .inverted(false)
             .reduction(1)
             .StallLimit(70)
             .FreeLimit(45)
@@ -52,7 +52,7 @@ public class LauncherConstants {
 
     public static FlywheelConstants FlywheelRightConstants = FlywheelConstants.builder()
             .FlywheelCANID(50)
-            .inverted(false)
+            .inverted(true)
             .reduction(1)
             .StallLimit(70)
             .FreeLimit(45)
@@ -64,7 +64,7 @@ public class LauncherConstants {
 
     public class InserterConstants {
         public static int InserterCANID = 55;
-        public static boolean inverted = false;
+        public static boolean inverted = true;
         public static final double reduction = 1;
         public static int StallLimit = 70; // can go with less bcz doesnt need same speeds - BigD
         public static int FreeLimit = 45;
