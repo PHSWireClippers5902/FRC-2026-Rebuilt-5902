@@ -57,10 +57,11 @@ public class SLAMTake {
                 stop();
                 break;
             case LOWERED_INTAKE:
-                runVelocities(0.3, 0);
+                // runVelocities(3, 0);
+                runSystemVolts(3, 0);
                 break;
             case LOWERED_EXTAKE:
-                runVelocities(-0.3, 0);
+                runVelocities(-3, 0);
                 break;
             case SHUFFLE:
                 stop();
