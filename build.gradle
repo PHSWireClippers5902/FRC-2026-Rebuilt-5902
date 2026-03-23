@@ -139,6 +139,7 @@ gversion {
 project.compileJava.dependsOn(spotlessApply)
 spotless {
     java {
+ 
         target fileTree('.') {
             include '**/*.java'
             exclude '**/build/**', '**/build-*/**'
