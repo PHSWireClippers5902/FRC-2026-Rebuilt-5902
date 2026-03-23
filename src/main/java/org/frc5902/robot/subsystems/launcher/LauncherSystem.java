@@ -77,7 +77,6 @@ public class LauncherSystem {
                 break;
             }
             case LAUNCH_STUPID -> {
-                runLaunchVelocities(0, estimation.getTotalFlywheelVelocity());
                 runLaunchVelocities(flywheel_velocity.getAsDouble(), flywheel_velocity.getAsDouble());
                 break;
             }
