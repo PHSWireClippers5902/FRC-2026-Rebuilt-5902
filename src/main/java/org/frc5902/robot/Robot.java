@@ -205,7 +205,7 @@ public class Robot extends LoggedRobot {
         if (autonomousCommand != null) {
             CommandScheduler.getInstance().schedule(autonomousCommand);
         }
-        // RobotState.getInstance().resetPose(robotContainer.getInitialPose());
+        robotContainer.resetInitialPose();
     }
 
     @Override

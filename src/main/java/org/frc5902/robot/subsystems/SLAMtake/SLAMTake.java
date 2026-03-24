@@ -8,6 +8,7 @@ import org.frc5902.robot.subsystems.SLAMtake.intake.IntakeIO;
 import org.frc5902.robot.subsystems.SLAMtake.intake.IntakeIOInputsAutoLogged;
 import org.frc5902.robot.subsystems.SLAMtake.slam.SlamIO;
 import org.frc5902.robot.subsystems.SLAMtake.slam.SlamIOInputsAutoLogged;
+import org.frc5902.robot.subsystems.SLAMtake.slam.SlamSystemConstants;
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 
@@ -43,39 +44,79 @@ public class SLAMTake {
         SlamDisconnectedAlert.set(!sIOInputs.data.motorConnected());
         IntakeDisconnectedAlert.set(!sIOInputs.data.motorConnected());
 
-        switch (goal) {
-            case LOWER_STUPID:
-                runVelocities(0, 0.3);
-                break;
-            case RAISE_STUPID:
-                runVelocities(0, -0.3);
-                break;
-            case RAISED:
-                stop();
-                break;
-            case LOWERED_IDLE:
-                stop();
-                break;
-            case LOWERED_INTAKE:
-                runVelocities(35, 0);
-                // runSystemVolts(3, 0);
-                break;
-            case LOWERED_EXTAKE:
-                runVelocities(-3, 0);
-                break;
-            case SHUFFLE:
-                stop();
-                break;
-            case STOP:
-                stop();
-                break;
-            default:
-                stop();
-                break;
+        if (sIOInputs.data.limitSwitchTriggered()) {
+            slamIO.resetEncoderToPosition(0.0);
         }
+
+        // update state
+
+        switch (goal) {
+            case LOWERED_INTAKE: {
+                lowerIntakeUtilizingLimitSwitch();
+                runIntakeVelocity(35.0);
+                break;
+            }
+            case RAISED: {
+                slamIO.runAngle(SlamSystemConstants.SlamConstants.raisedAngle);
+                break;
+            }
+            case LOWERED_IDLE: {
+                lowerIntakeUtilizingLimitSwitch();
+                intakeIO.stop();
+                break;
+            }
+            case STOP: {
+                stop();
+                break;
+            }
+            case FEED: {
+                slamIO.runAngle(SlamSystemConstants.SlamConstants.raisedAngle);
+                runIntakeVolts(3.0);
+                break;
+            }
+            default: {
+                stop();
+                break;
+            }
+        }
+
+        // switch (goal) {
+        //     case FEED:
+
+        //         break;
+        //     case LOWER_STUPID:
+        //         runVelocities(0, 0.3);
+        //         break;
+        //     case RAISE_STUPID:
+        //         runVelocities(0, -0.3);
+        //         break;
+        //     case RAISED:
+        //         stop();
+        //         break;
+        //     case LOWERED_IDLE:
+        //         stop();
+        //         break;
+        //     case LOWERED_INTAKE:
+        //         runVelocities(35, 0);
+        //         // runSystemVolts(3, 0);
+        //         break;
+        //     case LOWERED_EXTAKE:
+        //         runVelocities(-3, 0);
+        //         break;
+        //     case SHUFFLE:
+        //         stop();
+        //         break;
+        //     case STOP:
+        //         stop();
+        //         break;
+        //     default:
+        //         stop();
+        //         break;
+        // }
     }
 
     public enum Goal {
+        FEED,
         RAISE_STUPID,
         LOWER_STUPID,
         RAISED,
@@ -91,11 +132,28 @@ public class SLAMTake {
         slamIO.runVolts(slamVolts);
     }
 
+    public void runIntakeVelocity(double intakeVelocity) {
+        Logger.recordOutput("Outputs/Intake/IntakeVelocityRotationsPerSecond", 35.0);
+        intakeIO.runRotationsPerSecond(35.0);
+    }
+
+    public void runIntakeVolts(double volts) {
+        intakeIO.runVolts(volts);
+    }
+
+    public void lowerIntakeUtilizingLimitSwitch() {
+        if (!sIOInputs.data.limitSwitchTriggered() && Math.abs(sIOInputs.data.positionRotations()) < 0.03) {
+            slamIO.runRotationsPerSecond(-0.03);
+        } else {
+            slamIO.runAngle(0);
+        }
+    }
+
     public void runVelocities(double intakeVelocity, double slamVelocity) {
         Logger.recordOutput("Outputs/Intake/IntakeVelocityRotationsPerSecond", intakeVelocity);
-        intakeIO.runRadiansPerSecond(intakeVelocity);
+        intakeIO.runRotationsPerSecond(intakeVelocity);
         Logger.recordOutput("Outputs/Slam/SlamVelocityRotationsPerSecond", slamVelocity);
-        slamIO.runRadiansPerSecond(slamVelocity);
+        slamIO.runRotationsPerSecond(slamVelocity);
     }
 
     public void stop() {

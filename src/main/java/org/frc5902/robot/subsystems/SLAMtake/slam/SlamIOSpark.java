@@ -13,8 +13,10 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.filter.Debouncer.DebounceType;
+import edu.wpi.first.wpilibj.DigitalInput;
 import org.frc5902.robot.subsystems.SLAMtake.slam.SlamSystemConstants.SlamConstants;
 
+import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
 import static org.frc5902.robot.util.motorutil.SparkUtil.tryUntilOk;
@@ -24,14 +26,17 @@ public class SlamIOSpark implements SlamIO {
     public final SparkBase Slam;
     public final RelativeEncoder SlamEncoder;
     public final SparkClosedLoopController SlamController;
+    public final DigitalInput limitSwitch;
     // signals
     public final DoubleSupplier position;
     public final DoubleSupplier velocity;
     public final DoubleSupplier appliedVolts;
     public final DoubleSupplier temp;
     public final DoubleSupplier current;
+    public final BooleanSupplier LimitSwitchPressed;
     // outputs
     public final Debouncer SlamConnectedDebounce = new Debouncer(0.5, DebounceType.kFalling);
+    public final Debouncer LimitSwitchDebounce = new Debouncer(0.05, DebounceType.kFalling);
 
     public SlamIOSpark() {
         Slam = new SparkMax(SlamConstants.SlamCANID, MotorType.kBrushless);
@@ -60,12 +65,18 @@ public class SlamIOSpark implements SlamIO {
         appliedVolts = () -> Slam.getAppliedOutput();
         temp = () -> Slam.getMotorTemperature();
         current = () -> Slam.getOutputCurrent();
+
+        limitSwitch = new DigitalInput(SlamConstants.SlamLimitSwitchID);
+        LimitSwitchPressed = () -> (!limitSwitch.get());
+
+        resetEncoderToPosition(SlamConstants.EstimatedTopValue);
     }
 
     @Override
     public void updateInputs(SlamIOInputs inputs) {
         inputs.data = new SlamIOData(
                 SlamConnectedDebounce.calculate(Slam.getLastError() == REVLibError.kOk),
+                LimitSwitchDebounce.calculate(LimitSwitchPressed.getAsBoolean()),
                 position.getAsDouble(),
                 velocity.getAsDouble(),
                 appliedVolts.getAsDouble(),
@@ -79,8 +90,18 @@ public class SlamIOSpark implements SlamIO {
     }
 
     @Override
-    public void runRadiansPerSecond(double radiansPerSecond) {
-        SlamController.setSetpoint(radiansPerSecond, ControlType.kVelocity);
+    public void runRotationsPerSecond(double rotationsPerSecond) {
+        SlamController.setSetpoint(rotationsPerSecond, ControlType.kVelocity);
+    }
+
+    @Override
+    public void runAngle(double rotations) {
+        SlamController.setSetpoint(rotations, ControlType.kPosition);
+    }
+
+    @Override
+    public void resetEncoderToPosition(double position) {
+        SlamEncoder.setPosition(position);
     }
 
     @Override

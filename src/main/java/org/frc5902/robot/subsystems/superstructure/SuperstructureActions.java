@@ -14,12 +14,13 @@ public class SuperstructureActions {
             SuperstructureAction.builder().priority(0).build();
     public static SuperstructureAction MOVE_INTAKE_UP = SuperstructureAction.builder()
             .priority(1)
-            .slamGoal(SLAMTake.Goal.RAISE_STUPID)
+            .slamGoal(SLAMTake.Goal.RAISED)
             .build();
-    public static SuperstructureAction MOVE_INTAKE_DOWN = SuperstructureAction.builder()
+    public static SuperstructureAction RAISED_INTAKE = SuperstructureAction.builder()
             .priority(1)
-            .slamGoal(SLAMTake.Goal.LOWER_STUPID)
+            .slamGoal(SLAMTake.Goal.FEED)
             .build();
+
     // DEPLOY_IDLE: Maintain all defaults
     public static SuperstructureAction DEPLOY_IDLE =
             SuperstructureAction.builder().priority(0).build();
@@ -61,6 +62,7 @@ public class SuperstructureActions {
     public static SuperstructureAction LAUNCH_STUPID = SuperstructureAction.builder()
             .launcherGoal(LauncherSystem.Goal.LAUNCH_STUPID)
             .indexerGoal(IndexerSystem.Goal.MOVE_IN)
+            .slamGoal(SLAMTake.Goal.FEED)
             .priority(3)
             .build();
 
@@ -76,7 +78,7 @@ public class SuperstructureActions {
         private LauncherSystem.Goal launcherGoal = LauncherSystem.Goal.IDLE;
 
         @Builder.Default
-        private SLAMTake.Goal slamGoal = SLAMTake.Goal.STOP;
+        private SLAMTake.Goal slamGoal = SLAMTake.Goal.LOWERED_IDLE;
 
         @Builder.Default
         private IndexerSystem.Goal indexerGoal = IndexerSystem.Goal.STOP;

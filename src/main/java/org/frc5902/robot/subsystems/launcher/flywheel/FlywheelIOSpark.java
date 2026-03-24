@@ -12,7 +12,6 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.filter.Debouncer.DebounceType;
-import edu.wpi.first.math.geometry.Rotation2d;
 import org.frc5902.robot.subsystems.launcher.LauncherConstants;
 import org.frc5902.robot.subsystems.launcher.LauncherConstants.FlywheelConstants;
 
@@ -82,8 +81,8 @@ public class FlywheelIOSpark implements FlywheelIO {
     public void updateInputs(FlywheelIOInputs inputs) {
         inputs.data = new FlywheelIOData(
                 flywheelConnectedDebounce.calculate(flywheel.getLastError() == REVLibError.kOk),
-                Rotation2d.fromRotations(position.getAsDouble()).getRadians(),
-                Rotation2d.fromRotations(velocity.getAsDouble()).getRadians(),
+                position.getAsDouble(),
+                velocity.getAsDouble(),
                 appliedVolts.getAsDouble(),
                 current.getAsDouble(),
                 temp.getAsDouble());

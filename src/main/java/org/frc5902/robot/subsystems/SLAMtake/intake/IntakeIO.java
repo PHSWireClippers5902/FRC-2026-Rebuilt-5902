@@ -20,7 +20,7 @@ public interface IntakeIO {
 
     default void runVolts(double volts) {}
 
-    default void runRadiansPerSecond(double radiansPerSecond) {}
+    default void runRotationsPerSecond(double rotationsPerSecond) {}
 
     default void stop() {}
 }

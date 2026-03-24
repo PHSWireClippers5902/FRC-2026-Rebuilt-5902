@@ -79,8 +79,8 @@ public class IntakeIOSpark implements IntakeIO {
     }
 
     @Override
-    public void runRadiansPerSecond(double radiansPerSecond) {
-        IntakeController.setSetpoint(radiansPerSecond, ControlType.kVelocity);
+    public void runRotationsPerSecond(double rotationsPerSecond) {
+        IntakeController.setSetpoint(rotationsPerSecond, ControlType.kVelocity);
     }
 
     @Override

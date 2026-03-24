@@ -13,7 +13,7 @@ public class CompbotConstants {
     // @ refer to robot center
     // millemeters
     public static Transform3d questOffset = new Transform3d(
-                    new Translation3d(Units.inchesToMeters(6), Units.inchesToMeters(-9), Units.inchesToMeters(24)),
-                    new Rotation3d(0, 0, Math.PI))
-            .plus(backLeftModule.inverse());
+            new Translation3d(
+                    Units.inchesToMeters(-11.75 + 5.5), Units.inchesToMeters(12.75), Units.inchesToMeters(18)),
+            new Rotation3d(0, 0, Units.degreesToRadians(110)));
 }

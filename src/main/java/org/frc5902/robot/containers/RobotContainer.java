@@ -14,6 +14,7 @@ public abstract class RobotContainer {
 
     public abstract Pose2d getInitialPose();
 
+    public abstract void resetInitialPose();
     // public abstract DriveTrain getDriveTrain();
 
     public void resetAllGoals() {

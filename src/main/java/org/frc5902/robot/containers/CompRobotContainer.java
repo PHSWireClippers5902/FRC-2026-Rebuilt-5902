@@ -12,6 +12,7 @@ import org.frc5902.robot.Constants.RobotConstants;
 import org.frc5902.robot.FieldConstants;
 import org.frc5902.robot.FieldConstants.AprilTagLayoutType;
 import org.frc5902.robot.Robot;
+import org.frc5902.robot.RobotState;
 import org.frc5902.robot.commands.auto.EasyAutonomousCommandFactory;
 import org.frc5902.robot.commands.drive.DriveCommands;
 import org.frc5902.robot.subsystems.SLAMtake.SLAMTake;
@@ -101,12 +102,12 @@ public class CompRobotContainer extends RobotContainer {
         // var autoBuilder = new AutoBuilder(drive, superstructure);
         autoChooser = new LoggedDashboardChooser<>("Auto Choices");
         initialPositionChooser = new LoggedDashboardChooser<>("Initial Positions");
-        initialPositionChooser.addOption("BLUE_LEFT_BUMP", new Pose2d(3.56, 5.024, Rotation2d.kZero));
-        initialPositionChooser.addOption("BLUE_RIGHT_BUMP", new Pose2d(3.56, 3.035, Rotation2d.kZero));
+        initialPositionChooser.addOption("BLUE_RIGHT_BUMP", new Pose2d(3.56, 5.024, Rotation2d.kZero));
+        initialPositionChooser.addOption("BLUE_LEFT_BUMP", new Pose2d(3.56, 3.035, Rotation2d.kZero));
         initialPositionChooser.addOption("BLUE_CENTER", new Pose2d(3.56, 4.056, Rotation2d.k180deg));
 
-        initialPositionChooser.addOption("RED_LEFT_BUMP", new Pose2d(13, 5.024, Rotation2d.k180deg));
-        initialPositionChooser.addOption("RED_RIGHT_BUMP", new Pose2d(13, 3.035, Rotation2d.k180deg));
+        initialPositionChooser.addOption("RED_RIGHT_BUMP", new Pose2d(13, 5.024, Rotation2d.k180deg));
+        initialPositionChooser.addOption("RED_LEFT_BUMP", new Pose2d(13, 3.035, Rotation2d.k180deg));
         initialPositionChooser.addOption("RED_CENTER", new Pose2d(13, 4.056, Rotation2d.kZero));
 
         // sysid routines
@@ -136,10 +137,10 @@ public class CompRobotContainer extends RobotContainer {
         // set default commands here.... here I say.... HERE
         drive.setDefaultCommand(DriveCommands.joystickDrive(
                 drive,
-                () -> m_XboxController.getLeftY(),
-                () -> m_XboxController.getLeftX(),
+                () -> -m_XboxController.getLeftY(),
+                () -> -m_XboxController.getLeftX(),
                 () -> m_XboxController.getRightX(),
-                () -> true,
+                () -> false,
                 0.1,
                 0.5));
 
@@ -156,18 +157,23 @@ public class CompRobotContainer extends RobotContainer {
         //         .onFalse(superstructure.removeCommandFromScheduler(SuperstructureActions.READY_LAUNCHER_STUPID));
         m_XboxController
                 .leftTrigger(0.2)
+                .onTrue(superstructure.addCommandToScheduler(SuperstructureActions.READY_LAUNCHER_STUPID))
+                .onFalse(superstructure.removeCommandFromScheduler(SuperstructureActions.READY_LAUNCHER_STUPID));
+
+        m_XboxController
+                .leftBumper()
                 .onTrue(superstructure.addCommandToScheduler(SuperstructureActions.LAUNCH_STUPID))
                 .onFalse(superstructure.removeCommandFromScheduler(SuperstructureActions.LAUNCH_STUPID));
 
         m_XboxController
                 .b()
-                .onTrue(superstructure.addCommandToScheduler(SuperstructureActions.MOVE_INTAKE_UP))
-                .onFalse(superstructure.removeCommandFromScheduler(SuperstructureActions.MOVE_INTAKE_UP));
+                .onTrue(superstructure.addCommandToScheduler(SuperstructureActions.RAISED_INTAKE))
+                .onFalse(superstructure.removeCommandFromScheduler(SuperstructureActions.RAISED_INTAKE));
 
-        m_XboxController
-                .y()
-                .onTrue(superstructure.addCommandToScheduler(SuperstructureActions.MOVE_INTAKE_DOWN))
-                .onFalse(superstructure.removeCommandFromScheduler(SuperstructureActions.MOVE_INTAKE_DOWN));
+        // m_XboxController
+        //         .y()
+        //         .onTrue(superstructure.addCommandToScheduler(SuperstructureActions.MOVE_INTAKE_DOWN))
+        //         .onFalse(superstructure.removeCommandFromScheduler(SuperstructureActions.MOVE_INTAKE_DOWN));
 
         // m_XboxController
         //         .a()
@@ -265,5 +271,12 @@ public class CompRobotContainer extends RobotContainer {
         // depends on where you are....
 
         return initialPositionChooser.get();
+    }
+
+    @Override
+    public void resetInitialPose() {
+        RobotState.getInstance().resetPose(getInitialPose());
+        quest.resetPose(getInitialPose());
+        drive.resetGyroscope(getInitialPose().getRotation());
     }
 }

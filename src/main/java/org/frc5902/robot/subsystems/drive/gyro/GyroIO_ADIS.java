@@ -32,7 +32,7 @@ public class GyroIO_ADIS implements GyroIO {
 
     public GyroIO_ADIS() {
         ADIS_Gyro = new ADIS16470_IMU();
-        ADIS_Gyro.configCalTime(CalibrationTime._4s);
+        ADIS_Gyro.configCalTime(CalibrationTime._2s);
         ADIS_Gyro.calibrate();
         ADIS_Gyro.reset();
         yawTimestampQueue = SparkOdometryThread.getInstance().makeTimestampQueue();
@@ -60,13 +60,13 @@ public class GyroIO_ADIS implements GyroIO {
                         Units.degreesToRadians(pitch.getAsDouble()),
                         Units.degreesToRadians(roll.getAsDouble())),
                 new Translation3d(
-                        Units.degreesToRadians(rollVelocity.getAsDouble()),
+                        Units.degreesToRadians(yawVelocity.getAsDouble()),
                         Units.degreesToRadians(pitchVelocity.getAsDouble()),
-                        Units.degreesToRadians(yawVelocity.getAsDouble())),
+                        Units.degreesToRadians(rollVelocity.getAsDouble())),
                 new Translation3d(
-                        rollAcceleration.getAsDouble(),
+                        yawAcceleration.getAsDouble(),
                         pitchAcceleration.getAsDouble(),
-                        yawAcceleration.getAsDouble()));
+                        rollAcceleration.getAsDouble()));
         // inputs.data = new GyroIOData(
         //         ADIS_Gyro.isConnected(),
         //         Rotation2d.fromDegrees(yaw.getAsDouble()),
@@ -96,7 +96,7 @@ public class GyroIO_ADIS implements GyroIO {
     public void resetGyro(Rotation3d pose) {
         // pose = pose.rotateBy(DriveConstants.PhysicalConstraints.GYRO_TO_ROBOT_ANGLES);
         ADIS_Gyro.setGyroAngle(IMUAxis.kYaw, pose.getX() * Math.PI / 180.0);
-        ADIS_Gyro.setGyroAngle(IMUAxis.kPitch, pose.getY() * Math.PI / 180.0);
-        ADIS_Gyro.setGyroAngle(IMUAxis.kRoll, pose.getZ() * Math.PI / 180.0);
+        ADIS_Gyro.setGyroAngle(IMUAxis.kRoll, pose.getY() * Math.PI / 180.0);
+        ADIS_Gyro.setGyroAngle(IMUAxis.kPitch, pose.getZ() * Math.PI / 180.0);
     }
 }

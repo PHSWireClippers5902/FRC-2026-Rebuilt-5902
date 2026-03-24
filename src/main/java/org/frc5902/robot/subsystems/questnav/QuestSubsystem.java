@@ -6,6 +6,8 @@ import edu.wpi.first.math.geometry.Twist3d;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import org.frc5902.robot.CompbotConstants;
+import org.frc5902.robot.RobotState;
+import org.frc5902.robot.RobotState.QuestObservation;
 import org.frc5902.robot.util.buildutil.GeoUtil;
 import org.frc5902.robot.util.buildutil.VirtualSubsystem;
 import org.littletonrobotics.junction.AutoLogOutput;
@@ -40,10 +42,9 @@ public class QuestSubsystem extends VirtualSubsystem {
                 && questIOInputs.isTracking
                 && questIOInputs.questTimestamps.length > 2
                 && questIOInputs.readPoses.length > 1) {
-            // RobotState.getInstance()
-            //         .addQuestObservation(new QuestObservation(
-            //                 getLatestPose(), questIOInputs.questTimestamps[questIOInputs.questTimestamps.length -
-            // 1]));
+            RobotState.getInstance()
+                    .addQuestObservation(new QuestObservation(
+                            getLatestPose(), questIOInputs.questTimestamps[questIOInputs.questTimestamps.length - 1]));
         }
 
         // alert

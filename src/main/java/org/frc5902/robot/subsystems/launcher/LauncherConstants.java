@@ -67,9 +67,9 @@ public class LauncherConstants {
         public static boolean inverted = true;
         public static final double reduction = 1;
         public static int StallLimit = 70; // can go with less bcz doesnt need same speeds - BigD
-        public static int FreeLimit = 45;
+        public static int FreeLimit = 50;
         public static PID inserterPID =
-                PID.builder().proportional(0.2).deriviative(0.1).build();
+                PID.builder().proportional(0.25).deriviative(0.1).build();
         public static double inserterPositionConversionFactor = 1.0 / 3.0;
         public static double inserterVelocityConversionFactor = inserterPositionConversionFactor / 60;
         public static IdleMode idleMode = IdleMode.kBrake;
