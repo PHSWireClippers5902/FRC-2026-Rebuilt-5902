@@ -121,7 +121,8 @@ public class CompRobotContainer extends RobotContainer {
 
         // pathplanner
         AutoBuilder ab = new AutoBuilder(drive, superstructure, quest);
-        autoChooser.addOption("LEFT PATHPLANENR", new PathPlannerAuto("BLUE_AUTO"));
+        autoChooser.addOption("SWEEP_GREEDY", new PathPlannerAuto("SWEEP_GREEDY"));
+        autoChooser.addOption("SHOOT_GREEDY", new PathPlannerAuto("SHOOT_GREEDY"));
         // autoChooser.addOption("Auto pls work", AutoPlease.extendAndMoveAuto(() -> drive, () -> superstructure));
         // autoChooser.addOption(
         //         "Drive SysId (Quasistatic Forward)", drive.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
@@ -129,6 +130,7 @@ public class CompRobotContainer extends RobotContainer {
         //         "Drive SysId (Quasistatic Reverse)", drive.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
         // autoChooser.addOption("Drive SysId (Dynamic Forward)", drive.sysIdDynamic(SysIdRoutine.Direction.kForward));
         // autoChooser.addOption("Drive SysId (Dynamic Reverse)", drive.sysIdDynamic(SysIdRoutine.Direction.kReverse));
+
 
         initialPositionChooser.addDefaultOption("default (0,0)", new Pose2d());
 
