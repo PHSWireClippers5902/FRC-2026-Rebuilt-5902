@@ -68,6 +68,7 @@ public class SuperstructureActions {
 
     public static SuperstructureAction EMERGENCY = SuperstructureAction.builder()
             .launcherGoal(LauncherSystem.Goal.IDLE)
+            .slamGoal(SLAMTake.Goal.STOP)
             .build();
 
     @Builder

@@ -47,7 +47,7 @@ public class DriveConstants {
                 .TurningID(20)
                 .TurningEncoderID(30)
                 .MagnetOffset(-0.07275390625)
-                .DrivingMotorInverted(true)
+                .DrivingMotorInverted(false)
                 .TurningMotorInverted(false)
                 .ModuleOffset(new Translation2d(driveBaseRadius, driveBaseRadius))
                 .build();
@@ -58,7 +58,7 @@ public class DriveConstants {
                 .TurningID(21)
                 .TurningEncoderID(31)
                 .MagnetOffset(-0.07763671875)
-                .DrivingMotorInverted(true)
+                .DrivingMotorInverted(false)
                 .TurningMotorInverted(false)
                 .ModuleOffset(new Translation2d(driveBaseRadius, -driveBaseRadius))
                 .build();
@@ -68,7 +68,7 @@ public class DriveConstants {
                 .TurningID(22)
                 .TurningEncoderID(32)
                 .MagnetOffset(-0.09130859375)
-                .DrivingMotorInverted(true)
+                .DrivingMotorInverted(false)
                 .TurningMotorInverted(false)
                 .ModuleOffset(new Translation2d(-driveBaseRadius, driveBaseRadius))
                 .build();
@@ -78,7 +78,7 @@ public class DriveConstants {
                 .TurningID(23)
                 .TurningEncoderID(33)
                 .MagnetOffset(0.41162109375)
-                .DrivingMotorInverted(true)
+                .DrivingMotorInverted(false)
                 .TurningMotorInverted(false)
                 .ModuleOffset(new Translation2d(-driveBaseRadius, -driveBaseRadius))
                 .build();

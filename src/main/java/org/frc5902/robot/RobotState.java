@@ -107,10 +107,6 @@ public class RobotState {
 
         // pose buffer will now buffer at timestamp
         poseBuffer.addSample(observation.timestamp(), odometryPose);
-        // Calculate difference from last odo pose and add onto the pose estimate...
-        if (observation.roll.isPresent()) {
-            rotationBuffer.addSample(observation.timestamp(), new Rotation3d());
-        }
 
         Twist2d finalTwist = lastOdometryPose.log(odometryPose);
         estimatedPose = estimatedPose.exp(finalTwist);

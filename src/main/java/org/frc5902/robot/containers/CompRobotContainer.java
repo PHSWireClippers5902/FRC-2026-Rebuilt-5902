@@ -102,8 +102,8 @@ public class CompRobotContainer extends RobotContainer {
         // var autoBuilder = new AutoBuilder(drive, superstructure);
         autoChooser = new LoggedDashboardChooser<>("Auto Choices");
         initialPositionChooser = new LoggedDashboardChooser<>("Initial Positions");
-        initialPositionChooser.addOption("BLUE_RIGHT_BUMP", new Pose2d(3.56, 5.024, Rotation2d.kZero));
-        initialPositionChooser.addOption("BLUE_LEFT_BUMP", new Pose2d(3.56, 3.035, Rotation2d.kZero));
+        initialPositionChooser.addOption("BLUE_LEFT_BUMP", new Pose2d(3.56, 5.024, Rotation2d.kZero));
+        initialPositionChooser.addOption("BLUE_RIGHT_BUMP", new Pose2d(3.56, 3.035, Rotation2d.kZero));
         initialPositionChooser.addOption("BLUE_CENTER", new Pose2d(3.56, 4.056, Rotation2d.k180deg));
 
         initialPositionChooser.addOption("RED_RIGHT_BUMP", new Pose2d(13, 5.024, Rotation2d.k180deg));
@@ -139,7 +139,7 @@ public class CompRobotContainer extends RobotContainer {
                 drive,
                 () -> -m_XboxController.getLeftY(),
                 () -> -m_XboxController.getLeftX(),
-                () -> m_XboxController.getRightX(),
+                () -> -m_XboxController.getRightX(),
                 () -> false,
                 0.1,
                 0.5));
@@ -189,7 +189,7 @@ public class CompRobotContainer extends RobotContainer {
                         drive,
                         () -> -m_XboxController.getLeftY(),
                         () -> -m_XboxController.getLeftX(),
-                        () -> m_XboxController.getRightX(),
+                        () -> -m_XboxController.getRightX(),
                         () -> false,
                         new Translation2d(
                                 DriveConstants.ModuleConfigurations.driveBaseRadius,
@@ -201,7 +201,7 @@ public class CompRobotContainer extends RobotContainer {
                         drive,
                         () -> -m_XboxController.getLeftY(),
                         () -> -m_XboxController.getLeftX(),
-                        () -> m_XboxController.getRightX(),
+                        () -> -m_XboxController.getRightX(),
                         () -> false,
                         new Translation2d(
                                 -DriveConstants.ModuleConfigurations.driveBaseRadius,
@@ -213,7 +213,7 @@ public class CompRobotContainer extends RobotContainer {
                         drive,
                         () -> -m_XboxController.getLeftY(),
                         () -> -m_XboxController.getLeftX(),
-                        () -> m_XboxController.getRightX(),
+                        () -> -m_XboxController.getRightX(),
                         () -> false,
                         new Translation2d(
                                 DriveConstants.ModuleConfigurations.driveBaseRadius,
@@ -225,7 +225,7 @@ public class CompRobotContainer extends RobotContainer {
                         drive,
                         () -> -m_XboxController.getLeftY(),
                         () -> -m_XboxController.getLeftX(),
-                        () -> m_XboxController.getRightX(),
+                        () -> -m_XboxController.getRightX(),
                         () -> false,
                         new Translation2d(
                                 -DriveConstants.ModuleConfigurations.driveBaseRadius,
