@@ -106,6 +106,8 @@ public class CompRobotContainer extends RobotContainer {
         autoChooser = new LoggedDashboardChooser<>("Auto Choices");
         initialPositionChooser = new LoggedDashboardChooser<>("Initial Positions");
         initialPositionChooser.addOption("BLUE_LEFT_TRENCH", new Pose2d(4.147, 7.642, Rotation2d.k180deg));
+        initialPositionChooser.addOption("RED_LEFT_TRENCH", new Pose2d(12.331, 7.642, Rotation2d.kZero));
+
         initialPositionChooser.addOption("BLUE_RIGHT_BUMP", new Pose2d(3.56, 3.035, Rotation2d.k180deg));
         initialPositionChooser.addOption("BLUE_CENTER", new Pose2d(3.56, 4.056, Rotation2d.k180deg));
 
@@ -130,7 +132,6 @@ public class CompRobotContainer extends RobotContainer {
         //         "Drive SysId (Quasistatic Reverse)", drive.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
         // autoChooser.addOption("Drive SysId (Dynamic Forward)", drive.sysIdDynamic(SysIdRoutine.Direction.kForward));
         // autoChooser.addOption("Drive SysId (Dynamic Reverse)", drive.sysIdDynamic(SysIdRoutine.Direction.kReverse));
-
 
         initialPositionChooser.addDefaultOption("default (0,0)", new Pose2d());
 
@@ -179,6 +180,13 @@ public class CompRobotContainer extends RobotContainer {
                 .onTrue(superstructure.addCommandToScheduler(SuperstructureActions.RAISED_INTAKE))
                 .onFalse(superstructure.removeCommandFromScheduler(SuperstructureActions.RAISED_INTAKE));
 
+        m_XboxController
+                .a()
+                .whileTrue(DriveCommands.pointAtPoseWhileMoving(
+                        drive,
+                        () -> -m_XboxController.getLeftY(),
+                        () -> -m_XboxController.getLeftX(),
+                        FieldConstants.BLUE_HUB_LOCATION));
         // m_XboxController
         //         .y()
         //         .onTrue(superstructure.addCommandToScheduler(SuperstructureActions.MOVE_INTAKE_DOWN))

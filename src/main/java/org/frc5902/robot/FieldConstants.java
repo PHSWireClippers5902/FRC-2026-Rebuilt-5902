@@ -10,6 +10,7 @@ package org.frc5902.robot;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
@@ -28,6 +29,9 @@ import java.nio.file.Path;
  * perspective of the blue alliance station
  */
 public class FieldConstants {
+
+    public static final Pose2d BLUE_HUB_LOCATION = new Pose2d(4.619, 4.619, new Rotation2d());
+
     public static final FieldType fieldType = FieldType.WELDED;
 
     // AprilTag related constants

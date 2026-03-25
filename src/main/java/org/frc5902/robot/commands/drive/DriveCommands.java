@@ -39,7 +39,7 @@ import java.util.function.Supplier;
 public class DriveCommands {
 
     private static final double DEADBAND = 0.1;
-    private static final double ANGLE_KP = 0.3;
+    private static final double ANGLE_KP = 4;
     private static final double ANGLE_KD = 0.15;
     private static final double ANGLE_MAX_VELOCITY = 2.0;
     private static final double ANGLE_MAX_ACCELERATION = 8.0;
@@ -84,21 +84,37 @@ public class DriveCommands {
 
     public static Command pointAtPose(Drive drive, Pose2d pose) {
         return aimAtAngle(drive, () -> {
-            return pose.minus(RobotState.getInstance().getEstimatedPose()).getRotation();
+            //     return pose.minus(RobotState.getInstance().getEstimatedPose()).getRotation();
+            // return Rotation2d.kZero;
+            Logger.recordOutput(
+                    "AIM_POSE",
+                    pose.getTranslation()
+                            .minus(RobotState.getInstance().getEstimatedPose().getTranslation())
+                            .getAngle());
+            return pose.getTranslation()
+                    .minus(RobotState.getInstance().getEstimatedPose().getTranslation())
+                    .getAngle();
         });
     }
 
     public static Command pointAtPoseWhileMoving(
             Drive drive, DoubleSupplier xSupplier, DoubleSupplier ySupplier, Pose2d pose) {
-        return joystickDriveAtAngle(drive, xSupplier, ySupplier, () -> pose.minus(
-                        RobotState.getInstance().getEstimatedPose())
-                .getRotation());
+        return joystickDriveAtAngle(drive, xSupplier, ySupplier, () -> {
+            Logger.recordOutput(
+                    "AIM_POSE",
+                    pose.getTranslation()
+                            .minus(RobotState.getInstance().getEstimatedPose().getTranslation())
+                            .getAngle());
+            return pose.getTranslation()
+                    .minus(RobotState.getInstance().getEstimatedPose().getTranslation())
+                    .getAngle();
+        });
     }
 
     public static Command aimAtAngle(Drive drive, Supplier<Rotation2d> rotationSupplier) {
         // configure (kP, kI, kD, -zoid: max_velocity, max_acceleration)
         ProfiledPIDController angleController =
-                new ProfiledPIDController(0.0, 0.0, 0.0, new TrapezoidProfile.Constraints(0.0, 0.0));
+                new ProfiledPIDController(3, 0.0, 0.0, new TrapezoidProfile.Constraints(0.0, 0.0));
         angleController.enableContinuousInput(-Math.PI, Math.PI);
         return Commands.run(
                         () -> {
@@ -114,8 +130,10 @@ public class DriveCommands {
                             drive.runVelocity(ChassisSpeeds.fromFieldRelativeSpeeds(
                                     speeds,
                                     isFlipped
-                                            ? drive.getGyroRotation().plus(new Rotation2d(Math.PI))
-                                            : drive.getGyroRotation()));
+                                            ? RobotState.getInstance()
+                                                    .getRotation()
+                                                    .plus(Rotation2d.kPi)
+                                            : RobotState.getInstance().getRotation()));
                         },
                         drive)
                 .beforeStarting(
@@ -157,8 +175,10 @@ public class DriveCommands {
                             drive.runVelocity(ChassisSpeeds.fromFieldRelativeSpeeds(
                                     speeds,
                                     isFlipped
-                                            ? drive.getGyroRotation().plus(new Rotation2d(Math.PI))
-                                            : drive.getGyroRotation()));
+                                            ? RobotState.getInstance()
+                                                    .getRotation()
+                                                    .plus(Rotation2d.kPi)
+                                            : RobotState.getInstance().getRotation()));
                         },
                         drive)
 
