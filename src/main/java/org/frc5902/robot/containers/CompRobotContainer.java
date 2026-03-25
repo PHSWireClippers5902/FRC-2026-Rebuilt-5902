@@ -106,7 +106,7 @@ public class CompRobotContainer extends RobotContainer {
         autoChooser = new LoggedDashboardChooser<>("Auto Choices");
         initialPositionChooser = new LoggedDashboardChooser<>("Initial Positions");
         initialPositionChooser.addOption("BLUE_LEFT_TRENCH", new Pose2d(4.147, 7.642, Rotation2d.k180deg));
-        initialPositionChooser.addOption("RED_LEFT_TRENCH", new Pose2d(12.331, 7.642, Rotation2d.kZero));
+        initialPositionChooser.addOption("RED_LEFT_TRENCH", new Pose2d(12.434, 0.407, Rotation2d.kZero));
 
         initialPositionChooser.addOption("BLUE_RIGHT_BUMP", new Pose2d(3.56, 3.035, Rotation2d.k180deg));
         initialPositionChooser.addOption("BLUE_CENTER", new Pose2d(3.56, 4.056, Rotation2d.k180deg));
@@ -123,8 +123,8 @@ public class CompRobotContainer extends RobotContainer {
 
         // pathplanner
         AutoBuilder ab = new AutoBuilder(drive, superstructure, quest);
-        autoChooser.addOption("SWEEP_GREEDY", new PathPlannerAuto("SWEEP_GREEDY"));
-        autoChooser.addOption("SHOOT_GREEDY", new PathPlannerAuto("SHOOT_GREEDY"));
+        autoChooser.addOption("L_SWEEP_GREEDY", new PathPlannerAuto("SWEEP_GREEDY_L"));
+        autoChooser.addOption("L_SHOOT_GREEDY", new PathPlannerAuto("SHOOT_GREEDY_L"));
         // autoChooser.addOption("Auto pls work", AutoPlease.extendAndMoveAuto(() -> drive, () -> superstructure));
         // autoChooser.addOption(
         //         "Drive SysId (Quasistatic Forward)", drive.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
