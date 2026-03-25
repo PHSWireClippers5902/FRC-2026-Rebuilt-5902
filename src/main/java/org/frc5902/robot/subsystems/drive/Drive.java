@@ -1,16 +1,13 @@
 package org.frc5902.robot.subsystems.drive;
 
 import edu.wpi.first.math.filter.Debouncer;
-import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.geometry.Twist3d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -119,28 +116,6 @@ public class Drive extends SubsystemBase {
                                                     gyroInputs.data.position().getZ())
                                             : null),
                             sampleTimestamps[i]));
-            // log 3d robot
-            Logger.recordOutput(
-                    "RobotState/EstimatedPose3d",
-                    new Pose3d(RobotState.getInstance().getEstimatedPose())
-                            .exp(new Twist3d(
-                                    0.0,
-                                    0.0,
-                                    Math.abs(gyroInputs.data.position().getY())
-                                            * Units.inchesToMeters(ModuleConfigurations.driveBaseRadius)
-                                            / 2.0,
-                                    0.0,
-                                    gyroInputs.data.position().getY(),
-                                    0.0))
-                            .exp(new Twist3d(
-                                    0.0,
-                                    0.0,
-                                    Math.abs(gyroInputs.data.position().getX())
-                                            * Units.inchesToMeters(ModuleConfigurations.driveBaseRadius)
-                                            / 2.0,
-                                    gyroInputs.data.position().getX(),
-                                    0.0,
-                                    0.0)));
         }
 
         RobotState.getInstance().addDriveSpeeds(getChassisSpeeds());

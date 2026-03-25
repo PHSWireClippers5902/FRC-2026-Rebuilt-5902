@@ -3,8 +3,8 @@ package org.frc5902.robot.commands.auto;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.DriverStation;
+import org.frc5902.robot.RobotState;
 import org.frc5902.robot.subsystems.drive.Drive;
 import org.frc5902.robot.subsystems.questnav.QuestSubsystem;
 import org.frc5902.robot.subsystems.superstructure.Superstructure;
@@ -28,10 +28,11 @@ public class AutoBuilder {
         }
 
         com.pathplanner.lib.auto.AutoBuilder.configure(
-                () -> new Pose2d(quest.getLatestPose().getTranslation().toTranslation2d(), drive.getGyroRotation()),
+                () -> RobotState.getInstance().getEstimatedPose(),
                 (pose) -> {
                     quest.resetPose(pose);
                     drive.resetGyroscope(pose.getRotation());
+                    RobotState.getInstance().resetPose(pose);
                 },
                 drive::getRobotRelativeSpeeds,
                 (speeds, feedfowards) -> drive.runVelocity(speeds),

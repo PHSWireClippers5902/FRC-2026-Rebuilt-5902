@@ -1,5 +1,6 @@
 package org.frc5902.robot.containers;
 
+import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -7,12 +8,14 @@ import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import org.frc5902.robot.Constants.RobotConstants;
 import org.frc5902.robot.FieldConstants;
 import org.frc5902.robot.FieldConstants.AprilTagLayoutType;
 import org.frc5902.robot.Robot;
 import org.frc5902.robot.RobotState;
+import org.frc5902.robot.commands.auto.AutoBuilder;
 import org.frc5902.robot.commands.auto.EasyAutonomousCommandFactory;
 import org.frc5902.robot.commands.drive.DriveCommands;
 import org.frc5902.robot.subsystems.SLAMtake.SLAMTake;
@@ -102,12 +105,12 @@ public class CompRobotContainer extends RobotContainer {
         // var autoBuilder = new AutoBuilder(drive, superstructure);
         autoChooser = new LoggedDashboardChooser<>("Auto Choices");
         initialPositionChooser = new LoggedDashboardChooser<>("Initial Positions");
-        initialPositionChooser.addOption("BLUE_LEFT_BUMP", new Pose2d(3.56, 5.024, Rotation2d.kZero));
-        initialPositionChooser.addOption("BLUE_RIGHT_BUMP", new Pose2d(3.56, 3.035, Rotation2d.kZero));
+        initialPositionChooser.addOption("BLUE_LEFT_TRENCH", new Pose2d(4.147, 7.642, Rotation2d.k180deg));
+        initialPositionChooser.addOption("BLUE_RIGHT_BUMP", new Pose2d(3.56, 3.035, Rotation2d.k180deg));
         initialPositionChooser.addOption("BLUE_CENTER", new Pose2d(3.56, 4.056, Rotation2d.k180deg));
 
-        initialPositionChooser.addOption("RED_RIGHT_BUMP", new Pose2d(13, 5.024, Rotation2d.k180deg));
-        initialPositionChooser.addOption("RED_LEFT_BUMP", new Pose2d(13, 3.035, Rotation2d.k180deg));
+        initialPositionChooser.addOption("RED_RIGHT_BUMP", new Pose2d(13, 5.024, Rotation2d.kZero));
+        initialPositionChooser.addOption("RED_LEFT_BUMP", new Pose2d(13, 3.035, Rotation2d.kZero));
         initialPositionChooser.addOption("RED_CENTER", new Pose2d(13, 4.056, Rotation2d.kZero));
 
         // sysid routines
@@ -115,6 +118,10 @@ public class CompRobotContainer extends RobotContainer {
         autoChooser.addOption("Drive Simple FF Characterization", DriveCommands.feedforwardCharacterization(drive));
         autoChooser.addOption("FORWARD PLEASE", EasyAutonomousCommandFactory.forwardAuto(() -> drive));
         autoChooser.addOption("DO NOTHING", EasyAutonomousCommandFactory.doNothingAuto(() -> drive));
+
+        // pathplanner
+        AutoBuilder ab = new AutoBuilder(drive, superstructure, quest);
+        autoChooser.addOption("LEFT PATHPLANENR", new PathPlannerAuto("BLUE_AUTO"));
         // autoChooser.addOption("Auto pls work", AutoPlease.extendAndMoveAuto(() -> drive, () -> superstructure));
         // autoChooser.addOption(
         //         "Drive SysId (Quasistatic Forward)", drive.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
@@ -231,6 +238,7 @@ public class CompRobotContainer extends RobotContainer {
                                 -DriveConstants.ModuleConfigurations.driveBaseRadius,
                                 DriveConstants.ModuleConfigurations.driveBaseRadius)));
 
+        m_XboxController.button(8).onTrue(Commands.runOnce(() -> resetInitialPose()));
         // m_XboxController
         //         .leftBumper()
         //         .whileTrue(DriveCommands.joystickDrive(

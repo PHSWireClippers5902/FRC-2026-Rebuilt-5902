@@ -30,7 +30,7 @@ public class RobotState {
     // Pose Estimation
     private static final double poseBufferSizeSec = 2.0;
     // trust up to 3 thousands of a meter, three thousandths of a meter, and two thousandths of a meter.
-    private static final Matrix<N3, N1> odometryStateStdDevs = new Matrix<>(VecBuilder.fill(0.003, 0.003, 0.002));
+    private static final Matrix<N3, N1> odometryStateStdDevs = new Matrix<>(VecBuilder.fill(0.03, 0.03, 0.02));
     private static final Matrix<N3, N1> questStdDevs = new Matrix<>(VecBuilder.fill(0.02, 0.02, 0.035));
 
     private static RobotState instance;
@@ -196,7 +196,7 @@ public class RobotState {
         }
 
         Pose2d estimateAtTime = estimatedPose;
-
+        // estimatedPose = observation.pose.toPose2d();
         // calc 3x3 vision matrix (idk why Mecha-Advantage used ++i)
         var r = new double[3];
         for (int i = 0; i < 3; ++i) {
