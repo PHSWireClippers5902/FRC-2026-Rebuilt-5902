@@ -8,8 +8,8 @@ public class IntakeSystemConstants {
         public static int IntakeCANID = 53;
         public static boolean inverted = false;
         public static final double reduction = 1;
-        public static int StallLimit = 70;
-        public static int FreeLimit = 45;
+        public static int StallLimit = 50;
+        public static int FreeLimit = 36;
         public static PID IntakePID =
                 PID.builder().proportional(0.5).deriviative(0.002).build();
         public static double IntakePositionConversionFactor = 1.0 / 3.0;

@@ -66,8 +66,8 @@ public class LauncherConstants {
         public static int InserterCANID = 55;
         public static boolean inverted = true;
         public static final double reduction = 1;
-        public static int StallLimit = 70; // can go with less bcz doesnt need same speeds - BigD
-        public static int FreeLimit = 50;
+        public static int StallLimit = 65;
+        public static int FreeLimit = 46;
         public static PID inserterPID =
                 PID.builder().proportional(0.25).deriviative(0.1).build();
         public static double inserterPositionConversionFactor = 1.0 / 3.0;
