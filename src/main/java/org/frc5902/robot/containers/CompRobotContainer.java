@@ -211,6 +211,7 @@ public class CompRobotContainer extends RobotContainer {
                         () -> -m_XboxController.getLeftY(),
                         () -> -m_XboxController.getLeftX(),
                         FieldConstants.BLUE_HUB_LOCATION));
+        m_XboxController.x().whileTrue(DriveCommands.pointAtPoseOSCILLATE(drive, FieldConstants.BLUE_HUB_LOCATION));
         // m_XboxController
         //         .y()
         //         .onTrue(superstructure.addCommandToScheduler(SuperstructureActions.MOVE_INTAKE_DOWN))

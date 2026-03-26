@@ -112,7 +112,7 @@ public class DriveCommands {
     }
 
     public static Command pointAtPoseOSCILLATE(Drive drive, Pose2d pose) {
-        return aimAtAngle(drive, () -> {
+        return aimAtAngleOSCLILATE(drive, () -> {
             //     return pose.minus(RobotState.getInstance().getEstimatedPose()).getRotation();
             // return Rotation2d.kZero;
             Logger.recordOutput(
@@ -129,7 +129,7 @@ public class DriveCommands {
     public static Command aimAtAngleOSCLILATE(Drive drive, Supplier<Rotation2d> rotationSupplier) {
         // configure (kP, kI, kD, -zoid: max_velocity, max_acceleration)
         ProfiledPIDController angleController =
-                new ProfiledPIDController(7, 0.0, 0.0, new TrapezoidProfile.Constraints(0.0, 0.0));
+                new ProfiledPIDController(7.5, 0.0, 0.0, new TrapezoidProfile.Constraints(0.0, 0.0));
         angleController.enableContinuousInput(-Math.PI, Math.PI);
         return Commands.run(
                         () -> {
