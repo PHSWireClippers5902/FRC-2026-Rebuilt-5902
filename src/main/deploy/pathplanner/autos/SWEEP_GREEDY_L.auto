@@ -36,22 +36,9 @@
           }
         },
         {
-          "type": "deadline",
+          "type": "named",
           "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "LAUNCH"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "OSCILLATE"
-                }
-              }
-            ]
+            "name": "LAUNCH_SEQUENCE"
           }
         },
         {
@@ -61,7 +48,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "shoot_sweep_L"
+                  "pathName": "shoot_trench_oversweep_L"
                 }
               },
               {
@@ -76,26 +63,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "sweep_shoot_L"
+            "pathName": "oversweep_shoot_L"
           }
         },
         {
-          "type": "deadline",
+          "type": "named",
           "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "LAUNCH"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "OSCILLATE"
-                }
-              }
-            ]
+            "name": "LAUNCH_SEQUENCE"
           }
         }
       ]

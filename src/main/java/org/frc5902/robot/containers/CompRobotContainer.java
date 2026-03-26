@@ -139,15 +139,17 @@ public class CompRobotContainer extends RobotContainer {
                 Superstructure.AutonomousSuperstructureGoalCommand(
                         SuperstructureActions.LAUNCH_STUPID, 3.0, superstructure));
 
+        NamedCommands.registerCommand("LAUNCH_SEQUENCE", MiscCommands.LaunchSequence(drive, superstructure));
+
         autoChooser.addOption("BLUE_LEFT_SWEEP", new PathPlannerAuto("SWEEP_GREEDY_L"));
-        autoChooser.addOption("RED_RIGHT_SWEEP", new PathPlannerAuto("SWEEP_GREEDY_L"));
+        autoChooser.addOption("RED_RIGHT_SWEEP", new PathPlannerAuto("SWEEP_GREEDY_L", true));
         autoChooser.addOption("BLUE_LEFT_SHOOT", new PathPlannerAuto("SHOOT_GREEDY_L"));
-        autoChooser.addOption("RED_RIGHT_SHOOT", new PathPlannerAuto("SHOOT_GREEDY_L"));
+        autoChooser.addOption("RED_RIGHT_SHOOT", new PathPlannerAuto("SHOOT_GREEDY_L", true));
 
         autoChooser.addOption("BLUE_RIGHT_SWEEP", new PathPlannerAuto("SWEEP_GREEDY_R"));
-        autoChooser.addOption("RED_LEFT_SWEEP", new PathPlannerAuto("SWEEP_GREEDY_R"));
+        autoChooser.addOption("RED_LEFT_SWEEP", new PathPlannerAuto("SWEEP_GREEDY_R", true));
         autoChooser.addOption("BLUE_RIGHT_SHOOT", new PathPlannerAuto("SHOOT_GREEDY_R"));
-        autoChooser.addOption("RED_LEFT_SHOOT", new PathPlannerAuto("SHOOT_GREEDY_R"));
+        autoChooser.addOption("RED_LEFT_SHOOT", new PathPlannerAuto("SHOOT_GREEDY_R", true));
 
         // autoChooser.addOption("Auto pls work", AutoPlease.extendAndMoveAuto(() -> drive, () -> superstructure));
         // autoChooser.addOption(
