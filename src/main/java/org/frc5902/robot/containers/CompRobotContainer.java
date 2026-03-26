@@ -123,7 +123,10 @@ public class CompRobotContainer extends RobotContainer {
         AutoBuilder ab = new AutoBuilder(drive, superstructure, quest);
 
         NamedCommands.registerCommand("RESET_POSE", MiscCommands.PoseResetCommand(this));
-        NamedCommands.registerCommand("OSCILLATE", DriveCommands.pointAtPoseOSCILLATE(drive, FieldConstants.BLUE_HUB_LOCATION).repeatedly());
+        NamedCommands.registerCommand(
+                "OSCILLATE",
+                DriveCommands.pointAtPoseOSCILLATE(drive, FieldConstants.BLUE_HUB_LOCATION)
+                        .repeatedly());
         NamedCommands.registerCommand(
                 "INTAKE",
                 Superstructure.AutonomousSuperstructureGoalCommand(SuperstructureActions.INTAKE, 1000, superstructure));
