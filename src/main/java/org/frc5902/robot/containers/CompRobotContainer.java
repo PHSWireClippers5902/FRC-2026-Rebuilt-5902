@@ -1,5 +1,6 @@
 package org.frc5902.robot.containers;
 
+import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -8,13 +9,13 @@ import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import org.frc5902.robot.Constants.RobotConstants;
 import org.frc5902.robot.FieldConstants;
 import org.frc5902.robot.FieldConstants.AprilTagLayoutType;
 import org.frc5902.robot.Robot;
 import org.frc5902.robot.RobotState;
+import org.frc5902.robot.commands.MiscCommands;
 import org.frc5902.robot.commands.auto.AutoBuilder;
 import org.frc5902.robot.commands.auto.EasyAutonomousCommandFactory;
 import org.frc5902.robot.commands.drive.DriveCommands;
@@ -105,13 +106,12 @@ public class CompRobotContainer extends RobotContainer {
         // var autoBuilder = new AutoBuilder(drive, superstructure);
         autoChooser = new LoggedDashboardChooser<>("Auto Choices");
         initialPositionChooser = new LoggedDashboardChooser<>("Initial Positions");
-        
+
         initialPositionChooser.addOption("BLUE_LEFT_TRENCH", new Pose2d(4.147, 7.642, Rotation2d.k180deg));
         initialPositionChooser.addOption("RED_LEFT_TRENCH", new Pose2d(12.434, 0.407, Rotation2d.kZero));
 
         initialPositionChooser.addOption("BLUE_RIGHT_TRENCH", new Pose2d(4.147, 0.407, Rotation2d.k180deg));
         initialPositionChooser.addOption("RED_RIGHT_TRENCH", new Pose2d(12.434, 7.642, Rotation2d.kZero));
-
 
         // sysid routines
         autoChooser.addOption("Drive Wheel Radius Characterization", DriveCommands.wheelRadiusCharacterization(drive));
@@ -121,6 +121,21 @@ public class CompRobotContainer extends RobotContainer {
 
         // pathplanner
         AutoBuilder ab = new AutoBuilder(drive, superstructure, quest);
+
+        NamedCommands.registerCommand("RESET_POSE", MiscCommands.PoseResetCommand(this));
+        NamedCommands.registerCommand("OSCILLATE", DriveCommands.pointAtPoseOSCILLATE(drive, FieldConstants.BLUE_HUB_LOCATION).repeatedly());
+        NamedCommands.registerCommand(
+                "INTAKE",
+                Superstructure.AutonomousSuperstructureGoalCommand(SuperstructureActions.INTAKE, 1000, superstructure));
+        NamedCommands.registerCommand(
+                "READY_LAUNCHER",
+                Superstructure.AutonomousSuperstructureGoalCommand(
+                        SuperstructureActions.READY_LAUNCHER_STUPID, 1000, superstructure));
+        NamedCommands.registerCommand(
+                "LAUNCH",
+                Superstructure.AutonomousSuperstructureGoalCommand(
+                        SuperstructureActions.LAUNCH_STUPID, 3.0, superstructure));
+
         autoChooser.addOption("BLUE_LEFT_SWEEP", new PathPlannerAuto("SWEEP_GREEDY_L"));
         autoChooser.addOption("RED_RIGHT_SWEEP", new PathPlannerAuto("SWEEP_GREEDY_L"));
         autoChooser.addOption("BLUE_LEFT_SHOOT", new PathPlannerAuto("SHOOT_GREEDY_L"));
@@ -130,7 +145,6 @@ public class CompRobotContainer extends RobotContainer {
         autoChooser.addOption("RED_LEFT_SWEEP", new PathPlannerAuto("SWEEP_GREEDY_R"));
         autoChooser.addOption("BLUE_RIGHT_SHOOT", new PathPlannerAuto("SHOOT_GREEDY_R"));
         autoChooser.addOption("RED_LEFT_SHOOT", new PathPlannerAuto("SHOOT_GREEDY_R"));
-
 
         // autoChooser.addOption("Auto pls work", AutoPlease.extendAndMoveAuto(() -> drive, () -> superstructure));
         // autoChooser.addOption(
@@ -255,7 +269,7 @@ public class CompRobotContainer extends RobotContainer {
                                 -DriveConstants.ModuleConfigurations.driveBaseRadius,
                                 DriveConstants.ModuleConfigurations.driveBaseRadius)));
 
-        m_XboxController.button(8).onTrue(Commands.runOnce(() -> resetInitialPose()));
+        m_XboxController.button(8).onTrue(MiscCommands.PoseResetCommand(this));
         // m_XboxController
         //         .leftBumper()
         //         .whileTrue(DriveCommands.joystickDrive(

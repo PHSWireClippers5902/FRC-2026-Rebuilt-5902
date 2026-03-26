@@ -111,6 +111,51 @@ public class DriveCommands {
         });
     }
 
+    public static Command pointAtPoseOSCILLATE(Drive drive, Pose2d pose) {
+        return aimAtAngle(drive, () -> {
+            //     return pose.minus(RobotState.getInstance().getEstimatedPose()).getRotation();
+            // return Rotation2d.kZero;
+            Logger.recordOutput(
+                    "AIM_POSE",
+                    pose.getTranslation()
+                            .minus(RobotState.getInstance().getEstimatedPose().getTranslation())
+                            .getAngle());
+            return pose.getTranslation()
+                    .minus(RobotState.getInstance().getEstimatedPose().getTranslation())
+                    .getAngle();
+        });
+    }
+
+    public static Command aimAtAngleOSCLILATE(Drive drive, Supplier<Rotation2d> rotationSupplier) {
+        // configure (kP, kI, kD, -zoid: max_velocity, max_acceleration)
+        ProfiledPIDController angleController =
+                new ProfiledPIDController(7, 0.0, 0.0, new TrapezoidProfile.Constraints(0.0, 0.0));
+        angleController.enableContinuousInput(-Math.PI, Math.PI);
+        return Commands.run(
+                        () -> {
+                            // Calculate angular speed
+                            double omega = angleController.calculate(
+                                    drive.getGyroRotation().getRadians(),
+                                    rotationSupplier.get().getRadians());
+
+                            // Convert to field relative speeds & send command
+                            ChassisSpeeds speeds = new ChassisSpeeds(0.0, 0.0, omega);
+                            boolean isFlipped = DriverStation.getAlliance().isPresent()
+                                    && DriverStation.getAlliance().get() == Alliance.Red;
+                            drive.runVelocity(ChassisSpeeds.fromFieldRelativeSpeeds(
+                                    speeds,
+                                    isFlipped
+                                            ? RobotState.getInstance()
+                                                    .getRotation()
+                                                    .plus(Rotation2d.kPi)
+                                            : RobotState.getInstance().getRotation()));
+                        },
+                        drive)
+                .beforeStarting(
+                        () -> angleController.reset(drive.getGyroRotation().getRadians()));
+    }
+
+
     public static Command aimAtAngle(Drive drive, Supplier<Rotation2d> rotationSupplier) {
         // configure (kP, kI, kD, -zoid: max_velocity, max_acceleration)
         ProfiledPIDController angleController =

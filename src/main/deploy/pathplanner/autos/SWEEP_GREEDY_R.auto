@@ -5,6 +5,12 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "RESET_POSE"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "start_sweep_R"

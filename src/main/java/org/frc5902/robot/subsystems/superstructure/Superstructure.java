@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import lombok.Getter;
 import lombok.Setter;
 import org.frc5902.robot.subsystems.SLAMtake.SLAMTake;
@@ -32,7 +33,7 @@ public class Superstructure extends SubsystemBase {
     @Getter
     @Setter
     @AutoLogOutput
-    private boolean KILL_SYSTEMS = true;
+    private boolean KILL_SYSTEMS = false;
 
     @Getter
     private SuperstructureAction goal = SuperstructureActions.DEPLOY_IDLE;
@@ -70,22 +71,27 @@ public class Superstructure extends SubsystemBase {
         this.goal = maximumGoal;
     }
 
-    public InstantCommand addCommandToScheduler(SuperstructureAction g) {
-        return new InstantCommand(() -> scheduled_goals.add(g), this);
+    public Command addCommandToScheduler(SuperstructureAction g) {
+        return Commands.runOnce(() -> scheduled_goals.add(g), this);
     }
 
-    public InstantCommand removeCommandFromScheduler(SuperstructureAction g) {
-        return new InstantCommand(() -> scheduled_goals.remove(g), this);
+    public Command removeCommandFromScheduler(SuperstructureAction g) {
+        return Commands.runOnce(() -> scheduled_goals.remove(g), this);
     }
 
     public InstantCommand SWAP_KILL_SYSTEMS() {
         return new InstantCommand(() -> this.KILL_SYSTEMS = !this.KILL_SYSTEMS);
     }
 
+    public void resetScheduler() {
+        scheduled_goals = new ArrayList<SuperstructureAction>();
+        scheduled_goals.add(SuperstructureActions.DEPLOY_IDLE);
+    }
+
     public static Command AutonomousSuperstructureGoalCommand(
             SuperstructureAction actionGoal, double timeout, Superstructure superinstance) {
-        return Commands.run(() -> superinstance.addCommandToScheduler(actionGoal), superinstance)
-                .withTimeout(timeout)
-                .finallyDo(() -> superinstance.removeCommandFromScheduler(actionGoal));
+        return Commands.parallel(
+                superinstance.addCommandToScheduler(actionGoal),
+                new WaitCommand(timeout).finallyDo(() -> superinstance.scheduled_goals.remove(actionGoal)));
     }
 }

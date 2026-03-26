@@ -20,7 +20,6 @@ import org.frc5902.robot.containers.RobotContainer;
 import org.frc5902.robot.subsystems.led.LEDManager;
 import org.frc5902.robot.subsystems.rumble.Rumble;
 import org.frc5902.robot.subsystems.superstructure.Superstructure;
-import org.frc5902.robot.subsystems.superstructure.SuperstructureActions;
 import org.frc5902.robot.util.buildutil.BuildInfo;
 import org.frc5902.robot.util.buildutil.SystemTimeValidReader;
 import org.frc5902.robot.util.buildutil.VirtualSubsystem;
@@ -221,7 +220,7 @@ public class Robot extends LoggedRobot {
         }
         // notify phases that autonomous has ended
         Phases.getInstance().teleopInit();
-        Superstructure.getInstance().removeCommandFromScheduler(SuperstructureActions.STOW);
+        Superstructure.getInstance().resetScheduler();
     }
 
     @Override

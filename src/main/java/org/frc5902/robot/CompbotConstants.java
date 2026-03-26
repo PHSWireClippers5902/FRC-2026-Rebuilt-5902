@@ -15,5 +15,5 @@ public class CompbotConstants {
     public static Transform3d questOffset = new Transform3d(
             new Translation3d(
                     Units.inchesToMeters(-6.9375), Units.inchesToMeters(12.0875), Units.inchesToMeters(18.25)),
-            new Rotation3d(0, 0, Units.degreesToRadians(121)));
+            new Rotation3d(0, 0, Units.degreesToRadians(110)));
 }
