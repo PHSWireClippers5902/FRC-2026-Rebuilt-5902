@@ -45,6 +45,7 @@ import org.frc5902.robot.subsystems.questnav.QuestSubsystem;
 import org.frc5902.robot.subsystems.rumble.Rumble;
 import org.frc5902.robot.subsystems.superstructure.Superstructure;
 import org.frc5902.robot.subsystems.superstructure.SuperstructureActions;
+import org.frc5902.robot.util.fieldbased.AllianceFlipUtil;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 import java.util.Optional;
@@ -125,7 +126,7 @@ public class CompRobotContainer extends RobotContainer {
         NamedCommands.registerCommand("RESET_POSE", MiscCommands.PoseResetCommand(this));
         NamedCommands.registerCommand(
                 "OSCILLATE",
-                DriveCommands.pointAtPoseOSCILLATE(drive, FieldConstants.BLUE_HUB_LOCATION)
+                DriveCommands.pointAtPoseOSCILLATE(drive, AllianceFlipUtil.apply(FieldConstants.BLUE_HUB_LOCATION))
                         .repeatedly());
         NamedCommands.registerCommand(
                 "INTAKE",
@@ -203,12 +204,14 @@ public class CompRobotContainer extends RobotContainer {
 
         m_XboxController
                 .b()
-                .onTrue(superstructure.addCommandToScheduler(SuperstructureActions.RAISED_INTAKE))
-                .onFalse(superstructure.removeCommandFromScheduler(SuperstructureActions.RAISED_INTAKE));
+                .whileTrue(DriveCommands.aimAtAngleOSCLILATE_ONETIME(
+                        drive, RobotState.getInstance().getEstimatedPose().getRotation()));
+        // .onTrue(superstructure.addCommandToScheduler(SuperstructureActions.RAISED_INTAKE))
+        // .onFalse(superstructure.removeCommandFromScheduler(SuperstructureActions.RAISED_INTAKE));
         m_XboxController
                 .y()
                 .onTrue(superstructure.addCommandToScheduler(SuperstructureActions.RAISED_INTAKE_HIGH))
-                .onFalse(superstructure.addCommandToScheduler(SuperstructureActions.RAISED_INTAKE_HIGH));
+                .onFalse(superstructure.removeCommandFromScheduler(SuperstructureActions.RAISED_INTAKE_HIGH));
 
         m_XboxController
                 .a()
@@ -217,7 +220,11 @@ public class CompRobotContainer extends RobotContainer {
                         () -> -m_XboxController.getLeftY(),
                         () -> -m_XboxController.getLeftX(),
                         FieldConstants.BLUE_HUB_LOCATION));
-        m_XboxController.x().whileTrue(DriveCommands.pointAtPoseOSCILLATE(drive, FieldConstants.BLUE_HUB_LOCATION));
+
+        m_XboxController
+                .x()
+                .whileTrue(DriveCommands.pointAtPoseOSCILLATE(
+                        drive, AllianceFlipUtil.apply(FieldConstants.BLUE_HUB_LOCATION)));
         // m_XboxController
         //         .y()
         //         .onTrue(superstructure.addCommandToScheduler(SuperstructureActions.MOVE_INTAKE_DOWN))
@@ -280,16 +287,16 @@ public class CompRobotContainer extends RobotContainer {
                                 DriveConstants.ModuleConfigurations.driveBaseRadius)));
 
         m_XboxController.button(8).onTrue(MiscCommands.PoseResetCommand(this));
-        // m_XboxController
-        //         .leftBumper()
-        //         .whileTrue(DriveCommands.joystickDrive(
-        //                 drive,
-        //                 () -> -m_XboxController.getLeftY(),
-        //                 () -> -m_XboxController.getLeftX(),
-        //                 () -> m_XboxController.getRightX(),
-        //                 () -> false,
-        //                 1.0,
-        //                 1.0));
+        m_XboxController
+                .rightBumper()
+                .whileTrue(DriveCommands.joystickDrive(
+                        drive,
+                        () -> -m_XboxController.getLeftY(),
+                        () -> -m_XboxController.getLeftX(),
+                        () -> m_XboxController.getRightX(),
+                        () -> false,
+                        1.0,
+                        1.0));
 
         // m_XboxController.x().whileTrue(DriveCommands.defenseGoal(drive));
     }
