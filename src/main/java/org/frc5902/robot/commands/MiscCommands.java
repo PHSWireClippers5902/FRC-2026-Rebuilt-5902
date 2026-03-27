@@ -11,6 +11,7 @@ import org.frc5902.robot.subsystems.superstructure.SuperstructureActions;
 
 public class MiscCommands {
     public static Command PoseResetCommand(CompRobotContainer crc) {
+        // this 0.1 timeout doesn't actually do anything??
         return Commands.runOnce(() -> {
                     crc.resetInitialPose();
                 })
