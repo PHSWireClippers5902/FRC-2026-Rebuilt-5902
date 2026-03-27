@@ -8,8 +8,8 @@ public class IndexerConstants {
         public static int IndexCANID = 54;
         public static boolean inverted = false;
         public static final double reduction = 1;
-        public static int StallLimit = 70;
-        public static int FreeLimit = 45;
+        public static int StallLimit = 10;
+        public static int FreeLimit = 20;
         public static PID IndexerPID =
                 PID.builder().proportional(0.1).deriviative(0.002).build();
         public static double IndexPositionConversionFactor = 1.0 / 5.0;

@@ -8,8 +8,8 @@ public class SlamSystemConstants {
         public static int SlamCANID = 52;
         public static boolean inverted = false;
         public static final double reduction = 1;
-        public static int StallLimit = 70;
-        public static int FreeLimit = 45;
+        public static int StallLimit = 45;
+        public static int FreeLimit = 30;
         public static PID SlamPID =
                 PID.builder().proportional(2.3).deriviative(0.002).build();
         public static double SlamPositionConversionFactor = 0.01;

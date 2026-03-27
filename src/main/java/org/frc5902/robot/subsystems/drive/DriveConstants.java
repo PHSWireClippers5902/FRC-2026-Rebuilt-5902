@@ -99,8 +99,8 @@ public class DriveConstants {
         // Units.inchesToMeters(driveWheelRadiusInches)
         public static double drivePositionConversionFactor = 2 * Math.PI / 5.54; // // change
         public static double driveVelocityConversionFactor = drivePositionConversionFactor / 60; // change
-        public static int driveFreeLimit = 45;
-        public static int driveStallLimit = 67; // 67 67 67
+        public static int driveFreeLimit = 40;
+        public static int driveStallLimit = 56;
         public static double driveVoltageCompensation = 12;
         public static FeedbackSensor driveFeedbackSensor = FeedbackSensor.kPrimaryEncoder;
         public static PID driveClosedLoop =
