@@ -20,6 +20,10 @@ public class SuperstructureActions {
             .priority(1)
             .slamGoal(SLAMTake.Goal.FEED)
             .build();
+    public static SuperstructureAction RAISED_INTAKE_HIGH = SuperstructureAction.builder()
+            .priority(1)
+            .slamGoal(SLAMTake.Goal.FEED_HIGH)
+            .build();
 
     // DEPLOY_IDLE: Maintain all defaults
     public static SuperstructureAction DEPLOY_IDLE =

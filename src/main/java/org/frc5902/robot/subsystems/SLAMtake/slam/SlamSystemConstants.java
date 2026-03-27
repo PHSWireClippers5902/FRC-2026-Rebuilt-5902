@@ -19,6 +19,7 @@ public class SlamSystemConstants {
         public static int SlamLimitSwitchID = 9;
         // public static boolean SlamLimitSwitchOnByDefault = true;
         public static double EstimatedTopValue = 0.21;
-        public static double raisedAngle = 0.09;
+        public static double raisedAngleLOW = 0.09;
+        public static double raisedAngleHIGH = 0.15;
     }
 }

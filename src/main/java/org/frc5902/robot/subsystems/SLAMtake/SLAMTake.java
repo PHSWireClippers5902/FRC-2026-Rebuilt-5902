@@ -57,7 +57,7 @@ public class SLAMTake {
                 break;
             }
             case RAISED: {
-                slamIO.runAngle(SlamSystemConstants.SlamConstants.raisedAngle);
+                slamIO.runAngle(SlamSystemConstants.SlamConstants.raisedAngleLOW);
                 break;
             }
             case LOWERED_IDLE: {
@@ -70,7 +70,12 @@ public class SLAMTake {
                 break;
             }
             case FEED: {
-                slamIO.runAngle(SlamSystemConstants.SlamConstants.raisedAngle);
+                slamIO.runAngle(SlamSystemConstants.SlamConstants.raisedAngleLOW);
+                runIntakeVolts(3.0);
+                break;
+            }
+            case FEED_HIGH: {
+                slamIO.runAngle(SlamSystemConstants.SlamConstants.raisedAngleHIGH);
                 runIntakeVolts(3.0);
                 break;
             }
@@ -117,6 +122,7 @@ public class SLAMTake {
 
     public enum Goal {
         FEED,
+        FEED_HIGH,
         RAISE_STUPID,
         LOWER_STUPID,
         RAISED,

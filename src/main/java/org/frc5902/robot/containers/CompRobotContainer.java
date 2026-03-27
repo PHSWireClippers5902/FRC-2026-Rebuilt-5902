@@ -177,7 +177,7 @@ public class CompRobotContainer extends RobotContainer {
                 () -> -m_XboxController.getLeftX(),
                 () -> -m_XboxController.getRightX(),
                 () -> false,
-                0.1,
+                0.23,
                 0.5));
 
         m_XboxController.rightStick().onTrue(DriveCommands.resetGyroscope(drive));
@@ -205,6 +205,10 @@ public class CompRobotContainer extends RobotContainer {
                 .b()
                 .onTrue(superstructure.addCommandToScheduler(SuperstructureActions.RAISED_INTAKE))
                 .onFalse(superstructure.removeCommandFromScheduler(SuperstructureActions.RAISED_INTAKE));
+        m_XboxController
+                .y()
+                .onTrue(superstructure.addCommandToScheduler(SuperstructureActions.RAISED_INTAKE_HIGH))
+                .onFalse(superstructure.addCommandToScheduler(SuperstructureActions.RAISED_INTAKE_HIGH));
 
         m_XboxController
                 .a()
