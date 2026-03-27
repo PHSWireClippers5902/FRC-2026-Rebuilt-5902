@@ -66,6 +66,7 @@ public class CompRobotContainer extends RobotContainer {
 
     private final LoggedDashboardChooser<Command> autoChooser;
     private final LoggedDashboardChooser<Pose2d> initialPositionChooser;
+
     private final Alert primaryDisconnected = new Alert("Primary controller disconnected.", AlertType.kWarning);
 
     public CompRobotContainer() {
@@ -219,7 +220,7 @@ public class CompRobotContainer extends RobotContainer {
                         drive,
                         () -> -m_XboxController.getLeftY(),
                         () -> -m_XboxController.getLeftX(),
-                        FieldConstants.BLUE_HUB_LOCATION));
+                        AllianceFlipUtil.apply(FieldConstants.BLUE_HUB_LOCATION)));
 
         m_XboxController
                 .x()
@@ -287,6 +288,8 @@ public class CompRobotContainer extends RobotContainer {
                                 DriveConstants.ModuleConfigurations.driveBaseRadius)));
 
         m_XboxController.button(8).onTrue(MiscCommands.PoseResetCommand(this));
+        m_XboxController.button(7).toggleOnTrue(Superstructure.getInstance().SWAP_KILL_SYSTEMS());
+
         m_XboxController
                 .rightBumper()
                 .whileTrue(DriveCommands.joystickDrive(

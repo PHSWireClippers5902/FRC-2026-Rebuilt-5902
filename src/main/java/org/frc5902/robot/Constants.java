@@ -53,9 +53,9 @@ public class Constants {
         // idk what a 'hal' is...
         public static boolean disableHAL = false;
 
-        public static void disableHAL() {
-            disableHAL = true;
-        }
+        // public static void disableHAL() {
+        //     disableHAL = true;
+        // }
     }
 
     public static class PathPlannerConstants {

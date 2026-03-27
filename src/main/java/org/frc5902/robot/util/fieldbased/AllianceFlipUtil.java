@@ -8,7 +8,6 @@ package org.frc5902.robot.util.fieldbased;
 
 import edu.wpi.first.math.geometry.*;
 import edu.wpi.first.wpilibj.DriverStation;
-import org.frc5902.robot.Constants.RobotConstants;
 import org.frc5902.robot.FieldConstants;
 
 public class AllianceFlipUtil {
@@ -45,8 +44,7 @@ public class AllianceFlipUtil {
     }
 
     public static boolean shouldFlip() {
-        return !RobotConstants.disableHAL
-                && DriverStation.getAlliance().isPresent()
+        return DriverStation.getAlliance().isPresent()
                 && DriverStation.getAlliance().get() == DriverStation.Alliance.Red;
     }
 }
