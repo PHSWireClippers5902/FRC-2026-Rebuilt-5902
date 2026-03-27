@@ -104,7 +104,7 @@ public class RobotState {
             Rotation2d angle = gyroAngle.plus(gyroOffset);
             odometryPose = new Pose2d(odometryPose.getTranslation(), angle);
         });
-        
+
         // pose buffer will now buffer at timestamp
         poseBuffer.addSample(observation.timestamp(), odometryPose);
 
