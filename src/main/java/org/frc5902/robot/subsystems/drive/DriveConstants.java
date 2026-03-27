@@ -92,7 +92,7 @@ public class DriveConstants {
     }
 
     public static class DriveMotorConstants {
-        public static double driveWheelRadiusInches = 1.422; // in inches // change
+        public static double driveWheelRadiusInches = 1.603; // in inches // change
         // TODO CONVERT
         public static double driveGearReduction = 1.0 / 5.54; // change
         // First, convert to radians (2pi/5.54). Then, divide by drive train radius

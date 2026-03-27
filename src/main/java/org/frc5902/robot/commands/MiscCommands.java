@@ -17,7 +17,7 @@ public class MiscCommands {
                 })
                 .withTimeout(0.1);
     }
-    // whatever this technically isn't a miscellaneous command... 
+    // whatever this technically isn't a miscellaneous command...
     public static Command LaunchSequence(Drive drive, Superstructure superstructure) {
         return Commands.race(
                 DriveCommands.pointAtPoseOSCILLATE(drive, FieldConstants.BLUE_HUB_LOCATION),

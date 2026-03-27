@@ -30,7 +30,7 @@ public class RobotState {
     // Pose Estimation
     private static final double poseBufferSizeSec = 2.0;
     // trust up to 3 thousands of a meter, three thousandths of a meter, and two thousandths of a meter.
-    private static final Matrix<N3, N1> odometryStateStdDevs = new Matrix<>(VecBuilder.fill(0.03, 0.03, 0.02));
+    private static final Matrix<N3, N1> odometryStateStdDevs = new Matrix<>(VecBuilder.fill(0.3, 0.3, 0.2));
     private static final Matrix<N3, N1> questStdDevs = new Matrix<>(VecBuilder.fill(0.02, 0.02, 0.035));
 
     private static RobotState instance;
@@ -109,6 +109,7 @@ public class RobotState {
         poseBuffer.addSample(observation.timestamp(), odometryPose);
 
         Twist2d finalTwist = lastOdometryPose.log(odometryPose);
+
         estimatedPose = estimatedPose.exp(finalTwist);
     }
 
