@@ -115,6 +115,11 @@ public class CompRobotContainer extends RobotContainer {
         initialPositionChooser.addOption("BLUE_RIGHT_TRENCH", new Pose2d(4.147, 0.407, Rotation2d.k180deg));
         initialPositionChooser.addOption("RED_RIGHT_TRENCH", new Pose2d(12.434, 7.642, Rotation2d.kZero));
 
+        initialPositionChooser.addOption("BLUE_LEFT_BUMP",new Pose2d(3.622, 5.066, Rotation2d.k180deg));
+        initialPositionChooser.addOption("RED_LEFT_BUMP",new Pose2d(12.908, 3.015, Rotation2d.kZero));
+        initialPositionChooser.addOption("BLUE_RIGHT_BUMP",new Pose2d(3.622, 3.015, Rotation2d.k180deg));
+        initialPositionChooser.addOption("RED_RIGHT_BUMP",new Pose2d(12.908, 5.066, Rotation2d.k180deg));
+
         // sysid routines
         autoChooser.addOption("Drive Wheel Radius Characterization", DriveCommands.wheelRadiusCharacterization(drive));
         autoChooser.addOption("Drive Simple FF Characterization", DriveCommands.feedforwardCharacterization(drive));
