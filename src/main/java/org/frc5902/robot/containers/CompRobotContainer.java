@@ -326,7 +326,7 @@ public class CompRobotContainer extends RobotContainer {
                         drive,
                         () -> -m_XboxController.getLeftY(),
                         () -> -m_XboxController.getLeftX(),
-                        () -> m_XboxController.getRightX(),
+                        () -> -m_XboxController.getRightX(),
                         () -> false,
                         1.0,
                         1.0));
