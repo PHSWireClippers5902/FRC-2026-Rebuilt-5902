@@ -1,17 +1,18 @@
 package org.frc5902.robot.subsystems.launcher;
 
-import org.frc5902.robot.FieldConstants;
-import org.frc5902.robot.RobotState;
-import org.frc5902.robot.util.fieldbased.AllianceFlipUtil;
-
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.math.util.Units;
+import org.frc5902.robot.FieldConstants;
+import org.frc5902.robot.RobotState;
+import org.frc5902.robot.util.fieldbased.AllianceFlipUtil;
+import org.littletonrobotics.junction.Logger;
 
 public class LauncherCalculatorExperimental {
     public static final InterpolatingDoubleTreeMap inch_velocity = new InterpolatingDoubleTreeMap();
-    
+
     static {
         // anything under 58 NOTHING
         inch_velocity.put(Units.inchesToMeters(66.5), 145.0);
@@ -36,11 +37,35 @@ public class LauncherCalculatorExperimental {
 
     public static double calculate(Translation2d distance) {
         // filter
-        if (distance.getDistance(new Translation2d()) > Units.inchesToMeters(167.0) || distance.getDistance(new Translation2d()) < Units.inchesToMeters(60)) {
+        if (distance.getDistance(new Translation2d()) > Units.inchesToMeters(167.0)
+                || distance.getDistance(new Translation2d()) < Units.inchesToMeters(60)) {
             return 0;
         }
         return inch_velocity.get(distance.getDistance(new Translation2d()));
     }
 
+    public static boolean ready() {
+        // tolerance magick number 5 degrees
+        Pose2d currentPose = RobotState.getInstance().getEstimatedPose();
+        Translation2d hubLocation = AllianceFlipUtil.apply(FieldConstants.BLUE_HUB_LOCATION);
+        double tolerance = 8.0;
+        boolean returnval = (Math.abs(currentPose
+                        .getTranslation()
+                        .minus(hubLocation)
+                        .getAngle()
+                        .minus(currentPose.getRotation())
+                        .getDegrees())
+                <= tolerance);
+        Logger.recordOutput("Outputs/MagickCalculator/ReturnValue", returnval);
+        return returnval;
+    }
 
+    public static Rotation2d calcPointedAngle() {
+        Rotation2d returnRot;
+        Pose2d currentPose = RobotState.getInstance().getEstimatedPose();
+        Translation2d hubLocation = AllianceFlipUtil.apply(FieldConstants.BLUE_HUB_LOCATION);
+        returnRot = currentPose.getTranslation().minus(hubLocation).getAngle();
+        Logger.recordOutput("Outputs/MagickCalcluator/CalcPointedAngle", returnRot);
+        return returnRot;
+    }
 }

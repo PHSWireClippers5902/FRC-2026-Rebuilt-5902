@@ -9,6 +9,7 @@ import org.frc5902.robot.subsystems.SLAMtake.intake.IntakeIOInputsAutoLogged;
 import org.frc5902.robot.subsystems.SLAMtake.slam.SlamIO;
 import org.frc5902.robot.subsystems.SLAMtake.slam.SlamIOInputsAutoLogged;
 import org.frc5902.robot.subsystems.SLAMtake.slam.SlamSystemConstants;
+import org.frc5902.robot.subsystems.launcher.LauncherCalculatorExperimental;
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 
@@ -79,6 +80,19 @@ public class SLAMTake {
                 runIntakeVolts(3.0);
                 break;
             }
+            case SMART_LAUNCH: {
+                double calculatedValue = LauncherCalculatorExperimental.calculate();
+                Logger.recordOutput("Outputs/Launcher/CalculateExperimental", calculatedValue);
+                if (LauncherCalculatorExperimental.ready()) {
+                    slamIO.runAngle(SlamSystemConstants.SlamConstants.raisedAngleLOW);
+                    runIntakeVolts(3.0);
+                } else {
+                    slamIO.runVolts(0.0);
+                    runIntakeVolts(0.0);
+                }
+
+                break;
+            }
             default: {
                 stop();
                 break;
@@ -130,6 +144,7 @@ public class SLAMTake {
         LOWERED_INTAKE,
         LOWERED_EXTAKE,
         SHUFFLE,
+        SMART_LAUNCH,
         STOP,
     }
 

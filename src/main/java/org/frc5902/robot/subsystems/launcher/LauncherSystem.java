@@ -5,13 +5,9 @@ import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import lombok.Getter;
 import lombok.Setter;
-
-import org.frc5902.robot.FieldConstants;
-import org.frc5902.robot.RobotState;
 import org.frc5902.robot.subsystems.launcher.flywheel.*;
 import org.frc5902.robot.subsystems.launcher.inserter.*;
 import org.frc5902.robot.util.buildutil.LoggedTunableNumber;
-import org.frc5902.robot.util.fieldbased.AllianceFlipUtil;
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 
@@ -99,7 +95,12 @@ public class LauncherSystem {
                 fIOL.runRotationsPerSecond(calculatedValue);
                 fIOR.runRotationsPerSecond(calculatedValue);
 
-                
+                if (LauncherCalculatorExperimental.ready()) {
+                    iIO.runRadiansPerSecond(calculatedValue);
+                } else {
+                    iIO.runVolts(0.0);
+                }
+
                 break;
             }
             default -> {

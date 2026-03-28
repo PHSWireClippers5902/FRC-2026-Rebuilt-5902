@@ -34,6 +34,7 @@ import org.frc5902.robot.subsystems.drive.modules.ModuleIOSparkAbsolute;
 import org.frc5902.robot.subsystems.indexer.IndexerIO;
 import org.frc5902.robot.subsystems.indexer.IndexerIOSpark;
 import org.frc5902.robot.subsystems.indexer.IndexerSystem;
+import org.frc5902.robot.subsystems.launcher.LauncherCalculatorExperimental;
 import org.frc5902.robot.subsystems.launcher.LauncherSystem;
 import org.frc5902.robot.subsystems.launcher.flywheel.FlywheelIO;
 import org.frc5902.robot.subsystems.launcher.flywheel.FlywheelIOSpark;
@@ -119,8 +120,8 @@ public class CompRobotContainer extends RobotContainer {
         initialPositionChooser.addOption("BLUE_RIGHT_BUMP", new Pose2d(3.622, 3.015, Rotation2d.k180deg));
         initialPositionChooser.addOption("RED_RIGHT_BUMP", new Pose2d(12.908, 5.066, Rotation2d.k180deg));
 
-        initialPositionChooser.addOption("BLUE_HUB_POS", new Pose2d());
-        initialPositionChooser.addOption("RED_HUB_POS", new Pose2d());
+        initialPositionChooser.addOption("BLUE_HUB_POS", new Pose2d(3.560, 4.1, Rotation2d.k180deg));
+        initialPositionChooser.addOption("RED_HUB_POS", new Pose2d(12.939, 4.1, Rotation2d.kZero));
 
         // sysid routines
         autoChooser.addOption("Drive Wheel Radius Characterization", DriveCommands.wheelRadiusCharacterization(drive));
@@ -256,6 +257,12 @@ public class CompRobotContainer extends RobotContainer {
                 .x()
                 .whileTrue(DriveCommands.pointAtPose(
                         drive, new Pose2d(AllianceFlipUtil.apply(FieldConstants.BLUE_HUB_LOCATION), new Rotation2d())));
+
+        m_XboxController
+                .b()
+                .whileTrue(DriveCommands.aimAtAngle(drive, () -> LauncherCalculatorExperimental.calcPointedAngle()))
+                .onTrue(superstructure.addCommandToScheduler(SuperstructureActions.SMART_LAUNCH))
+                .onFalse(superstructure.removeCommandFromScheduler(SuperstructureActions.SMART_LAUNCH));
         // m_XboxController
         //         .y()
         //         .onTrue(superstructure.addCommandToScheduler(SuperstructureActions.MOVE_INTAKE_DOWN))

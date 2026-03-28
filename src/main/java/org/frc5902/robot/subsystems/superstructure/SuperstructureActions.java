@@ -75,6 +75,13 @@ public class SuperstructureActions {
             .slamGoal(SLAMTake.Goal.STOP)
             .build();
 
+    public static SuperstructureAction SMART_LAUNCH = SuperstructureAction.builder()
+            .launcherGoal(LauncherSystem.Goal.SMART_LAUNCH)
+            .slamGoal(SLAMTake.Goal.SMART_LAUNCH)
+            .indexerGoal(IndexerSystem.Goal.MOVE_IN)
+            .priority(3)
+            .build();
+
     @Builder
     @ToString
     public static class SuperstructureAction {
