@@ -18,7 +18,7 @@ public class LauncherSystem {
     private final FlywheelIOInputsAutoLogged fIOLInputs = new FlywheelIOInputsAutoLogged();
     private final FlywheelIOInputsAutoLogged fIORInputs = new FlywheelIOInputsAutoLogged();
     private final FlywheelEstimation estimation = FlywheelEstimation.getInstance();
-    private final LoggedTunableNumber flywheel_velocity = new LoggedTunableNumber("Launcher/Flywheel_Velocity", 100);
+    private final LoggedTunableNumber flywheel_velocity = new LoggedTunableNumber("Launcher/Flywheel_Velocity", 200);
     private final LoggedTunableNumber jam_volts = new LoggedTunableNumber("Launcher/Jam_Volts", -4.0);
 
     @Getter
@@ -81,8 +81,8 @@ public class LauncherSystem {
                 break;
             }
             case READY_STUPID -> {
-                fIOL.runRadiansPerSecond(flywheel_velocity.getAsDouble());
-                fIOR.runRadiansPerSecond(flywheel_velocity.getAsDouble());
+                fIOL.runRotationsPerSecond(flywheel_velocity.getAsDouble());
+                fIOR.runRotationsPerSecond(flywheel_velocity.getAsDouble());
                 break;
             }
             default -> {
@@ -97,7 +97,7 @@ public class LauncherSystem {
         // we would want the top and the botton to be at about equal speeds
         double estimatedTotalVelocity = estimation.getTotalFlywheelVelocity();
 
-        return new double[] {estimatedTotalVelocity / 2, estimatedTotalVelocity / 2};
+        return new double[] {estimatedTotalVelocity, estimatedTotalVelocity};
     }
 
     public void runLaunchVolts(double insertVolts, double launchVolts) {
@@ -110,8 +110,8 @@ public class LauncherSystem {
         Logger.recordOutput("Outputs/Launcher/Inserter/InsertVelocityPerSecond", insertVelocityPerSecond);
         Logger.recordOutput("Outputs/Launcher/Flywheel/FlywheelVelocityPerSecond", flywheelVelocityPerSecond);
         iIO.runRadiansPerSecond(insertVelocityPerSecond);
-        fIOL.runRadiansPerSecond(flywheelVelocityPerSecond);
-        fIOR.runRadiansPerSecond(flywheelVelocityPerSecond);
+        fIOL.runRotationsPerSecond(flywheelVelocityPerSecond);
+        fIOR.runRotationsPerSecond(flywheelVelocityPerSecond);
     }
 
     public void stop() {

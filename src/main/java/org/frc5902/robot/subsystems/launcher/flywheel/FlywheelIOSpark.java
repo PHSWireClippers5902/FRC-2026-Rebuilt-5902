@@ -95,8 +95,8 @@ public class FlywheelIOSpark implements FlywheelIO {
     }
 
     @Override
-    public void runRadiansPerSecond(double radiansPerSecond) {
-        flywheelcontroller.setSetpoint(radiansPerSecond, ControlType.kVelocity);
+    public void runRotationsPerSecond(double rotationsPerSecond) {
+        flywheelcontroller.setSetpoint(rotationsPerSecond, ControlType.kVelocity);
     }
 
     @Override
