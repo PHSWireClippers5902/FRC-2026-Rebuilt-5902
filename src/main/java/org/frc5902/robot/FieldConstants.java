@@ -31,7 +31,7 @@ import java.nio.file.Path;
 public class FieldConstants {
 
     public static final Pose2d BLUE_HUB_LOCATION = new Pose2d(4.619, 4.619, new Rotation2d());
-
+    public static final Pose2d RED_HUB_LOCATION = new Pose2d(4.619, 16.54 - 4.619, new Rotation2d());
     public static final FieldType fieldType = FieldType.WELDED;
 
     // AprilTag related constants

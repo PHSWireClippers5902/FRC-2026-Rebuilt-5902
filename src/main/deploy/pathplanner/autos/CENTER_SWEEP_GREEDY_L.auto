@@ -17,7 +17,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "start_sweep_L"
+                  "pathName": "center_oversweep_L"
                 }
               },
               {
@@ -32,7 +32,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "sweep_shoot_L"
+            "pathName": "oversweep_shoot_L"
           }
         },
         {

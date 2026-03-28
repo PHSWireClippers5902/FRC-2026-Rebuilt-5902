@@ -48,7 +48,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "shoot_bump_oversweep_L"
+                  "pathName": "shoot_short_L"
                 }
               },
               {
@@ -63,7 +63,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "oversweep_shoot_L"
+            "pathName": "short_shoot_L"
           }
         },
         {
