@@ -11,28 +11,9 @@
           }
         },
         {
-          "type": "race",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "start_sweep_L"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "INTAKE"
-                }
-              }
-            ]
-          }
-        },
-        {
           "type": "path",
           "data": {
-            "pathName": "sweep_shoot_L"
+            "pathName": "center_shoot_L"
           }
         },
         {
@@ -42,7 +23,7 @@
           }
         },
         {
-          "type": "race",
+          "type": "deadline",
           "data": {
             "commands": [
               {

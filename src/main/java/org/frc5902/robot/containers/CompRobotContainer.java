@@ -127,7 +127,7 @@ public class CompRobotContainer extends RobotContainer {
         NamedCommands.registerCommand("RESET_POSE", MiscCommands.PoseResetCommand(this));
         NamedCommands.registerCommand(
                 "OSCILLATE",
-                DriveCommands.pointAtPoseOSCILLATE(drive, AllianceFlipUtil.apply(FieldConstants.BLUE_HUB_LOCATION))
+                DriveCommands.pointAtPoseOSCILLATE(drive, FieldConstants.BLUE_HUB_LOCATION)
                         .repeatedly());
         NamedCommands.registerCommand(
                 "INTAKE",
@@ -203,10 +203,6 @@ public class CompRobotContainer extends RobotContainer {
                 .onTrue(superstructure.addCommandToScheduler(SuperstructureActions.LAUNCH_STUPID))
                 .onFalse(superstructure.removeCommandFromScheduler(SuperstructureActions.LAUNCH_STUPID));
 
-        m_XboxController
-                .b()
-                .whileTrue(DriveCommands.aimAtAngleOSCLILATE_ONETIME(
-                        drive, RobotState.getInstance().getEstimatedPose().getRotation()));
         // .onTrue(superstructure.addCommandToScheduler(SuperstructureActions.RAISED_INTAKE))
         // .onFalse(superstructure.removeCommandFromScheduler(SuperstructureActions.RAISED_INTAKE));
         m_XboxController
@@ -220,12 +216,17 @@ public class CompRobotContainer extends RobotContainer {
                         drive,
                         () -> -m_XboxController.getLeftY(),
                         () -> -m_XboxController.getLeftX(),
-                        AllianceFlipUtil.apply(FieldConstants.BLUE_HUB_LOCATION)));
+                        new Pose2d(
+                                AllianceFlipUtil.apply(FieldConstants.BLUE_HUB_LOCATION.getTranslation()),
+                                new Rotation2d())));
 
         m_XboxController
                 .x()
-                .whileTrue(DriveCommands.pointAtPoseOSCILLATE(
-                        drive, AllianceFlipUtil.apply(FieldConstants.BLUE_HUB_LOCATION)));
+                .whileTrue(DriveCommands.pointAtPose(
+                        drive,
+                        new Pose2d(
+                                AllianceFlipUtil.apply(FieldConstants.BLUE_HUB_LOCATION.getTranslation()),
+                                new Rotation2d())));
         // m_XboxController
         //         .y()
         //         .onTrue(superstructure.addCommandToScheduler(SuperstructureActions.MOVE_INTAKE_DOWN))
