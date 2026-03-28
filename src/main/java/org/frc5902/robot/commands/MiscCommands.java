@@ -41,4 +41,13 @@ public class MiscCommands {
                         Superstructure.AutonomousSuperstructureGoalCommand(
                                 SuperstructureActions.LAUNCH_STUPID, 3, superstructure)));
     }
+
+    // whatever this technically isn't a miscellaneous command...
+    public static Command LaunchSequenceBetterSTUPID(Drive drive, Superstructure superstructure) {
+        return Commands.sequence(
+                Superstructure.AutonomousSuperstructureGoalCommand(
+                        SuperstructureActions.READY_LAUNCHER_STUPID, 1, superstructure),
+                Superstructure.AutonomousSuperstructureGoalCommand(
+                        SuperstructureActions.LAUNCH_STUPID, 3, superstructure));
+    }
 }

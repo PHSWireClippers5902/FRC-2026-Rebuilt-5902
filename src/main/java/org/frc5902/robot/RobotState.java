@@ -104,13 +104,13 @@ public class RobotState {
             Rotation2d angle = gyroAngle.plus(gyroOffset);
             odometryPose = new Pose2d(odometryPose.getTranslation(), angle);
         });
+        estimatedPose = new Pose2d(estimatedPose.exp(twist).getTranslation(), observation.yaw.orElse(new Rotation2d()));
 
         // pose buffer will now buffer at timestamp
         // poseBuffer.addSample(observation.timestamp(), odometryPose);
 
         // Twist2d finalTwist = lastOdometryPose.log(odometryPose);
 
-        estimatedPose = estimatedPose.exp(twist);
     }
 
     public void addVisionObservation(VisionObservation observation) {
@@ -183,18 +183,18 @@ public class RobotState {
 
     public void addQuestObservation(QuestObservation observation) {
         // if obso is old to be outside the pose buffer's timespan, skip please!
-        try {
-            if (poseBuffer.getInternalBuffer().lastKey() - poseBufferSizeSec > observation.timestamp()) {
-                return;
-            }
-        } catch (NoSuchElementException ex) {
-            return;
-        }
-        // allows compiler to assume...
-        var sample = poseBuffer.getSample(observation.timestamp());
-        if (sample.isEmpty()) {
-            return;
-        }
+        // try {
+        //     if (poseBuffer.getInternalBuffer().lastKey() - poseBufferSizeSec > observation.timestamp()) {
+        //         return;
+        //     }
+        // } catch (NoSuchElementException ex) {
+        //     return;
+        // }
+        // // allows compiler to assume...
+        // var sample = poseBuffer.getSample(observation.timestamp());
+        // if (sample.isEmpty()) {
+        //     return;
+        // }
         // estimatedPose = observation.pose.toPose2d();
         Pose2d estimateAtTime = estimatedPose;
         // estimatedPose = observation.pose.toPose2d();

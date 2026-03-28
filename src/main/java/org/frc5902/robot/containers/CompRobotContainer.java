@@ -148,7 +148,8 @@ public class CompRobotContainer extends RobotContainer {
                 Superstructure.AutonomousSuperstructureGoalCommand(
                         SuperstructureActions.LAUNCH_STUPID, 3.0, superstructure));
 
-        NamedCommands.registerCommand("LAUNCH_SEQUENCE", MiscCommands.LaunchSequenceBetter(drive, superstructure));
+        NamedCommands.registerCommand(
+                "LAUNCH_SEQUENCE", MiscCommands.LaunchSequenceBetterSTUPID(drive, superstructure));
         // GREEDY SWEEP
         autoChooser.addOption("BLUE_LEFT_GREEDY_SWEEP", new PathPlannerAuto("SWEEP_GREEDY_L"));
         autoChooser.addOption("RED_RIGHT_GREEDY_SWEEP", new PathPlannerAuto("SWEEP_GREEDY_L", true));
