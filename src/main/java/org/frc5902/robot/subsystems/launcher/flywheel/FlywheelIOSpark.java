@@ -62,6 +62,7 @@ public class FlywheelIOSpark implements FlywheelIO {
                 constants.flywheelPID.getProportional(),
                 constants.flywheelPID.getIntegral(),
                 constants.flywheelPID.getDeriviative());
+        config.closedLoop.outputRange(0, 1);
         tryUntilOk(
                 flywheel,
                 5,
