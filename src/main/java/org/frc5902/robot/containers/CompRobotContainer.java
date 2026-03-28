@@ -111,7 +111,6 @@ public class CompRobotContainer extends RobotContainer {
 
         initialPositionChooser.addOption("BLUE_LEFT_TRENCH", new Pose2d(4.147, 7.642, Rotation2d.k180deg));
         initialPositionChooser.addOption("RED_LEFT_TRENCH", new Pose2d(12.434, 0.407, Rotation2d.kZero));
-
         initialPositionChooser.addOption("BLUE_RIGHT_TRENCH", new Pose2d(4.147, 0.407, Rotation2d.k180deg));
         initialPositionChooser.addOption("RED_RIGHT_TRENCH", new Pose2d(12.434, 7.642, Rotation2d.kZero));
 
@@ -147,16 +146,42 @@ public class CompRobotContainer extends RobotContainer {
                         SuperstructureActions.LAUNCH_STUPID, 3.0, superstructure));
 
         NamedCommands.registerCommand("LAUNCH_SEQUENCE", MiscCommands.LaunchSequence(drive, superstructure));
+        // GREEDY SWEEP
+        autoChooser.addOption("BLUE_LEFT_GREEDY_SWEEP", new PathPlannerAuto("SWEEP_GREEDY_L"));
+        autoChooser.addOption("RED_RIGHT_GREEDY_SWEEP", new PathPlannerAuto("SWEEP_GREEDY_L", true));
+        autoChooser.addOption("RED_LEFT_GREEDY_SWEEP", new PathPlannerAuto("SWEEP_GREEDY_L"));
+        autoChooser.addOption("BLUE_RIGHT_GREEDY_SWEEP", new PathPlannerAuto("SWEEP_GREEDY_L", true));
+        // GREEDY SHOOT
+        autoChooser.addOption("BLUE_LEFT_GREEDY_SHOOT", new PathPlannerAuto("SHOOT_GREEDY_L"));
+        autoChooser.addOption("RED_RIGHT_GREEDY_SHOOT", new PathPlannerAuto("SHOOT_GREEDY_L", true));
+        autoChooser.addOption("RED_LEFT_GREEDY_SHOOT", new PathPlannerAuto("SHOOT_GREEDY_L"));
+        autoChooser.addOption("BLUE_RIGHT_GREEDY_SHOOT", new PathPlannerAuto("SHOOT_GREEDY_L", true));
+        // TRENCH SHOOT
+        autoChooser.addOption("BLUE_LEFT_TRENCH_SHOOT", new PathPlannerAuto("SHOOT_TRENCH_L"));
+        autoChooser.addOption("RED_RIGHT_TRENCH_SHOOT", new PathPlannerAuto("SHOOT_TRENCH_L", true));
+        autoChooser.addOption("RED_LEFT_TRENCH_SHOOT", new PathPlannerAuto("SHOOT_TRENCH_L"));
+        autoChooser.addOption("BLUE_RIGHT_TRENCH_SHOOT", new PathPlannerAuto("SHOOT_TRENCH_L", true));
+        // TRENCH SWEEP
+        autoChooser.addOption("BLUE_LEFT_TRENCH_SWEEP", new PathPlannerAuto("SWEEP_TRENCH_L"));
+        autoChooser.addOption("RED_RIGHT_TRENCH_SWEEP", new PathPlannerAuto("SWEEP_TRENCH_L", true));
+        autoChooser.addOption("RED_LEFT_TRENCH_SWEEP", new PathPlannerAuto("SWEEP_TRENCH_L"));
+        autoChooser.addOption("BLUE_RIGHT_TRENCH_SWEEP", new PathPlannerAuto("SWEEP_TRENCH_L", true));
+        
+        // CENTER SHOOT
+        autoChooser.addOption("BLUE_LEFT_CENTER_SHOOT", new PathPlannerAuto("SHOOT_TRENCH_L"));
+        autoChooser.addOption("RED_RIGHT_CENTER_SHOOT", new PathPlannerAuto("SHOOT_TRENCH_L", true));
+        autoChooser.addOption("RED_LEFT_CENTER_SHOOT", new PathPlannerAuto("SHOOT_TRENCH_L"));
+        autoChooser.addOption("BLUE_RIGHT_CENTER_SHOOT", new PathPlannerAuto("SHOOT_TRENCH_L", true));
+        // CENTER SWEEP
+        autoChooser.addOption("BLUE_LEFT_CENTER_SWEEP", new PathPlannerAuto("SWEEP_TRENCH_L"));
+        autoChooser.addOption("RED_RIGHT_CENTER_SWEEP", new PathPlannerAuto("SWEEP_TRENCH_L", true));
+        autoChooser.addOption("RED_LEFT_CENTER_SWEEP", new PathPlannerAuto("SWEEP_TRENCH_L"));
+        autoChooser.addOption("BLUE_RIGHT_CENTER_SWEEP", new PathPlannerAuto("SWEEP_TRENCH_L", true));
 
-        autoChooser.addOption("BLUE_LEFT_SWEEP", new PathPlannerAuto("SWEEP_GREEDY_L"));
-        autoChooser.addOption("RED_RIGHT_SWEEP", new PathPlannerAuto("SWEEP_GREEDY_L", true));
-        autoChooser.addOption("BLUE_LEFT_SHOOT", new PathPlannerAuto("SHOOT_GREEDY_L"));
-        autoChooser.addOption("RED_RIGHT_SHOOT", new PathPlannerAuto("SHOOT_GREEDY_L", true));
-
-        autoChooser.addOption("BLUE_RIGHT_SWEEP", new PathPlannerAuto("SWEEP_GREEDY_L", true));
-        autoChooser.addOption("RED_LEFT_SWEEP", new PathPlannerAuto("SWEEP_GREEDY_L"));
-        autoChooser.addOption("BLUE_RIGHT_SHOOT", new PathPlannerAuto("SHOOT_GREEDY_L", true));
-        autoChooser.addOption("RED_LEFT_SHOOT", new PathPlannerAuto("SHOOT_GREEDY_L"));
+        // autoChooser.addOption("BLUE_LEFT_CENTER");
+        // autoChooser.addOption("BLUE_LEFT_CENTER");
+        // autoChooser.addOption("BLUE_LEFT_CENTER");
+        // autoChooser.addOption("BLUE_LEFT_CENTER");
 
         // autoChooser.addOption("Auto pls work", AutoPlease.extendAndMoveAuto(() -> drive, () -> superstructure));
         // autoChooser.addOption(
