@@ -106,11 +106,11 @@ public class RobotState {
         });
 
         // pose buffer will now buffer at timestamp
-        poseBuffer.addSample(observation.timestamp(), odometryPose);
+        // poseBuffer.addSample(observation.timestamp(), odometryPose);
 
-        Twist2d finalTwist = lastOdometryPose.log(odometryPose);
+        // Twist2d finalTwist = lastOdometryPose.log(odometryPose);
 
-        estimatedPose = estimatedPose.exp(finalTwist);
+        estimatedPose = estimatedPose.exp(twist);
     }
 
     public void addVisionObservation(VisionObservation observation) {
@@ -195,38 +195,38 @@ public class RobotState {
         if (sample.isEmpty()) {
             return;
         }
-        estimatedPose = observation.pose.toPose2d();
-        // Pose2d estimateAtTime = estimatedPose;
-        // // estimatedPose = observation.pose.toPose2d();
-        // // calc 3x3 vision matrix (idk why Mecha-Advantage used ++i)
-        // var r = new double[3];
-        // for (int i = 0; i < 3; ++i) {
-        //     r[i] = questStdDevs.get(i, 0) * questStdDevs.get(i, 0);
-        // }
-        // // as Mechanical Advantage wrote (and wise words from them...)
-        // // Solve for closed form Kalman gain for continuous Kalman filter with A = 0
-        // // and C = I. See wpimath/algorithms.md.
-        // Matrix<N3, N3> visionK = new Matrix<>(Nat.N3(), Nat.N3());
-        // for (int row = 0; row < 3; ++row) {
-        //     double stdDev = qStdDevs.get(row, 0);
-        //     if (stdDev == 0.0) {
-        //         visionK.set(row, row, 0.0);
-        //     } else {
-        //         visionK.set(row, row, stdDev / (stdDev + Math.sqrt(stdDev * r[row])));
-        //     }
-        // }
+        // estimatedPose = observation.pose.toPose2d();
+        Pose2d estimateAtTime = estimatedPose;
+        // estimatedPose = observation.pose.toPose2d();
+        // calc 3x3 vision matrix (idk why Mecha-Advantage used ++i)
+        var r = new double[3];
+        for (int i = 0; i < 3; ++i) {
+            r[i] = questStdDevs.get(i, 0) * questStdDevs.get(i, 0);
+        }
+        // as Mechanical Advantage wrote (and wise words from them...)
+        // Solve for closed form Kalman gain for continuous Kalman filter with A = 0
+        // and C = I. See wpimath/algorithms.md.
+        Matrix<N3, N3> visionK = new Matrix<>(Nat.N3(), Nat.N3());
+        for (int row = 0; row < 3; ++row) {
+            double stdDev = qStdDevs.get(row, 0);
+            if (stdDev == 0.0) {
+                visionK.set(row, row, 0.0);
+            } else {
+                visionK.set(row, row, stdDev / (stdDev + Math.sqrt(stdDev * r[row])));
+            }
+        }
 
-        // // calculate difference between estimate and vision pose
-        // Transform2d transform =
-        //         new Transform2d(estimateAtTime, observation.pose().toPose2d());
-        // // transform by visionK
-        // var kTimesTransform = visionK.times(VecBuilder.fill(
-        //         transform.getX(), transform.getY(), transform.getRotation().getRadians()));
-        // Transform2d scaledTransform = new Transform2d(
-        //         kTimesTransform.get(0, 0),
-        //         kTimesTransform.get(1, 0),
-        //         Rotation2d.fromRadians(kTimesTransform.get(2, 0)));
-        // estimatedPose = estimateAtTime.plus(scaledTransform);
+        // calculate difference between estimate and vision pose
+        Transform2d transform =
+                new Transform2d(estimateAtTime, observation.pose().toPose2d());
+        // transform by visionK
+        var kTimesTransform = visionK.times(VecBuilder.fill(
+                transform.getX(), transform.getY(), transform.getRotation().getRadians()));
+        Transform2d scaledTransform = new Transform2d(
+                kTimesTransform.get(0, 0),
+                kTimesTransform.get(1, 0),
+                Rotation2d.fromRadians(kTimesTransform.get(2, 0)));
+        estimatedPose = estimateAtTime.plus(scaledTransform);
     }
 
     public record OdometryObservation(

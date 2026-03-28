@@ -119,6 +119,9 @@ public class CompRobotContainer extends RobotContainer {
         initialPositionChooser.addOption("BLUE_RIGHT_BUMP", new Pose2d(3.622, 3.015, Rotation2d.k180deg));
         initialPositionChooser.addOption("RED_RIGHT_BUMP", new Pose2d(12.908, 5.066, Rotation2d.k180deg));
 
+        initialPositionChooser.addOption("BLUE_HUB_POS", new Pose2d());
+        initialPositionChooser.addOption("RED_HUB_POS", new Pose2d());
+
         // sysid routines
         autoChooser.addOption("Drive Wheel Radius Characterization", DriveCommands.wheelRadiusCharacterization(drive));
         autoChooser.addOption("Drive Simple FF Characterization", DriveCommands.feedforwardCharacterization(drive));
@@ -131,7 +134,7 @@ public class CompRobotContainer extends RobotContainer {
         NamedCommands.registerCommand("RESET_POSE", MiscCommands.PoseResetCommand(this));
         NamedCommands.registerCommand(
                 "OSCILLATE",
-                DriveCommands.pointAtPoseOSCILLATE(drive, FieldConstants.BLUE_HUB_LOCATION)
+                DriveCommands.pointAtTranslation(drive, FieldConstants.BLUE_HUB_LOCATION)
                         .repeatedly());
         NamedCommands.registerCommand(
                 "INTAKE",
@@ -145,7 +148,7 @@ public class CompRobotContainer extends RobotContainer {
                 Superstructure.AutonomousSuperstructureGoalCommand(
                         SuperstructureActions.LAUNCH_STUPID, 3.0, superstructure));
 
-        NamedCommands.registerCommand("LAUNCH_SEQUENCE", MiscCommands.LaunchSequence(drive, superstructure));
+        NamedCommands.registerCommand("LAUNCH_SEQUENCE", MiscCommands.LaunchSequenceBetter(drive, superstructure));
         // GREEDY SWEEP
         autoChooser.addOption("BLUE_LEFT_GREEDY_SWEEP", new PathPlannerAuto("SWEEP_GREEDY_L"));
         autoChooser.addOption("RED_RIGHT_GREEDY_SWEEP", new PathPlannerAuto("SWEEP_GREEDY_L", true));
@@ -168,15 +171,15 @@ public class CompRobotContainer extends RobotContainer {
         autoChooser.addOption("BLUE_RIGHT_TRENCH_SWEEP", new PathPlannerAuto("SWEEP_TRENCH_L", true));
 
         // CENTER SHOOT
-        autoChooser.addOption("BLUE_LEFT_CENTER_SHOOT", new PathPlannerAuto("SHOOT_TRENCH_L"));
-        autoChooser.addOption("RED_RIGHT_CENTER_SHOOT", new PathPlannerAuto("SHOOT_TRENCH_L", true));
-        autoChooser.addOption("RED_LEFT_CENTER_SHOOT", new PathPlannerAuto("SHOOT_TRENCH_L"));
-        autoChooser.addOption("BLUE_RIGHT_CENTER_SHOOT", new PathPlannerAuto("SHOOT_TRENCH_L", true));
+        autoChooser.addOption("BLUE_LEFT_CENTER_SHOOT", new PathPlannerAuto("CENTER_SHOOT_GREEDY_L"));
+        autoChooser.addOption("RED_RIGHT_CENTER_SHOOT", new PathPlannerAuto("CENTER_SHOOT_GREEDY_L", true));
+        autoChooser.addOption("RED_LEFT_CENTER_SHOOT", new PathPlannerAuto("CENTER_SHOOT_GREEDY_L"));
+        autoChooser.addOption("BLUE_RIGHT_CENTER_SHOOT", new PathPlannerAuto("CENTER_SHOOT_GREEDY_L", true));
         // CENTER SWEEP
-        autoChooser.addOption("BLUE_LEFT_CENTER_SWEEP", new PathPlannerAuto("SWEEP_TRENCH_L"));
-        autoChooser.addOption("RED_RIGHT_CENTER_SWEEP", new PathPlannerAuto("SWEEP_TRENCH_L", true));
-        autoChooser.addOption("RED_LEFT_CENTER_SWEEP", new PathPlannerAuto("SWEEP_TRENCH_L"));
-        autoChooser.addOption("BLUE_RIGHT_CENTER_SWEEP", new PathPlannerAuto("SWEEP_TRENCH_L", true));
+        autoChooser.addOption("BLUE_LEFT_CENTER_SWEEP", new PathPlannerAuto("CENTER_SWEEP_GREEDY_L"));
+        autoChooser.addOption("RED_RIGHT_CENTER_SWEEP", new PathPlannerAuto("CENTER_SWEEP_GREEDY_L", true));
+        autoChooser.addOption("RED_LEFT_CENTER_SWEEP", new PathPlannerAuto("CENTER_SWEEP_GREEDY_L"));
+        autoChooser.addOption("BLUE_RIGHT_CENTER_SWEEP", new PathPlannerAuto("CENTER_SWEEP_GREEDY_L", true));
 
         // autoChooser.addOption("BLUE_LEFT_CENTER");
         // autoChooser.addOption("BLUE_LEFT_CENTER");
@@ -246,17 +249,12 @@ public class CompRobotContainer extends RobotContainer {
                         drive,
                         () -> -m_XboxController.getLeftY(),
                         () -> -m_XboxController.getLeftX(),
-                        new Pose2d(
-                                AllianceFlipUtil.apply(FieldConstants.BLUE_HUB_LOCATION.getTranslation()),
-                                new Rotation2d())));
+                        new Pose2d(AllianceFlipUtil.apply(FieldConstants.BLUE_HUB_LOCATION), new Rotation2d())));
 
         m_XboxController
                 .x()
                 .whileTrue(DriveCommands.pointAtPose(
-                        drive,
-                        new Pose2d(
-                                AllianceFlipUtil.apply(FieldConstants.BLUE_HUB_LOCATION.getTranslation()),
-                                new Rotation2d())));
+                        drive, new Pose2d(AllianceFlipUtil.apply(FieldConstants.BLUE_HUB_LOCATION), new Rotation2d())));
         // m_XboxController
         //         .y()
         //         .onTrue(superstructure.addCommandToScheduler(SuperstructureActions.MOVE_INTAKE_DOWN))

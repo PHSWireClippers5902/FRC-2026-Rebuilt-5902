@@ -67,11 +67,11 @@ public class LauncherSystem {
                 runLaunchVelocities(0, estimation.getTotalFlywheelVelocity());
                 break;
             }
-            case LAUNCH -> {
-                estimation.setGoal(FlywheelEstimation.Goal.HUB);
-                runLaunchVelocities(launchCalculations()[0], launchCalculations()[1]);
-                break;
-            }
+                // case LAUNCH -> {
+                //     estimation.setGoal(FlywheelEstimation.Goal.HUB);
+                //     runLaunchVelocities(launchCalculations()[0], launchCalculations()[1]);
+                //     break;
+                // }
             case CLEAR_JAM -> {
                 runLaunchVolts(jam_volts.getAsDouble(), jam_volts.getAsDouble());
                 break;

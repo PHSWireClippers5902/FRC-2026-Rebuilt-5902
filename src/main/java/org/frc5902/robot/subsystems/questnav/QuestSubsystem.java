@@ -40,7 +40,7 @@ public class QuestSubsystem extends VirtualSubsystem {
         questLock.unlock();
         if (questIOInputs.connected
                 && questIOInputs.isTracking
-                && questIOInputs.questTimestamps.length > 2
+                && questIOInputs.questTimestamps.length > 1
                 && questIOInputs.readPoses.length > 1) {
             RobotState.getInstance()
                     .addQuestObservation(new QuestObservation(
