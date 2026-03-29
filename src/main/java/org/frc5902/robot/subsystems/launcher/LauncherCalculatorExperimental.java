@@ -37,11 +37,12 @@ public class LauncherCalculatorExperimental {
 
     public static double calculate(Translation2d distance) {
         // filter
-        if (distance.getDistance(new Translation2d()) > Units.inchesToMeters(167.0)
-                || distance.getDistance(new Translation2d()) < Units.inchesToMeters(60)) {
+        if (distance.getDistance(new Translation2d()) > Units.inchesToMeters(167.0 + 16 + 23)
+                || distance.getDistance(new Translation2d()) < Units.inchesToMeters(60 + 16 + 23)) {
             return 0;
         }
-        return inch_velocity.get(distance.getDistance(new Translation2d()));
+        // plus magick 23in hub 16 in bot
+        return inch_velocity.get( distance.getDistance(new Translation2d()) - Units.inchesToMeters(16+23));
     }
 
     public static boolean ready() {
@@ -49,9 +50,8 @@ public class LauncherCalculatorExperimental {
         Pose2d currentPose = RobotState.getInstance().getEstimatedPose();
         Translation2d hubLocation = AllianceFlipUtil.apply(FieldConstants.BLUE_HUB_LOCATION);
         double tolerance = 8.0;
-        boolean returnval = (Math.abs(currentPose
-                        .getTranslation()
-                        .minus(hubLocation)
+        boolean returnval = (Math.abs(hubLocation
+                        .minus(currentPose.getTranslation())
                         .getAngle()
                         .minus(currentPose.getRotation())
                         .getDegrees())
@@ -64,7 +64,7 @@ public class LauncherCalculatorExperimental {
         Rotation2d returnRot;
         Pose2d currentPose = RobotState.getInstance().getEstimatedPose();
         Translation2d hubLocation = AllianceFlipUtil.apply(FieldConstants.BLUE_HUB_LOCATION);
-        returnRot = currentPose.getTranslation().minus(hubLocation).getAngle();
+        returnRot = hubLocation.minus(currentPose.getTranslation()).getAngle();
         Logger.recordOutput("Outputs/MagickCalcluator/CalcPointedAngle", returnRot);
         return returnRot;
     }

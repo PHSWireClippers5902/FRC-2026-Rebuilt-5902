@@ -217,7 +217,7 @@ public class CompRobotContainer extends RobotContainer {
                 0.23,
                 0.5));
 
-        m_XboxController.rightStick().onTrue(DriveCommands.resetGyroscope(drive));
+        // m_XboxController.rightStick().onTrue(DriveCommands.resetGyroscope(drive));
 
         m_XboxController
                 .rightTrigger(0.2)
@@ -373,6 +373,6 @@ public class CompRobotContainer extends RobotContainer {
     public void resetInitialPose() {
         RobotState.getInstance().resetPose(getInitialPose());
         quest.resetPose(getInitialPose());
-        drive.resetGyroscope(getInitialPose().getRotation());
+        // drive.resetGyroscope(getInitialPose().getRotation());
     }
 }
