@@ -57,6 +57,10 @@ public class SLAMTake {
                 runIntakeVelocity(35.0);
                 break;
             }
+            case LOWERED_EXTAKE: {
+                lowerIntakeUtilizingLimitSwitch();
+                runIntakeVelocity(-35.0);
+            }
             case RAISED: {
                 slamIO.runAngle(SlamSystemConstants.SlamConstants.raisedAngleLOW);
                 break;
