@@ -21,7 +21,6 @@ public class LauncherSystem {
     private final LoggedTunableNumber flywheel_velocity = new LoggedTunableNumber("Launcher/Flywheel_Velocity", 190);
     private final LoggedTunableNumber jam_volts = new LoggedTunableNumber("Launcher/Jam_Volts", -4.0);
 
-
     @Getter
     @Setter
     @AutoLogOutput

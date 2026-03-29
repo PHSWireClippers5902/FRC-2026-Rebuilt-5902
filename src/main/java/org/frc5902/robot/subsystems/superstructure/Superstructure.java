@@ -71,6 +71,10 @@ public class Superstructure extends SubsystemBase {
         this.goal = maximumGoal;
     }
 
+    public boolean isScheduled(SuperstructureAction g) {
+        return scheduled_goals.contains(g);
+    }
+
     public Command addCommandToScheduler(SuperstructureAction g) {
         return Commands.runOnce(() -> scheduled_goals.add(g), this);
     }

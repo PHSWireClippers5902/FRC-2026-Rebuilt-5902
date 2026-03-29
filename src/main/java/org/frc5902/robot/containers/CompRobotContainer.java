@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import lombok.Getter;
 import lombok.Setter;
@@ -189,6 +190,11 @@ public class CompRobotContainer extends RobotContainer {
         autoChooser.addOption("RED_LEFT_CENTER_SWEEP", new PathPlannerAuto("CENTER_SWEEP_GREEDY_L"));
         autoChooser.addOption("BLUE_RIGHT_CENTER_SWEEP", new PathPlannerAuto("CENTER_SWEEP_GREEDY_L", true));
 
+        autoChooser.addOption("BLUE_LEFT_PLAYOFF_TRENCH", new PathPlannerAuto("SWEEP_TRENCH_L_ONE"));
+        autoChooser.addOption("RED_RIGHT_PLAYOFF_TRENCH", new PathPlannerAuto("SWEEP_TRENCH_L_ONE", true));
+        autoChooser.addOption("RED_LEFT_PLAYOFF_TRENCH", new PathPlannerAuto("SWEEP_TRENCH_L_ONE"));
+        autoChooser.addOption("BLUE_RIGHT_PLAYOFF_TRENCH", new PathPlannerAuto("SWEEP_TRENCH_L_ONE", true));
+
         // autoChooser.addOption("BLUE_LEFT_CENTER");
         // autoChooser.addOption("BLUE_LEFT_CENTER");
         // autoChooser.addOption("BLUE_LEFT_CENTER");
@@ -265,8 +271,11 @@ public class CompRobotContainer extends RobotContainer {
         // .onFalse(superstructure.removeCommandFromScheduler(SuperstructureActions.RAISED_INTAKE));
         m_XboxController
                 .y()
-                .onTrue(superstructure.addCommandToScheduler(SuperstructureActions.RAISED_INTAKE_HIGH))
-                .onFalse(superstructure.removeCommandFromScheduler(SuperstructureActions.RAISED_INTAKE_HIGH));
+                .toggleOnTrue(new ConditionalCommand(
+                        superstructure.addCommandToScheduler(SuperstructureActions.RAISED_INTAKE_HIGH),
+                        superstructure.removeCommandFromScheduler(SuperstructureActions.RAISED_INTAKE_HIGH),
+                        () -> !superstructure.isScheduled(SuperstructureActions.RAISED_INTAKE_HIGH)));
+        // .onFalse(superstructure.removeCommandFromScheduler(SuperstructureActions.RAISED_INTAKE_HIGH));
 
         // m_XboxController
         //         .a()
@@ -281,7 +290,9 @@ public class CompRobotContainer extends RobotContainer {
                 .whileTrue(DriveCommands.pointAtPose(
                         drive, new Pose2d(AllianceFlipUtil.apply(FieldConstants.BLUE_HUB_LOCATION), new Rotation2d())));
 
-        m_XboxController.a().onTrue(superstructure.addCommandToScheduler(SuperstructureActions.INVERT_FEED))
+        m_XboxController
+                .a()
+                .onTrue(superstructure.addCommandToScheduler(SuperstructureActions.INVERT_FEED))
                 .onFalse(superstructure.removeCommandFromScheduler(SuperstructureActions.INVERT_FEED));
         // m_XboxController
         //         .b()

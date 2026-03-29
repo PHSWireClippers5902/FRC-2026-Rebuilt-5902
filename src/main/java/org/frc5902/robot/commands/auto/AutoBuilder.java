@@ -31,12 +31,12 @@ public class AutoBuilder {
                 () -> RobotState.getInstance().getEstimatedPose(),
                 (pose) -> {
                     quest.resetPose(pose);
-                    drive.resetGyroscope(pose.getRotation());
+                    // drive.resetGyroscope(pose.getRotation());
                     RobotState.getInstance().resetPose(pose);
                 },
                 drive::getRobotRelativeSpeeds,
                 (speeds, feedfowards) -> drive.runVelocity(speeds),
-                new PPHolonomicDriveController(new PIDConstants(5.0, 0.0, 0.0), new PIDConstants(5.0, 0.0, 0.0)),
+                new PPHolonomicDriveController(new PIDConstants(6.0, 0.0, 0.0), new PIDConstants(6.0, 0.0, 0.0)),
                 config,
                 () -> {
                     var alliance = DriverStation.getAlliance();

@@ -59,7 +59,8 @@ public class SLAMTake {
             }
             case LOWERED_EXTAKE: {
                 lowerIntakeUtilizingLimitSwitch();
-                runIntakeVelocity(-35.0);
+                runIntakeVolts(-3.0);
+                break;
             }
             case RAISED: {
                 slamIO.runAngle(SlamSystemConstants.SlamConstants.raisedAngleLOW);
@@ -81,7 +82,7 @@ public class SLAMTake {
             }
             case FEED_HIGH: {
                 slamIO.runAngle(SlamSystemConstants.SlamConstants.raisedAngleHIGH);
-                runIntakeVolts(3.0);
+                runIntakeVolts(0.0);
                 break;
             }
             case SMART_LAUNCH: {

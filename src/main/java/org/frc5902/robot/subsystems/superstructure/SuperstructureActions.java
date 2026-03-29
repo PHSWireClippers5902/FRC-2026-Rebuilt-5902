@@ -24,7 +24,12 @@ public class SuperstructureActions {
             .priority(1)
             .slamGoal(SLAMTake.Goal.FEED_HIGH)
             .build();
-    public static SuperstructureAction INVERT_FEED = SuperstructureAction.builder().priority(1).slamGoal(SLAMTake.Goal.LOWERED_EXTAKE).indexerGoal(IndexerSystem.Goal.MOVE_OUT).launcherGoal(LauncherSystem.Goal.CLEAR_JAM).build();
+    public static SuperstructureAction INVERT_FEED = SuperstructureAction.builder()
+            .priority(1)
+            .slamGoal(SLAMTake.Goal.LOWERED_EXTAKE)
+            .indexerGoal(IndexerSystem.Goal.MOVE_OUT)
+            .launcherGoal(LauncherSystem.Goal.CLEAR_JAM)
+            .build();
     // DEPLOY_IDLE: Maintain all defaults
     public static SuperstructureAction DEPLOY_IDLE =
             SuperstructureAction.builder().priority(0).build();
