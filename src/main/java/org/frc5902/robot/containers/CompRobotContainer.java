@@ -61,7 +61,6 @@ public class CompRobotContainer extends RobotContainer {
     private final IndexerSystem indexer;
     private final SLAMTake slamTake;
 
-    @SuppressWarnings("unused")
     private final QuestSubsystem quest;
 
     @Getter
@@ -136,6 +135,7 @@ public class CompRobotContainer extends RobotContainer {
         autoChooser.addOption("DO NOTHING", EasyAutonomousCommandFactory.doNothingAuto(() -> drive));
 
         // pathplanner
+        @SuppressWarnings("unused")
         AutoBuilder ab = new AutoBuilder(drive, superstructure, quest);
 
         NamedCommands.registerCommand("RESET_POSE", MiscCommands.PoseResetCommand(this));

@@ -47,7 +47,6 @@ public class LauncherCalculatorExperimental {
     public static boolean ready() {
         // tolerance magick number 5 degrees
         Pose2d currentPose = RobotState.getInstance().getEstimatedPose();
-        Translation2d hubLocation = AllianceFlipUtil.apply(FieldConstants.BLUE_HUB_LOCATION);
         double tolerance = 13.0;
         boolean returnval =
                 (Math.abs((currentPose.getRotation().minus(calcPointedAngle()).getDegrees() % 360 + 360) % 360)

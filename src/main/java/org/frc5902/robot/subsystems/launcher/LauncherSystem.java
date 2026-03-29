@@ -1,6 +1,5 @@
 package org.frc5902.robot.subsystems.launcher;
 
-import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import lombok.Getter;
@@ -22,7 +21,6 @@ public class LauncherSystem {
     private final LoggedTunableNumber flywheel_velocity = new LoggedTunableNumber("Launcher/Flywheel_Velocity", 190);
     private final LoggedTunableNumber jam_volts = new LoggedTunableNumber("Launcher/Jam_Volts", -4.0);
 
-    private InterpolatingDoubleTreeMap flywheel_velocity_distance_map = new InterpolatingDoubleTreeMap();
 
     @Getter
     @Setter
