@@ -19,7 +19,7 @@ public class LauncherSystem {
     private final FlywheelIOInputsAutoLogged fIOLInputs = new FlywheelIOInputsAutoLogged();
     private final FlywheelIOInputsAutoLogged fIORInputs = new FlywheelIOInputsAutoLogged();
     private final FlywheelEstimation estimation = FlywheelEstimation.getInstance();
-    private final LoggedTunableNumber flywheel_velocity = new LoggedTunableNumber("Launcher/Flywheel_Velocity", 200);
+    private final LoggedTunableNumber flywheel_velocity = new LoggedTunableNumber("Launcher/Flywheel_Velocity", 190);
     private final LoggedTunableNumber jam_volts = new LoggedTunableNumber("Launcher/Jam_Volts", -4.0);
 
     private InterpolatingDoubleTreeMap flywheel_velocity_distance_map = new InterpolatingDoubleTreeMap();
@@ -65,16 +65,30 @@ public class LauncherSystem {
                 break;
             }
             case READY -> {
-                estimation.setGoal(FlywheelEstimation.Goal.HUB);
+                // estimation.setGoal(FlywheelEstimation.Goal.HUB);
                 // run top motor at flywheel velocity
-                runLaunchVelocities(0, estimation.getTotalFlywheelVelocity());
+                // runLaunchVelocities(0, estimation.getTotalFlywheelVelocity());
+                double calculatedValue = LauncherCalculatorExperimental.calculate();
+                Logger.recordOutput("Outputs/Launcher/CalculateExperimental", calculatedValue);
+
+                fIOL.runRotationsPerSecond(calculatedValue);
+                fIOR.runRotationsPerSecond(calculatedValue);
                 break;
             }
-                // case LAUNCH -> {
-                //     estimation.setGoal(FlywheelEstimation.Goal.HUB);
-                //     runLaunchVelocities(launchCalculations()[0], launchCalculations()[1]);
-                //     break;
+            case LAUNCH -> {
+                double calculatedValue = LauncherCalculatorExperimental.calculate();
+                Logger.recordOutput("Outputs/Launcher/CalculateExperimental", calculatedValue);
+
+                fIOL.runRotationsPerSecond(calculatedValue);
+                fIOR.runRotationsPerSecond(calculatedValue);
+
+                // if (LauncherCalculatorExperimental.ready()) {
+                iIO.runRadiansPerSecond(calculatedValue);
+                // } else {
+                // iIO.runVolts(0.0);
                 // }
+                break;
+            }
             case CLEAR_JAM -> {
                 runLaunchVolts(jam_volts.getAsDouble(), jam_volts.getAsDouble());
                 break;

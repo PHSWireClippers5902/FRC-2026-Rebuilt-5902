@@ -37,25 +37,21 @@ public class LauncherCalculatorExperimental {
 
     public static double calculate(Translation2d distance) {
         // filter
-        if (distance.getDistance(new Translation2d()) > Units.inchesToMeters(167.0 + 16 + 23)
-                || distance.getDistance(new Translation2d()) < Units.inchesToMeters(60 + 16 + 23)) {
+        if (distance.getDistance(new Translation2d()) < Units.inchesToMeters(60 + 16 + 23)) {
             return 0;
         }
         // plus magick 23in hub 16 in bot
-        return inch_velocity.get( distance.getDistance(new Translation2d()) - Units.inchesToMeters(16+23));
+        return inch_velocity.get(distance.getDistance(new Translation2d()) - Units.inchesToMeters(4));
     }
 
     public static boolean ready() {
         // tolerance magick number 5 degrees
         Pose2d currentPose = RobotState.getInstance().getEstimatedPose();
         Translation2d hubLocation = AllianceFlipUtil.apply(FieldConstants.BLUE_HUB_LOCATION);
-        double tolerance = 8.0;
-        boolean returnval = (Math.abs(hubLocation
-                        .minus(currentPose.getTranslation())
-                        .getAngle()
-                        .minus(currentPose.getRotation())
-                        .getDegrees())
-                <= tolerance);
+        double tolerance = 13.0;
+        boolean returnval =
+                (Math.abs((currentPose.getRotation().minus(calcPointedAngle()).getDegrees() % 360 + 360) % 360)
+                        <= tolerance);
         Logger.recordOutput("Outputs/MagickCalculator/ReturnValue", returnval);
         return returnval;
     }
@@ -64,7 +60,7 @@ public class LauncherCalculatorExperimental {
         Rotation2d returnRot;
         Pose2d currentPose = RobotState.getInstance().getEstimatedPose();
         Translation2d hubLocation = AllianceFlipUtil.apply(FieldConstants.BLUE_HUB_LOCATION);
-        returnRot = hubLocation.minus(currentPose.getTranslation()).getAngle();
+        returnRot = currentPose.getTranslation().minus(hubLocation).getAngle();
         Logger.recordOutput("Outputs/MagickCalcluator/CalcPointedAngle", returnRot);
         return returnRot;
     }

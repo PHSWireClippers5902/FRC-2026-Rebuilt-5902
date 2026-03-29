@@ -171,7 +171,7 @@ public class DriveCommands {
     public static Command aimAtAngle(Drive drive, Supplier<Rotation2d> rotationSupplier) {
         // configure (kP, kI, kD, -zoid: max_velocity, max_acceleration)
         ProfiledPIDController angleController =
-                new ProfiledPIDController(3, 0.0, 0.0, new TrapezoidProfile.Constraints(0.0, 0.0));
+                new ProfiledPIDController(4, 0.0, 0.0, new TrapezoidProfile.Constraints(0.0, 0.0));
         angleController.enableContinuousInput(-Math.PI, Math.PI);
         return Commands.run(
                         () -> {

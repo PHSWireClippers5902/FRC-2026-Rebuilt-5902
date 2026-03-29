@@ -24,7 +24,7 @@ public class SuperstructureActions {
             .priority(1)
             .slamGoal(SLAMTake.Goal.FEED_HIGH)
             .build();
-
+    public static SuperstructureAction INVERT_FEED = SuperstructureAction.builder().priority(1).slamGoal(SLAMTake.Goal.LOWERED_EXTAKE).indexerGoal(IndexerSystem.Goal.MOVE_OUT).launcherGoal(LauncherSystem.Goal.CLEAR_JAM).build();
     // DEPLOY_IDLE: Maintain all defaults
     public static SuperstructureAction DEPLOY_IDLE =
             SuperstructureAction.builder().priority(0).build();
@@ -70,6 +70,17 @@ public class SuperstructureActions {
             .priority(3)
             .build();
 
+    public static SuperstructureAction READY_SMART = SuperstructureAction.builder()
+            .launcherGoal(LauncherSystem.Goal.READY)
+            .priority(2)
+            .build();
+    public static SuperstructureAction LAUNCH_SMART = SuperstructureAction.builder()
+            .launcherGoal(LauncherSystem.Goal.LAUNCH)
+            .indexerGoal(IndexerSystem.Goal.MOVE_IN)
+            .slamGoal(SLAMTake.Goal.FEED)
+            .priority(3)
+            .build();
+
     public static SuperstructureAction EMERGENCY = SuperstructureAction.builder()
             .launcherGoal(LauncherSystem.Goal.IDLE)
             .slamGoal(SLAMTake.Goal.STOP)
@@ -78,7 +89,7 @@ public class SuperstructureActions {
     public static SuperstructureAction SMART_LAUNCH = SuperstructureAction.builder()
             .launcherGoal(LauncherSystem.Goal.SMART_LAUNCH)
             .slamGoal(SLAMTake.Goal.SMART_LAUNCH)
-            .indexerGoal(IndexerSystem.Goal.MOVE_IN)
+            .indexerGoal(IndexerSystem.Goal.SMART_AGITATION)
             .priority(3)
             .build();
 

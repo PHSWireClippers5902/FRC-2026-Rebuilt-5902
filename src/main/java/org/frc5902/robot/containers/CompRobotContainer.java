@@ -9,7 +9,10 @@ import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import lombok.Getter;
+import lombok.Setter;
 import org.frc5902.robot.Constants.RobotConstants;
 import org.frc5902.robot.FieldConstants;
 import org.frc5902.robot.FieldConstants.AprilTagLayoutType;
@@ -34,7 +37,6 @@ import org.frc5902.robot.subsystems.drive.modules.ModuleIOSparkAbsolute;
 import org.frc5902.robot.subsystems.indexer.IndexerIO;
 import org.frc5902.robot.subsystems.indexer.IndexerIOSpark;
 import org.frc5902.robot.subsystems.indexer.IndexerSystem;
-import org.frc5902.robot.subsystems.launcher.LauncherCalculatorExperimental;
 import org.frc5902.robot.subsystems.launcher.LauncherSystem;
 import org.frc5902.robot.subsystems.launcher.flywheel.FlywheelIO;
 import org.frc5902.robot.subsystems.launcher.flywheel.FlywheelIOSpark;
@@ -61,6 +63,10 @@ public class CompRobotContainer extends RobotContainer {
 
     @SuppressWarnings("unused")
     private final QuestSubsystem quest;
+
+    @Getter
+    @Setter
+    private boolean OVERRIDE_SMART_LAUNCH = false;
     // vision? implement later, pah-lease!
     // command xbox
     private final CommandXboxController m_XboxController = new CommandXboxController(0);
@@ -230,13 +236,30 @@ public class CompRobotContainer extends RobotContainer {
         //         .onFalse(superstructure.removeCommandFromScheduler(SuperstructureActions.READY_LAUNCHER_STUPID));
         m_XboxController
                 .leftTrigger(0.2)
+                .and(() -> !this.OVERRIDE_SMART_LAUNCH)
+                .onTrue(superstructure.addCommandToScheduler(SuperstructureActions.READY_SMART))
+                .onFalse(superstructure.removeCommandFromScheduler(SuperstructureActions.READY_SMART));
+
+        m_XboxController
+                .leftBumper()
+                .and(() -> !this.OVERRIDE_SMART_LAUNCH)
+                .onTrue(superstructure.addCommandToScheduler(SuperstructureActions.LAUNCH_SMART))
+                .onFalse(superstructure.removeCommandFromScheduler(SuperstructureActions.LAUNCH_SMART));
+
+        m_XboxController
+                .leftTrigger(0.2)
+                .and(() -> this.OVERRIDE_SMART_LAUNCH)
                 .onTrue(superstructure.addCommandToScheduler(SuperstructureActions.READY_LAUNCHER_STUPID))
                 .onFalse(superstructure.removeCommandFromScheduler(SuperstructureActions.READY_LAUNCHER_STUPID));
 
         m_XboxController
                 .leftBumper()
+                .and(() -> this.OVERRIDE_SMART_LAUNCH)
                 .onTrue(superstructure.addCommandToScheduler(SuperstructureActions.LAUNCH_STUPID))
                 .onFalse(superstructure.removeCommandFromScheduler(SuperstructureActions.LAUNCH_STUPID));
+        m_XboxController
+                .b()
+                .toggleOnTrue(Commands.runOnce(() -> this.OVERRIDE_SMART_LAUNCH = !this.OVERRIDE_SMART_LAUNCH));
 
         // .onTrue(superstructure.addCommandToScheduler(SuperstructureActions.RAISED_INTAKE))
         // .onFalse(superstructure.removeCommandFromScheduler(SuperstructureActions.RAISED_INTAKE));
@@ -245,24 +268,26 @@ public class CompRobotContainer extends RobotContainer {
                 .onTrue(superstructure.addCommandToScheduler(SuperstructureActions.RAISED_INTAKE_HIGH))
                 .onFalse(superstructure.removeCommandFromScheduler(SuperstructureActions.RAISED_INTAKE_HIGH));
 
-        m_XboxController
-                .a()
-                .whileTrue(DriveCommands.pointAtPoseWhileMoving(
-                        drive,
-                        () -> -m_XboxController.getLeftY(),
-                        () -> -m_XboxController.getLeftX(),
-                        new Pose2d(AllianceFlipUtil.apply(FieldConstants.BLUE_HUB_LOCATION), new Rotation2d())));
+        // m_XboxController
+        //         .a()
+        //         .whileTrue(DriveCommands.pointAtPoseWhileMoving(
+        //                 drive,
+        //                 () -> -m_XboxController.getLeftY(),
+        //                 () -> -m_XboxController.getLeftX(),
+        //                 new Pose2d(AllianceFlipUtil.apply(FieldConstants.BLUE_HUB_LOCATION), new Rotation2d())));
 
         m_XboxController
                 .x()
                 .whileTrue(DriveCommands.pointAtPose(
                         drive, new Pose2d(AllianceFlipUtil.apply(FieldConstants.BLUE_HUB_LOCATION), new Rotation2d())));
 
-        m_XboxController
-                .b()
-                .whileTrue(DriveCommands.aimAtAngle(drive, () -> LauncherCalculatorExperimental.calcPointedAngle()))
-                .onTrue(superstructure.addCommandToScheduler(SuperstructureActions.SMART_LAUNCH))
-                .onFalse(superstructure.removeCommandFromScheduler(SuperstructureActions.SMART_LAUNCH));
+        m_XboxController.a().onTrue(superstructure.addCommandToScheduler(SuperstructureActions.INVERT_FEED))
+                .onFalse(superstructure.removeCommandFromScheduler(SuperstructureActions.INVERT_FEED));
+        // m_XboxController
+        //         .b()
+        //         .whileTrue(DriveCommands.aimAtAngle(drive, () -> LauncherCalculatorExperimental.calcPointedAngle()))
+        //         .onTrue(superstructure.addCommandToScheduler(SuperstructureActions.SMART_LAUNCH))
+        //         .onFalse(superstructure.removeCommandFromScheduler(SuperstructureActions.SMART_LAUNCH));
         // m_XboxController
         //         .y()
         //         .onTrue(superstructure.addCommandToScheduler(SuperstructureActions.MOVE_INTAKE_DOWN))

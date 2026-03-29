@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import lombok.Getter;
 import lombok.Setter;
+import org.frc5902.robot.subsystems.launcher.LauncherCalculatorExperimental;
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 
@@ -41,6 +42,13 @@ public class IndexerSystem {
             case STOP:
                 stop();
                 break;
+            case SMART_AGITATION:
+                if (LauncherCalculatorExperimental.ready()) {
+                    runLaunchVelocities(20);
+                } else {
+                    indexIO.runVolts(0.0);
+                }
+                break;
             default:
                 stop();
                 break;
@@ -63,6 +71,7 @@ public class IndexerSystem {
     public enum Goal {
         MOVE_IN,
         MOVE_OUT,
+        SMART_AGITATION,
         STOP
     }
 }
