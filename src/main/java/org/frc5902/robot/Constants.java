@@ -1,8 +1,8 @@
 /**
  * @team: The Wire Clippers 5902
- * @name:    Constants.java
+ * @name:    Constants
  * @purpose: A single place to store program-wide constants. Updated for 2026.
- * @name:    Daniel Sabalakov
+ * @author:    Daniel Sabalakov
  */
 package org.frc5902.robot;
 

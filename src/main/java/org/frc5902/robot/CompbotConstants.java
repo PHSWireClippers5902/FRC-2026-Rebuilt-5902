@@ -1,3 +1,9 @@
+/**
+ * @team: The Wire Clippers 5902
+ * @name:    CompbotConstants
+ * @purpose: A single place to store competition robot-wide constants. Updated for 2026.
+ * @author:    Daniel Sabalakov
+ */
 package org.frc5902.robot;
 
 import edu.wpi.first.math.geometry.Rotation3d;

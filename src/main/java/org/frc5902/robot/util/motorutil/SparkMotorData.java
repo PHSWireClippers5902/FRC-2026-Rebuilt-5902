@@ -1,5 +1,8 @@
 /**
- * Describes Desired Motor Data from a base Spark Max...
+ * @team: The Wire Clippers 5902
+ * @name:    SparkMotorData
+ * @purpose: A potential abstract SparkMotorData object that might provide even better abstraction
+ * @author:    Daniel Sabalakov
  */
 package org.frc5902.robot.util.motorutil;
 

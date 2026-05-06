@@ -1,3 +1,9 @@
+/**
+ * @team: The Wire Clippers 5902
+ * @name:    RobotState
+ * @purpose: Manages poses. Abstracted enough to implement PhotonVision in the future
+ * @author:    Daniel Sabalakov
+ */
 package org.frc5902.robot;
 
 import edu.wpi.first.math.Matrix;

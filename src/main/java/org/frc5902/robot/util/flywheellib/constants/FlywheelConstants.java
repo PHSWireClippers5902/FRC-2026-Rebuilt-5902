@@ -1,6 +1,6 @@
 /**
  * Flywheel Constants are to be tuned in the robot.
- * @blame Daniel Sabalakov
+ * @author Daniel Sabalakov
  * @todo Confirm measurements, integrate into wpilib by making a sample robot project.
  */
 package org.frc5902.robot.util.flywheellib.constants;

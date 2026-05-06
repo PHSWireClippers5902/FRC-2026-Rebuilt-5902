@@ -1,3 +1,9 @@
+/**
+ * @team: The Wire Clippers 5902
+ * @name:    Phases
+ * @purpose: Shape2d abstraction for the future. Field based commands
+ * @author:    Daniel Sabalakov
+ */
 package org.frc5902.robot.util.fieldbased;
 
 import edu.wpi.first.math.geometry.Translation2d;

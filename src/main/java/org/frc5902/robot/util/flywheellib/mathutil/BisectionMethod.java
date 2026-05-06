@@ -1,3 +1,6 @@
+/**
+ * @author Daniel Sabalakov
+ */
 package org.frc5902.robot.util.flywheellib.mathutil;
 
 import org.frc5902.robot.util.flywheellib.functions.BaseFunction;

@@ -1,5 +1,5 @@
 /**
- * @blame Daniel Sabalakov
+ * @author Daniel Sabalakov
  */
 package org.frc5902.robot.util.flywheellib.mathutil;
 

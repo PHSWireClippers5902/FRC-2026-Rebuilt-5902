@@ -1,6 +1,6 @@
 /**
- * IF
- * @blame Daniel Sabalakov
+ * Field Command takes a runnable Command as input and triggers whenever the pose is inside the Shape2d
+ * @author Daniel Sabalakov
  */
 package org.frc5902.robot.util.fieldbased;
 

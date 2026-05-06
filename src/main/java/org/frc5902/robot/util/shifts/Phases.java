@@ -1,3 +1,9 @@
+/**
+ * @team: The Wire Clippers 5902
+ * @name:    Phases
+ * @purpose: Phase Manager. Never implemented but **might** work.
+ * @author:    Daniel Sabalakov
+ */
 package org.frc5902.robot.util.shifts;
 
 import edu.wpi.first.wpilibj.DriverStation;

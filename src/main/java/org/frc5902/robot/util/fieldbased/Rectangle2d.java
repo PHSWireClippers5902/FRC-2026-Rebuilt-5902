@@ -1,3 +1,9 @@
+/**
+ * @team: The Wire Clippers 5902
+ * @name:    Rectangle
+ * @purpose: Extension of Shape2d, can initialize a Rectangle
+ * @author:    Daniel Sabalakov
+ */
 package org.frc5902.robot.util.fieldbased;
 
 import edu.wpi.first.math.geometry.Translation2d;

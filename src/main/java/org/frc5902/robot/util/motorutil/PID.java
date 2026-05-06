@@ -1,3 +1,9 @@
+/**
+ * @team: The Wire Clippers 5902
+ * @name:    PID
+ * @purpose: Boilerplate simplification for PID constants
+ * @author:    Daniel Sabalakov
+ */
 package org.frc5902.robot.util.motorutil;
 
 import lombok.Builder;
