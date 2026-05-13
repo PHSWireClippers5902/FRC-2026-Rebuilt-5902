@@ -82,17 +82,21 @@ public class DriveCommands {
                 drive);
     }
 
-    public static Command pointAtTranslation(Drive drive, Translation2d pose) {
-        return aimAtAngle(drive, () -> {
-            //     return pose.minus(RobotState.getInstance().getEstimatedPose()).getRotation();
-            // return Rotation2d.kZero;
-            Logger.recordOutput(
-                    "AIM_POSE",
-                    pose.minus(RobotState.getInstance().getEstimatedPose().getTranslation())
-                            .getAngle());
-            return pose.minus(RobotState.getInstance().getEstimatedPose().getTranslation())
-                    .getAngle();
-        });
+    //     public static Command pointAtTranslation(Drive drive, Translation2d pose) {
+    //         return aimAtAngle(drive, () -> {
+    //             //     return pose.minus(RobotState.getInstance().getEstimatedPose()).getRotation();
+    //             // return Rotation2d.kZero;
+    //             Logger.recordOutput(
+    //                     "AIM_POSE",
+    //                     pose.minus(RobotState.getInstance().getEstimatedPose().getTranslation()));
+    //             return pose.minus(RobotState.getInstance().getEstimatedPose().getTranslation())
+    //                     .getAngle();
+    //         });
+    //     }
+    public static Command pointAtTranslation(Drive drive, Translation2d target) {
+        return aimAtAngle(drive, () -> target.minus(
+                        RobotState.getInstance().getEstimatedPose().getTranslation())
+                .getAngle());
     }
 
     public static Command pointAtPose(Drive drive, Pose2d pose) {

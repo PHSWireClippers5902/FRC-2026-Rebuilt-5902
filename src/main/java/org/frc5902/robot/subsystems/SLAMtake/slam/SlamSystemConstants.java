@@ -11,7 +11,7 @@ public class SlamSystemConstants {
         public static int StallLimit = 45;
         public static int FreeLimit = 30;
         public static PID SlamPID =
-                PID.builder().proportional(2.3).deriviative(0.002).build();
+                PID.builder().proportional(3.3).deriviative(0.002).build();
         public static double SlamPositionConversionFactor = 0.01;
         public static double SlamVelocityConversionFactor = SlamPositionConversionFactor / 60;
         public static IdleMode idleMode = IdleMode.kBrake;

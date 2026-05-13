@@ -71,7 +71,7 @@ public class SuperstructureActions {
     public static SuperstructureAction LAUNCH_STUPID = SuperstructureAction.builder()
             .launcherGoal(LauncherSystem.Goal.LAUNCH_STUPID)
             .indexerGoal(IndexerSystem.Goal.MOVE_IN)
-            .slamGoal(SLAMTake.Goal.FEED)
+            .slamGoal(SLAMTake.Goal.ONLY_INTAKE)
             .priority(3)
             .build();
 
@@ -82,7 +82,7 @@ public class SuperstructureActions {
     public static SuperstructureAction LAUNCH_SMART = SuperstructureAction.builder()
             .launcherGoal(LauncherSystem.Goal.LAUNCH)
             .indexerGoal(IndexerSystem.Goal.MOVE_IN)
-            .slamGoal(SLAMTake.Goal.FEED)
+            .slamGoal(SLAMTake.Goal.ONLY_INTAKE)
             .priority(3)
             .build();
 

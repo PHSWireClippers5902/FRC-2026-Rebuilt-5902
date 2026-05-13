@@ -91,7 +91,7 @@ public class Superstructure extends SubsystemBase {
         scheduled_goals = new ArrayList<SuperstructureAction>();
         scheduled_goals.add(SuperstructureActions.DEPLOY_IDLE);
     }
-    
+
     public static Command AutonomousSuperstructureGoalCommand(
             SuperstructureAction actionGoal, double timeout, Superstructure superinstance) {
         return Commands.parallel(

@@ -85,6 +85,9 @@ public class SLAMTake {
                 runIntakeVolts(0.0);
                 break;
             }
+            case SINUSOID: {
+                break;
+            }
             case SMART_LAUNCH: {
                 double calculatedValue = LauncherCalculatorExperimental.calculate();
                 Logger.recordOutput("Outputs/Launcher/CalculateExperimental", calculatedValue);
@@ -97,6 +100,12 @@ public class SLAMTake {
                 }
 
                 break;
+            }
+            case NOTHING: {
+                break;
+            }
+            case ONLY_INTAKE: {
+                runIntakeVolts(3.0);
             }
             default: {
                 stop();
@@ -150,7 +159,10 @@ public class SLAMTake {
         LOWERED_EXTAKE,
         SHUFFLE,
         SMART_LAUNCH,
+        SINUSOID,
         STOP,
+        NOTHING,
+        ONLY_INTAKE,
     }
 
     public void runSystemVolts(double intakeVolts, double slamVolts) {
@@ -173,6 +185,11 @@ public class SLAMTake {
         } else {
             slamIO.runAngle(0);
         }
+    }
+
+    public void runSLAMAngle(double SLAMPosition) {
+        Logger.recordOutput("Outputs/Slam/SlamTargetPosition", SLAMPosition);
+        slamIO.runAngle(SLAMPosition);
     }
 
     public void runVelocities(double intakeVelocity, double slamVelocity) {

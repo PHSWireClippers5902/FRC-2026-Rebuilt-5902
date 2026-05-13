@@ -1,12 +1,9 @@
 package org.frc5902.robot.commands.auto;
 /**
- * 
- * 
+ *
+ *
  * @author Daniel Sabalakov
  */
-
-
-
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;

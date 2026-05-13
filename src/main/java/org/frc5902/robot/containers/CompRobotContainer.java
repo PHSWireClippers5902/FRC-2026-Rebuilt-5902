@@ -5,6 +5,7 @@ import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -20,6 +21,7 @@ import org.frc5902.robot.FieldConstants.AprilTagLayoutType;
 import org.frc5902.robot.Robot;
 import org.frc5902.robot.RobotState;
 import org.frc5902.robot.commands.MiscCommands;
+import org.frc5902.robot.commands.SinusoidalControlCommand;
 import org.frc5902.robot.commands.auto.AutoBuilder;
 import org.frc5902.robot.commands.auto.EasyAutonomousCommandFactory;
 import org.frc5902.robot.commands.drive.DriveCommands;
@@ -49,7 +51,6 @@ import org.frc5902.robot.subsystems.questnav.QuestSubsystem;
 import org.frc5902.robot.subsystems.rumble.Rumble;
 import org.frc5902.robot.subsystems.superstructure.Superstructure;
 import org.frc5902.robot.subsystems.superstructure.SuperstructureActions;
-import org.frc5902.robot.util.fieldbased.AllianceFlipUtil;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 import java.util.Optional;
@@ -66,7 +67,7 @@ public class CompRobotContainer extends RobotContainer {
 
     @Getter
     @Setter
-    private boolean OVERRIDE_SMART_LAUNCH = false;
+    private boolean OVERRIDE_SMART_LAUNCH = true;
     // vision? implement later, pah-lease!
     // command xbox
     private final CommandXboxController m_XboxController = new CommandXboxController(0);
@@ -158,6 +159,12 @@ public class CompRobotContainer extends RobotContainer {
 
         NamedCommands.registerCommand(
                 "LAUNCH_SEQUENCE", MiscCommands.LaunchSequenceBetterSTUPID(drive, superstructure));
+        //        public static double raisedAngleLOW = 0.09;
+        NamedCommands.registerCommand(
+                "SINUSOIDAL_SLAM",
+                new SinusoidalControlCommand(
+                        null, (value) -> superstructure.getSlam().runSLAMAngle(value), -0.07, 2.5, 0, 0.07, true));
+
         // GREEDY SWEEP
         autoChooser.addOption("BLUE_LEFT_GREEDY_SWEEP", new PathPlannerAuto("SWEEP_GREEDY_L"));
         autoChooser.addOption("RED_RIGHT_GREEDY_SWEEP", new PathPlannerAuto("SWEEP_GREEDY_L", true));
@@ -250,6 +257,7 @@ public class CompRobotContainer extends RobotContainer {
                 .leftBumper()
                 .and(() -> !this.OVERRIDE_SMART_LAUNCH)
                 .onTrue(superstructure.addCommandToScheduler(SuperstructureActions.LAUNCH_SMART))
+                .whileTrue(NamedCommands.getCommand("SINUSOIDAL_SLAM"))
                 .onFalse(superstructure.removeCommandFromScheduler(SuperstructureActions.LAUNCH_SMART));
 
         m_XboxController
@@ -262,6 +270,7 @@ public class CompRobotContainer extends RobotContainer {
                 .leftBumper()
                 .and(() -> this.OVERRIDE_SMART_LAUNCH)
                 .onTrue(superstructure.addCommandToScheduler(SuperstructureActions.LAUNCH_STUPID))
+                .whileTrue(NamedCommands.getCommand("SINUSOIDAL_SLAM"))
                 .onFalse(superstructure.removeCommandFromScheduler(SuperstructureActions.LAUNCH_STUPID));
         m_XboxController
                 .b()
@@ -285,10 +294,11 @@ public class CompRobotContainer extends RobotContainer {
         //                 () -> -m_XboxController.getLeftX(),
         //                 new Pose2d(AllianceFlipUtil.apply(FieldConstants.BLUE_HUB_LOCATION), new Rotation2d())));
 
+        // m_XboxController.x().whileTrue(DriveCommands.aimAtAngleOSCLILATE(drive, () -> drive.getGyroRotation()));
         m_XboxController
                 .x()
-                .whileTrue(DriveCommands.pointAtPose(
-                        drive, new Pose2d(AllianceFlipUtil.apply(FieldConstants.BLUE_HUB_LOCATION), new Rotation2d())));
+                .whileTrue(new SinusoidalControlCommand(
+                        drive, (value) -> drive.runVelocity(new ChassisSpeeds(0, 0, value)), 0.3, 0.5, 0, 0, false));
 
         m_XboxController
                 .a()
