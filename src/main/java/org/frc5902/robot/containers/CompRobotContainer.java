@@ -4,7 +4,6 @@ import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
@@ -32,7 +31,6 @@ import org.frc5902.robot.subsystems.SLAMtake.intake.IntakeIOSpark;
 import org.frc5902.robot.subsystems.SLAMtake.slam.SlamIO;
 import org.frc5902.robot.subsystems.SLAMtake.slam.SlamIOSpark;
 import org.frc5902.robot.subsystems.drive.Drive;
-import org.frc5902.robot.subsystems.drive.DriveConstants;
 import org.frc5902.robot.subsystems.drive.gyro.GyroIO;
 import org.frc5902.robot.subsystems.drive.gyro.GyroIO_ADIS;
 import org.frc5902.robot.subsystems.drive.modules.ModuleIO;
@@ -68,7 +66,7 @@ public class CompRobotContainer extends RobotContainer {
 
     @Getter
     @Setter
-    private boolean OVERRIDE_SMART_LAUNCH = true;
+    private boolean OVERRIDE_SMART_LAUNCH = false;
     // vision? implement later, pah-lease!
     // command xbox
     private final CommandXboxController m_XboxController = new CommandXboxController(0);
@@ -267,7 +265,14 @@ public class CompRobotContainer extends RobotContainer {
                 .leftBumper()
                 .and(() -> !this.OVERRIDE_SMART_LAUNCH)
                 .onTrue(superstructure.addCommandToScheduler(SuperstructureActions.LAUNCH_SMART))
-                .whileTrue(NamedCommands.getCommand("SINUSOIDAL_SLAM"))
+                .whileTrue(Commands.parallel(
+                        NamedCommands.getCommand("SINUSOIDAL_SLAM"),
+                        PointCommands.pointAtTranslationWhileMoving(
+                                drive,
+                                () -> -m_XboxController.getLeftY(),
+                                () -> -m_XboxController.getLeftX(),
+                                0.23,
+                                FieldConstants.BLUE_HUB_LOCATION)))
                 .onFalse(superstructure.removeCommandFromScheduler(SuperstructureActions.LAUNCH_SMART));
 
         m_XboxController
@@ -282,9 +287,10 @@ public class CompRobotContainer extends RobotContainer {
                 .onTrue(superstructure.addCommandToScheduler(SuperstructureActions.LAUNCH_STUPID))
                 .whileTrue(NamedCommands.getCommand("SINUSOIDAL_SLAM"))
                 .onFalse(superstructure.removeCommandFromScheduler(SuperstructureActions.LAUNCH_STUPID));
-        m_XboxController
-                .b()
-                .toggleOnTrue(Commands.runOnce(() -> this.OVERRIDE_SMART_LAUNCH = !this.OVERRIDE_SMART_LAUNCH));
+        // m_XboxController
+        //         .b()
+        //         .toggleOnTrue(Commands.runOnce(() -> this.OVERRIDE_SMART_LAUNCH = !this.OVERRIDE_SMART_LAUNCH));
+        m_XboxController.b().whileTrue(PointCommands.pointAtTranslation(drive, FieldConstants.BLUE_HUB_LOCATION));
 
         // .onTrue(superstructure.addCommandToScheduler(SuperstructureActions.RAISED_INTAKE))
         // .onFalse(superstructure.removeCommandFromScheduler(SuperstructureActions.RAISED_INTAKE));
@@ -341,53 +347,53 @@ public class CompRobotContainer extends RobotContainer {
         //                 () -> -m_XboxController.getLeftX(),
         //                 () -> Rotation2d.fromDegrees(90)));
 
-        m_XboxController
-                .povLeft()
-                .whileTrue(DriveCommands.joystickDriveAround(
-                        drive,
-                        () -> -m_XboxController.getLeftY(),
-                        () -> -m_XboxController.getLeftX(),
-                        () -> -m_XboxController.getRightX(),
-                        () -> false,
-                        new Translation2d(
-                                DriveConstants.ModuleConfigurations.driveBaseRadius,
-                                DriveConstants.ModuleConfigurations.driveBaseRadius)));
+        // m_XboxController
+        //         .povLeft()
+        //         .whileTrue(DriveCommands.joystickDriveAround(
+        //                 drive,
+        //                 () -> -m_XboxController.getLeftY(),
+        //                 () -> -m_XboxController.getLeftX(),
+        //                 () -> -m_XboxController.getRightX(),
+        //                 () -> false,
+        //                 new Translation2d(
+        //                         DriveConstants.ModuleConfigurations.driveBaseRadius,
+        //                         DriveConstants.ModuleConfigurations.driveBaseRadius)));
 
-        m_XboxController
-                .povRight()
-                .whileTrue(DriveCommands.joystickDriveAround(
-                        drive,
-                        () -> -m_XboxController.getLeftY(),
-                        () -> -m_XboxController.getLeftX(),
-                        () -> -m_XboxController.getRightX(),
-                        () -> false,
-                        new Translation2d(
-                                -DriveConstants.ModuleConfigurations.driveBaseRadius,
-                                -DriveConstants.ModuleConfigurations.driveBaseRadius)));
+        // m_XboxController
+        //         .povRight()
+        //         .whileTrue(DriveCommands.joystickDriveAround(
+        //                 drive,
+        //                 () -> -m_XboxController.getLeftY(),
+        //                 () -> -m_XboxController.getLeftX(),
+        //                 () -> -m_XboxController.getRightX(),
+        //                 () -> false,
+        //                 new Translation2d(
+        //                         -DriveConstants.ModuleConfigurations.driveBaseRadius,
+        //                         -DriveConstants.ModuleConfigurations.driveBaseRadius)));
 
-        m_XboxController
-                .povUp()
-                .whileTrue(DriveCommands.joystickDriveAround(
-                        drive,
-                        () -> -m_XboxController.getLeftY(),
-                        () -> -m_XboxController.getLeftX(),
-                        () -> -m_XboxController.getRightX(),
-                        () -> false,
-                        new Translation2d(
-                                DriveConstants.ModuleConfigurations.driveBaseRadius,
-                                -DriveConstants.ModuleConfigurations.driveBaseRadius)));
+        // m_XboxController
+        //         .povUp()
+        //         .whileTrue(DriveCommands.joystickDriveAround(
+        //                 drive,
+        //                 () -> -m_XboxController.getLeftY(),
+        //                 () -> -m_XboxController.getLeftX(),
+        //                 () -> -m_XboxController.getRightX(),
+        //                 () -> false,
+        //                 new Translation2d(
+        //                         DriveConstants.ModuleConfigurations.driveBaseRadius,
+        //                         -DriveConstants.ModuleConfigurations.driveBaseRadius)));
 
-        m_XboxController
-                .povDown()
-                .whileTrue(DriveCommands.joystickDriveAround(
-                        drive,
-                        () -> -m_XboxController.getLeftY(),
-                        () -> -m_XboxController.getLeftX(),
-                        () -> -m_XboxController.getRightX(),
-                        () -> false,
-                        new Translation2d(
-                                -DriveConstants.ModuleConfigurations.driveBaseRadius,
-                                DriveConstants.ModuleConfigurations.driveBaseRadius)));
+        // m_XboxController
+        //         .povDown()
+        //         .whileTrue(DriveCommands.joystickDriveAround(
+        //                 drive,
+        //                 () -> -m_XboxController.getLeftY(),
+        //                 () -> -m_XboxController.getLeftX(),
+        //                 () -> -m_XboxController.getRightX(),
+        //                 () -> false,
+        //                 new Translation2d(
+        //                         -DriveConstants.ModuleConfigurations.driveBaseRadius,
+        //                         DriveConstants.ModuleConfigurations.driveBaseRadius)));
 
         m_XboxController.button(8).onTrue(MiscCommands.PoseResetCommand(this));
         m_XboxController.button(7).toggleOnTrue(Superstructure.getInstance().SWAP_KILL_SYSTEMS());

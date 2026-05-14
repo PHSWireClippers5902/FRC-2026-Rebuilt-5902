@@ -29,8 +29,8 @@ import java.nio.file.Path;
  */
 public class FieldConstants {
 
-    public static final Translation2d BLUE_HUB_LOCATION = new Translation2d(4.619, 4.619);
-    public static final Translation2d RED_HUB_LOCATION = new Translation2d(4.619, 16.54 - 4.619);
+    public static final Translation2d BLUE_HUB_LOCATION = new Translation2d(4.619, 4.000);
+    public static final Translation2d RED_HUB_LOCATION = new Translation2d(4.619, 16.54 - 4.0);
     public static final FieldType fieldType = FieldType.WELDED;
 
     // AprilTag related constants

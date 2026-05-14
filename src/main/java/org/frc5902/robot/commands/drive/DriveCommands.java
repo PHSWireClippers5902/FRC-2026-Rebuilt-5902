@@ -88,7 +88,11 @@ public class DriveCommands {
      * absolute rotation with a joystick.
      */
     public static Command joystickDriveAtAngle(
-            Drive drive, DoubleSupplier xSupplier, DoubleSupplier ySupplier, Supplier<Rotation2d> rotationSupplier) {
+            Drive drive,
+            DoubleSupplier xSupplier,
+            DoubleSupplier ySupplier,
+            Supplier<Rotation2d> rotationSupplier,
+            double translationMultiplier) {
 
         // Create PID controller
         ProfiledPIDController angleController = new ProfiledPIDController(
@@ -104,13 +108,20 @@ public class DriveCommands {
 
                             // Calculate angular speed
                             double omega = angleController.calculate(
-                                    drive.getGyroRotation().getRadians(),
+                                    RobotState.getInstance()
+                                            .getEstimatedPose()
+                                            .getRotation()
+                                            .getRadians(),
                                     rotationSupplier.get().getRadians());
 
                             // Convert to field relative speeds & send command
                             ChassisSpeeds speeds = new ChassisSpeeds(
-                                    linearVelocity.getX() * drive.getMaxLinearSpeedMetersPerSecond(),
-                                    linearVelocity.getY() * drive.getMaxLinearSpeedMetersPerSecond(),
+                                    linearVelocity.getX()
+                                            * drive.getMaxLinearSpeedMetersPerSecond()
+                                            * translationMultiplier,
+                                    linearVelocity.getY()
+                                            * drive.getMaxLinearSpeedMetersPerSecond()
+                                            * translationMultiplier,
                                     omega);
                             boolean isFlipped = DriverStation.getAlliance().isPresent()
                                     && DriverStation.getAlliance().get() == Alliance.Red;

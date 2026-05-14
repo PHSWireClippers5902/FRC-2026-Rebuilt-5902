@@ -19,11 +19,35 @@ import java.util.function.Supplier;
 
 public class PointCommands {
     public static Command pointAtTranslation(Drive drive, Translation2d target) {
+        Logger.recordOutput("PointCommands/TranslationPointer", target);
         return aimAtAngle(
                 drive,
-                () -> target.minus(RobotState.getInstance().getEstimatedPose().getTranslation())
+                () -> RobotState.getInstance()
+                        .getEstimatedPose()
+                        .getTranslation()
+                        .minus(target)
                         .getAngle(),
                 4.0);
+        // return aimAtAngle(drive, () -> Rotation2d.kCCW_Pi_2, 4.0);
+    }
+
+    public static Command pointAtTranslationWhileMoving(
+            Drive drive,
+            DoubleSupplier xSupplier,
+            DoubleSupplier ySupplier,
+            double translationMultiplier,
+            Translation2d target) {
+        Logger.recordOutput("PointCommands/TranslationPointer", target);
+        return DriveCommands.joystickDriveAtAngle(
+                drive,
+                xSupplier,
+                ySupplier,
+                () -> RobotState.getInstance()
+                        .getEstimatedPose()
+                        .getTranslation()
+                        .minus(target)
+                        .getAngle(),
+                translationMultiplier);
     }
 
     public static Command pointAtPose(Drive drive, Pose2d pose) {
@@ -46,20 +70,6 @@ public class PointCommands {
                 4.0);
     }
 
-    public static Command pointAtPoseWhileMoving(
-            Drive drive, DoubleSupplier xSupplier, DoubleSupplier ySupplier, Pose2d pose) {
-        return DriveCommands.joystickDriveAtAngle(drive, xSupplier, ySupplier, () -> {
-            Logger.recordOutput(
-                    "AIM_POSE",
-                    pose.getTranslation()
-                            .minus(RobotState.getInstance().getEstimatedPose().getTranslation())
-                            .getAngle());
-            return pose.getTranslation()
-                    .minus(RobotState.getInstance().getEstimatedPose().getTranslation())
-                    .getAngle();
-        });
-    }
-
     public static Command aimAtAngle(Drive drive, Supplier<Rotation2d> rotationSupplier, double kP) {
         // configure (kP, kI, kD, -zoid: max_velocity, max_acceleration)
         ProfiledPIDController angleController =
@@ -69,7 +79,10 @@ public class PointCommands {
                         () -> {
                             // Calculate angular speed
                             double omega = angleController.calculate(
-                                    drive.getGyroRotation().getRadians(),
+                                    RobotState.getInstance()
+                                            .getEstimatedPose()
+                                            .getRotation()
+                                            .getRadians(),
                                     rotationSupplier.get().getRadians());
 
                             // Convert to field relative speeds & send command

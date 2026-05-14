@@ -80,7 +80,7 @@ public class SuperstructureActions {
             .priority(2)
             .build();
     public static SuperstructureAction LAUNCH_SMART = SuperstructureAction.builder()
-            .launcherGoal(LauncherSystem.Goal.LAUNCH)
+            .launcherGoal(LauncherSystem.Goal.SMART_LAUNCH)
             .indexerGoal(IndexerSystem.Goal.MOVE_IN)
             .slamGoal(SLAMTake.Goal.ONLY_INTAKE)
             .priority(3)
