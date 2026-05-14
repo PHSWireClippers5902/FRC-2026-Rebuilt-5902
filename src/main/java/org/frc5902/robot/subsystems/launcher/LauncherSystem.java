@@ -12,11 +12,9 @@ import org.littletonrobotics.junction.Logger;
 
 public class LauncherSystem {
     private final InserterIO iIO;
-    private final FlywheelIO fIOL;
-    private final FlywheelIO fIOR;
+    private final FlywheelIO fIO;
     private final InserterIOInputsAutoLogged iIOInputs = new InserterIOInputsAutoLogged();
-    private final FlywheelIOInputsAutoLogged fIOLInputs = new FlywheelIOInputsAutoLogged();
-    private final FlywheelIOInputsAutoLogged fIORInputs = new FlywheelIOInputsAutoLogged();
+    private final FlywheelIOInputsAutoLogged fIOInputs = new FlywheelIOInputsAutoLogged();
     private final FlywheelEstimation estimation = FlywheelEstimation.getInstance();
     private final LoggedTunableNumber flywheel_velocity = new LoggedTunableNumber("Launcher/Flywheel_Velocity", 190);
     private final LoggedTunableNumber feeder_velocity = new LoggedTunableNumber("Launcher/Feeder_Velocity", 190);
@@ -31,32 +29,29 @@ public class LauncherSystem {
     private final Alert inserterDisconnectedAlert = new Alert(
             "The INSERTER has been disconnected. Recommended to coordinate with Alliance Partners and swap to defence.",
             AlertType.kError);
-    private final Alert flywheelLDisconnectedAlert = new Alert(
+    private final Alert flywheelLeaderDisconnected = new Alert(
             "The LEFT FLYWHEEL has been disconnected. Recommended to coordinate with Alliance Partners and swap to"
                     + " defence.",
             AlertType.kError);
-    private final Alert flywheelRDisconnectedAlert = new Alert(
+    private final Alert flywheelFollowerDisconnected = new Alert(
             "The RIGHT FLYWHEEL has been disconnected. Recommended to coordinate with Alliance Partners and swap to"
                     + " defence.",
             AlertType.kError);
 
-    public LauncherSystem(InserterIO iIO, FlywheelIO fIOL, FlywheelIO fIOR) {
+    public LauncherSystem(InserterIO iIO, FlywheelIO fIO) {
         this.iIO = iIO;
-        this.fIOL = fIOL;
-        this.fIOR = fIOR;
+        this.fIO = fIO;
     }
 
     public void periodic() {
         iIO.updateInputs(iIOInputs);
-        fIOL.updateInputs(fIOLInputs);
-        fIOR.updateInputs(fIORInputs);
+        fIO.updateInputs(fIOInputs);
         Logger.processInputs("Launcher/Inserter/Inputs", iIOInputs);
-        Logger.processInputs("Launcher/Flywheel/Inputs/Left", fIOLInputs);
-        Logger.processInputs("Launcher/Flywheel/Inputs/Right", fIORInputs);
+        Logger.processInputs("Launcher/Flywheel/Inputs", fIOInputs);
 
         inserterDisconnectedAlert.set(iIOInputs.data.motorConnected());
-        flywheelLDisconnectedAlert.set(fIOLInputs.data.motorConnected());
-        flywheelRDisconnectedAlert.set(fIORInputs.data.motorConnected());
+        flywheelLeaderDisconnected.set(fIOInputs.data.leaderConnected());
+        flywheelFollowerDisconnected.set(fIOInputs.data.followerConnected());
 
         switch (goal) {
             case IDLE -> {
@@ -70,19 +65,17 @@ public class LauncherSystem {
                 double calculatedValue = LauncherCalculatorExperimental.calculate();
                 Logger.recordOutput("Outputs/Launcher/CalculateExperimental", calculatedValue);
 
-                fIOL.runRotationsPerSecond(calculatedValue);
-                fIOR.runRotationsPerSecond(calculatedValue);
+                fIO.runRotationsPerSecond(calculatedValue);
                 break;
             }
             case LAUNCH -> {
                 double calculatedValue = LauncherCalculatorExperimental.calculate();
                 Logger.recordOutput("Outputs/Launcher/CalculateExperimental", calculatedValue);
 
-                fIOL.runRotationsPerSecond(calculatedValue);
-                fIOR.runRotationsPerSecond(calculatedValue);
+                fIO.runRotationsPerSecond(calculatedValue);
 
                 // if (LauncherCalculatorExperimental.ready()) {
-                iIO.runRadiansPerSecond(calculatedValue);
+                iIO.runRotationsPerSecond(calculatedValue);
                 // } else {
                 // iIO.runVolts(0.0);
                 // }
@@ -97,19 +90,17 @@ public class LauncherSystem {
                 break;
             }
             case READY_STUPID -> {
-                fIOL.runRotationsPerSecond(flywheel_velocity.getAsDouble());
-                fIOR.runRotationsPerSecond(flywheel_velocity.getAsDouble());
+                fIO.runRotationsPerSecond(flywheel_velocity.getAsDouble());
                 break;
             }
             case SMART_LAUNCH -> {
                 double calculatedValue = LauncherCalculatorExperimental.calculate();
                 Logger.recordOutput("Outputs/Launcher/CalculateExperimental", calculatedValue);
 
-                fIOL.runRotationsPerSecond(calculatedValue);
-                fIOR.runRotationsPerSecond(calculatedValue);
+                fIO.runRotationsPerSecond(calculatedValue);
 
                 if (LauncherCalculatorExperimental.ready()) {
-                    iIO.runRadiansPerSecond(calculatedValue);
+                    iIO.runRotationsPerSecond(calculatedValue);
                 } else {
                     iIO.runVolts(0.0);
                 }
@@ -133,22 +124,19 @@ public class LauncherSystem {
 
     public void runLaunchVolts(double insertVolts, double launchVolts) {
         iIO.runVolts(insertVolts);
-        fIOL.runVolts(launchVolts);
-        fIOR.runVolts(launchVolts);
+        fIO.runVolts(launchVolts);
     }
 
     public void runLaunchVelocities(double insertVelocityPerSecond, double flywheelVelocityPerSecond) {
         Logger.recordOutput("Outputs/Launcher/Inserter/InsertVelocityPerSecond", insertVelocityPerSecond);
         Logger.recordOutput("Outputs/Launcher/Flywheel/FlywheelVelocityPerSecond", flywheelVelocityPerSecond);
-        iIO.runRadiansPerSecond(insertVelocityPerSecond);
-        fIOL.runRotationsPerSecond(flywheelVelocityPerSecond);
-        fIOR.runRotationsPerSecond(flywheelVelocityPerSecond);
+        iIO.runRotationsPerSecond(insertVelocityPerSecond);
+        fIO.runRotationsPerSecond(flywheelVelocityPerSecond);
     }
 
     public void stop() {
         iIO.stop();
-        fIOL.stop();
-        fIOR.stop();
+        fIO.stop();
     }
 
     public enum Goal {

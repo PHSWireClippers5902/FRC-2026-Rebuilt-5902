@@ -43,7 +43,7 @@ import org.frc5902.robot.subsystems.indexer.IndexerIOSpark;
 import org.frc5902.robot.subsystems.indexer.IndexerSystem;
 import org.frc5902.robot.subsystems.launcher.LauncherSystem;
 import org.frc5902.robot.subsystems.launcher.flywheel.FlywheelIO;
-import org.frc5902.robot.subsystems.launcher.flywheel.FlywheelIOSpark;
+import org.frc5902.robot.subsystems.launcher.flywheel.FlywheelIOSparks;
 import org.frc5902.robot.subsystems.launcher.inserter.InserterIO;
 import org.frc5902.robot.subsystems.launcher.inserter.InserterIOSpark;
 import org.frc5902.robot.subsystems.questnav.QuestIO;
@@ -87,7 +87,7 @@ public class CompRobotContainer extends RobotContainer {
                         new ModuleIOSparkAbsolute(1),
                         new ModuleIOSparkAbsolute(2),
                         new ModuleIOSparkAbsolute(3));
-                launcher = new LauncherSystem(new InserterIOSpark(), new FlywheelIOSpark(0), new FlywheelIOSpark(1));
+                launcher = new LauncherSystem(new InserterIOSpark(), new FlywheelIOSparks());
                 slamTake = new SLAMTake(new SlamIOSpark(), new IntakeIOSpark());
                 indexer = new IndexerSystem(new IndexerIOSpark());
                 quest = new QuestSubsystem(new QuestIOReal());
@@ -97,7 +97,7 @@ public class CompRobotContainer extends RobotContainer {
                 // sim bot
                 drive = new Drive(
                         new GyroIO() {}, new ModuleIOSim(), new ModuleIOSim(), new ModuleIOSim(), new ModuleIOSim());
-                launcher = new LauncherSystem(new InserterIO() {}, new FlywheelIO() {}, new FlywheelIO() {});
+                launcher = new LauncherSystem(new InserterIO() {}, new FlywheelIO() {});
                 slamTake = new SLAMTake(new SlamIO() {}, new IntakeIO() {});
                 indexer = new IndexerSystem(new IndexerIO() {});
                 quest = new QuestSubsystem(new QuestIO() {});
@@ -107,7 +107,7 @@ public class CompRobotContainer extends RobotContainer {
                 // replay
                 drive = new Drive(
                         new GyroIO() {}, new ModuleIO() {}, new ModuleIO() {}, new ModuleIO() {}, new ModuleIO() {});
-                launcher = new LauncherSystem(new InserterIO() {}, new FlywheelIO() {}, new FlywheelIO() {});
+                launcher = new LauncherSystem(new InserterIO() {}, new FlywheelIO() {});
                 slamTake = new SLAMTake(new SlamIO() {}, new IntakeIO() {});
                 indexer = new IndexerSystem(new IndexerIO() {});
                 quest = new QuestSubsystem(new QuestIO() {});

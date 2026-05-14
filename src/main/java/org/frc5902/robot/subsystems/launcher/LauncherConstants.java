@@ -65,7 +65,7 @@ public class LauncherConstants {
     public class InserterConstants {
         public static int InserterCANID = 55;
         public static boolean inverted = true;
-        public static final double reduction = 1;
+        public static final double reduction = 3;
         public static int StallLimit = 65;
         public static int FreeLimit = 46;
         public static PID inserterPID =

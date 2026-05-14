@@ -5,11 +5,12 @@ import org.littletonrobotics.junction.AutoLog;
 public interface FlywheelIO {
     @AutoLog
     class FlywheelIOInputs {
-        public FlywheelIOData data = new FlywheelIOData(false, 0.0, 0.0, 0.0, 0.0, 0.0);
+        public FlywheelIOData data = new FlywheelIOData(false, false, 0.0, 0.0, 0.0, 0.0, 0.0);
     }
 
     record FlywheelIOData(
-            boolean motorConnected,
+            boolean leaderConnected,
+            boolean followerConnected,
             double positionRotations,
             double velocityRPS,
             double appliedVoltage,

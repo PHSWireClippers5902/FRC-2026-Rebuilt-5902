@@ -79,8 +79,8 @@ public class InserterIOSpark implements InserterIO {
     }
 
     @Override
-    public void runRadiansPerSecond(double radiansPerSecond) {
-        insertercontroller.setSetpoint(radiansPerSecond, ControlType.kVelocity);
+    public void runRotationsPerSecond(double rotationsPerSecond) {
+        insertercontroller.setSetpoint(rotationsPerSecond, ControlType.kVelocity);
     }
 
     @Override
