@@ -47,7 +47,7 @@ public class SinusoidalControlCommand extends Command {
     @Getter
     private String name = "";
 
-    @Getter 
+    @Getter
     private double cycles = -1;
 
     public SinusoidalControlCommand(
@@ -107,16 +107,6 @@ public class SinusoidalControlCommand extends Command {
     }
 
     public static SinusoidalControlCommand FakeSinusoidalCommand(String name) {
-        return new SinusoidalControlCommand(
-                null,
-                (double value) -> {},
-                "FakeSine/" + name,
-                1,
-                3,
-                0,
-                0,
-                -1,
-                0.0,
-                true);
+        return new SinusoidalControlCommand(null, (double value) -> {}, "FakeSine/" + name, 1, 3, 0, 0, -1, 0.0, true);
     }
 }

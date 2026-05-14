@@ -19,6 +19,8 @@ public class LauncherSystem {
     private final FlywheelIOInputsAutoLogged fIORInputs = new FlywheelIOInputsAutoLogged();
     private final FlywheelEstimation estimation = FlywheelEstimation.getInstance();
     private final LoggedTunableNumber flywheel_velocity = new LoggedTunableNumber("Launcher/Flywheel_Velocity", 190);
+    private final LoggedTunableNumber feeder_velocity = new LoggedTunableNumber("Launcher/Feeder_Velocity", 190);
+
     private final LoggedTunableNumber jam_volts = new LoggedTunableNumber("Launcher/Jam_Volts", -4.0);
 
     @Getter
@@ -91,7 +93,7 @@ public class LauncherSystem {
                 break;
             }
             case LAUNCH_STUPID -> {
-                runLaunchVelocities(flywheel_velocity.getAsDouble(), flywheel_velocity.getAsDouble());
+                runLaunchVelocities(feeder_velocity.getAsDouble(), flywheel_velocity.getAsDouble());
                 break;
             }
             case READY_STUPID -> {

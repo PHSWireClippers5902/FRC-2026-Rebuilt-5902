@@ -1,10 +1,9 @@
 package org.frc5902.robot.subsystems.vision;
 
+import edu.wpi.first.math.geometry.Pose3d;
 import org.frc5902.robot.RobotState;
 import org.frc5902.robot.RobotState.VisionObservation;
 import org.photonvision.PhotonCamera;
-
-import edu.wpi.first.math.geometry.Pose3d;
 
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -17,7 +16,6 @@ public class VisionIOPhoton implements VisionIO {
 
     public VisionIOPhoton(String name) {
         camera = new PhotonCamera(name);
-        
     }
 
     @Override
@@ -30,7 +28,8 @@ public class VisionIOPhoton implements VisionIO {
             // if (result.hasTargets()) {
             //     RobotState.getInstance()
             //             .addVisionObservation(
-            //                 new VisionObservation(result.getBestTarget().getBestCameraToTarget(), result.getTimestampSeconds(), null));
+            //                 new VisionObservation(result.getBestTarget().getBestCameraToTarget(),
+            // result.getTimestampSeconds(), null));
             // }
 
             if (result.multitagResult.isPresent()) {
@@ -42,20 +41,19 @@ public class VisionIOPhoton implements VisionIO {
 
                 double totalTagDistance = 0.0;
                 for (var target : result.targets) {
-                    totalTagDistance += target.bestCameraToTarget.getTranslation().getNorm();
+                    totalTagDistance +=
+                            target.bestCameraToTarget.getTranslation().getNorm();
                 }
 
                 tagIds.addAll(multitagResult.fiducialIDsUsed);
 
-                RobotState.getInstance().addVisionObservation(
-                    new VisionObservation(robotPose, result.getTimestampSeconds(), null)
-                );
+                RobotState.getInstance()
+                        .addVisionObservation(new VisionObservation(robotPose, result.getTimestampSeconds(), null));
 
-            }
-            else if (!result.targets.isEmpty()) {
+            } else if (!result.targets.isEmpty()) {
                 var target = result.targets.get(0);
                 // var tagPose = .getTagPose(target.fiducialId);
-                
+
             }
         }
     }

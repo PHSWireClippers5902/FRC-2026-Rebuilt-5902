@@ -1,12 +1,5 @@
 package org.frc5902.robot.commands.drive;
 
-import java.util.function.DoubleSupplier;
-import java.util.function.Supplier;
-
-import org.frc5902.robot.RobotState;
-import org.frc5902.robot.subsystems.drive.Drive;
-import org.littletonrobotics.junction.Logger;
-
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -17,27 +10,40 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import org.frc5902.robot.RobotState;
+import org.frc5902.robot.subsystems.drive.Drive;
+import org.littletonrobotics.junction.Logger;
+
+import java.util.function.DoubleSupplier;
+import java.util.function.Supplier;
 
 public class PointCommands {
     public static Command pointAtTranslation(Drive drive, Translation2d target) {
-        return aimAtAngle(drive, () -> target.minus(
-                        RobotState.getInstance().getEstimatedPose().getTranslation())
-                .getAngle(),4.0);
+        return aimAtAngle(
+                drive,
+                () -> target.minus(RobotState.getInstance().getEstimatedPose().getTranslation())
+                        .getAngle(),
+                4.0);
     }
 
     public static Command pointAtPose(Drive drive, Pose2d pose) {
-        return aimAtAngle(drive, () -> {
-            //     return pose.minus(RobotState.getInstance().getEstimatedPose()).getRotation();
-            // return Rotation2d.kZero;
-            Logger.recordOutput(
-                    "AIM_POSE",
-                    pose.getTranslation()
+        return aimAtAngle(
+                drive,
+                () -> {
+                    //     return pose.minus(RobotState.getInstance().getEstimatedPose()).getRotation();
+                    // return Rotation2d.kZero;
+                    Logger.recordOutput(
+                            "AIM_POSE",
+                            pose.getTranslation()
+                                    .minus(RobotState.getInstance()
+                                            .getEstimatedPose()
+                                            .getTranslation())
+                                    .getAngle());
+                    return pose.getTranslation()
                             .minus(RobotState.getInstance().getEstimatedPose().getTranslation())
-                            .getAngle());
-            return pose.getTranslation()
-                    .minus(RobotState.getInstance().getEstimatedPose().getTranslation())
-                    .getAngle();
-        },4.0);
+                            .getAngle();
+                },
+                4.0);
     }
 
     public static Command pointAtPoseWhileMoving(
@@ -53,8 +59,6 @@ public class PointCommands {
                     .getAngle();
         });
     }
-
-    
 
     public static Command aimAtAngle(Drive drive, Supplier<Rotation2d> rotationSupplier, double kP) {
         // configure (kP, kI, kD, -zoid: max_velocity, max_acceleration)
@@ -84,5 +88,4 @@ public class PointCommands {
                 .beforeStarting(
                         () -> angleController.reset(drive.getGyroRotation().getRadians()));
     }
-
 }
