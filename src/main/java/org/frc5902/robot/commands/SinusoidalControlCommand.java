@@ -103,7 +103,7 @@ public class SinusoidalControlCommand extends Command {
 
     @Override
     public boolean isFinished() {
-        return sinusoidalTimer.get() / period > cycles;
+        return sinusoidalTimer.get() / period < cycles;
     }
 
     public static SinusoidalControlCommand FakeSinusoidalCommand(String name) {
