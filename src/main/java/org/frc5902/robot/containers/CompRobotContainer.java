@@ -25,6 +25,7 @@ import org.frc5902.robot.commands.SinusoidalControlCommand;
 import org.frc5902.robot.commands.auto.AutoBuilder;
 import org.frc5902.robot.commands.auto.EasyAutonomousCommandFactory;
 import org.frc5902.robot.commands.drive.DriveCommands;
+import org.frc5902.robot.commands.drive.PointCommands;
 import org.frc5902.robot.subsystems.SLAMtake.SLAMTake;
 import org.frc5902.robot.subsystems.SLAMtake.intake.IntakeIO;
 import org.frc5902.robot.subsystems.SLAMtake.intake.IntakeIOSpark;
@@ -143,7 +144,7 @@ public class CompRobotContainer extends RobotContainer {
         NamedCommands.registerCommand("RESET_POSE", MiscCommands.PoseResetCommand(this));
         NamedCommands.registerCommand(
                 "OSCILLATE",
-                DriveCommands.pointAtTranslation(drive, FieldConstants.BLUE_HUB_LOCATION)
+                PointCommands.pointAtTranslation(drive, FieldConstants.BLUE_HUB_LOCATION)
                         .repeatedly());
         NamedCommands.registerCommand(
                 "INTAKE",

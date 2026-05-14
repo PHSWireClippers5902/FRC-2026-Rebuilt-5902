@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import org.frc5902.robot.FieldConstants;
 import org.frc5902.robot.commands.drive.DriveCommands;
+import org.frc5902.robot.commands.drive.PointCommands;
 import org.frc5902.robot.containers.CompRobotContainer;
 import org.frc5902.robot.subsystems.drive.Drive;
 import org.frc5902.robot.subsystems.superstructure.Superstructure;
@@ -23,7 +24,7 @@ public class MiscCommands {
     // whatever this technically isn't a miscellaneous command...
     public static Command LaunchSequence(Drive drive, Superstructure superstructure) {
         return Commands.race(
-                DriveCommands.pointAtPose(drive, new Pose2d(FieldConstants.BLUE_HUB_LOCATION, new Rotation2d())),
+                PointCommands.pointAtPose(drive, new Pose2d(FieldConstants.BLUE_HUB_LOCATION, new Rotation2d())),
                 Commands.sequence(
                         Superstructure.AutonomousSuperstructureGoalCommand(
                                 SuperstructureActions.READY_LAUNCHER_STUPID, 1, superstructure),
@@ -34,7 +35,7 @@ public class MiscCommands {
     // whatever this technically isn't a miscellaneous command...
     public static Command LaunchSequenceBetter(Drive drive, Superstructure superstructure) {
         return Commands.race(
-                DriveCommands.pointAtTranslation(drive, AllianceFlipUtil.apply(FieldConstants.BLUE_HUB_LOCATION)),
+                PointCommands.pointAtTranslation(drive, AllianceFlipUtil.apply(FieldConstants.BLUE_HUB_LOCATION)),
                 Commands.sequence(
                         Superstructure.AutonomousSuperstructureGoalCommand(
                                 SuperstructureActions.READY_LAUNCHER_STUPID, 1, superstructure),
