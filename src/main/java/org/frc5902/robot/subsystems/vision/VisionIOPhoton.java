@@ -4,6 +4,8 @@ import org.frc5902.robot.RobotState;
 import org.frc5902.robot.RobotState.VisionObservation;
 import org.photonvision.PhotonCamera;
 
+import edu.wpi.first.math.geometry.Pose3d;
+
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -15,6 +17,7 @@ public class VisionIOPhoton implements VisionIO {
 
     public VisionIOPhoton(String name) {
         camera = new PhotonCamera(name);
+        
     }
 
     @Override
@@ -24,15 +27,35 @@ public class VisionIOPhoton implements VisionIO {
         Set<Short> tagIds = new HashSet<>();
         List<VisionObservation> poseObservations = new LinkedList<>();
         for (var result : camera.getAllUnreadResults()) {
-            if (result.hasTargets()) {
-                RobotState.getInstance()
-                        .addVisionObservation(new VisionObservation(null, result.getTimestampSeconds(), null));
-            }
+            // if (result.hasTargets()) {
+            //     RobotState.getInstance()
+            //             .addVisionObservation(
+            //                 new VisionObservation(result.getBestTarget().getBestCameraToTarget(), result.getTimestampSeconds(), null));
+            // }
 
             if (result.multitagResult.isPresent()) {
                 var multitagResult = result.multitagResult.get();
 
                 // calc
+
+                Pose3d robotPose = new Pose3d();
+
+                double totalTagDistance = 0.0;
+                for (var target : result.targets) {
+                    totalTagDistance += target.bestCameraToTarget.getTranslation().getNorm();
+                }
+
+                tagIds.addAll(multitagResult.fiducialIDsUsed);
+
+                RobotState.getInstance().addVisionObservation(
+                    new VisionObservation(robotPose, result.getTimestampSeconds(), null)
+                );
+
+            }
+            else if (!result.targets.isEmpty()) {
+                var target = result.targets.get(0);
+                // var tagPose = .getTagPose(target.fiducialId);
+                
             }
         }
     }
