@@ -163,7 +163,7 @@ public class CompRobotContainer extends RobotContainer {
         NamedCommands.registerCommand(
                 "SINUSOIDAL_SLAM",
                 new SinusoidalControlCommand(
-                        null, (value) -> superstructure.getSlam().runSLAMAngle(value),"SINUSOIDAL_SLAM", -0.07, 2.5, 0, 0.07, -1,true));
+                        null, (value) -> superstructure.getSlam().runSLAMAngle(value),"SINUSOIDAL_SLAM", -0.07, 2.5, 0, 0.07, -1,0.0,true));
 
         // GREEDY SWEEP
         autoChooser.addOption("BLUE_LEFT_GREEDY_SWEEP", new PathPlannerAuto("SWEEP_GREEDY_L"));
@@ -298,7 +298,7 @@ public class CompRobotContainer extends RobotContainer {
         m_XboxController
                 .x()
                 .whileTrue(new SinusoidalControlCommand(
-                        drive, (value) -> drive.runVelocity(new ChassisSpeeds(0, 0, value)),"RotationSine", 0.3, 0.5, 0, 0,-1, false));
+                        drive, (value) -> drive.runVelocity(new ChassisSpeeds(0, 0, value)),"RotationSine", 0.3, 0.5, 0, 0,-1,0.0, false));
 
         m_XboxController
                 .a()

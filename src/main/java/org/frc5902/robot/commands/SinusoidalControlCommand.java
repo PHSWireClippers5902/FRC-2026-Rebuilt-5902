@@ -39,7 +39,10 @@ public class SinusoidalControlCommand extends Command {
     private double raise = 0.0;
 
     private BaseFunction sinefunction;
-    public double finalValue = 0.0;
+
+    @Setter
+    @Getter
+    private double finalValue = 0.0;
 
     @Getter
     private String name = "";
@@ -56,6 +59,7 @@ public class SinusoidalControlCommand extends Command {
             double shift,
             double raise,
             double cycles,
+            double finalValue,
             boolean useCosine) {
         this.method = method;
         sinusoidalTimer = new Timer();
@@ -67,6 +71,8 @@ public class SinusoidalControlCommand extends Command {
 
         this.cycles = cycles;
         this.name = name;
+
+        this.finalValue = finalValue;
 
         sinefunction = (value) -> this.raise
                 + this.magnitude
@@ -97,7 +103,7 @@ public class SinusoidalControlCommand extends Command {
 
     @Override
     public boolean isFinished() {
-        return period * sinusoidalTimer.get() > cycles;
+        return sinusoidalTimer.get() / period > cycles;
     }
 
     public static SinusoidalControlCommand FakeSinusoidalCommand(String name) {
@@ -110,6 +116,7 @@ public class SinusoidalControlCommand extends Command {
                 0,
                 0,
                 -1,
+                0.0,
                 true);
     }
 }
