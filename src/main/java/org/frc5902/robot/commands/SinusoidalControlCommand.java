@@ -41,13 +41,21 @@ public class SinusoidalControlCommand extends Command {
     private BaseFunction sinefunction;
     public double finalValue = 0.0;
 
+    @Getter
+    private String name = "";
+
+    @Getter 
+    private double cycles = -1;
+
     public SinusoidalControlCommand(
             SubsystemBase system,
             DoubleConsumer method,
+            String name,
             double magnitude,
             double period,
             double shift,
             double raise,
+            double cycles,
             boolean useCosine) {
         this.method = method;
         sinusoidalTimer = new Timer();
@@ -56,6 +64,9 @@ public class SinusoidalControlCommand extends Command {
         this.period = period;
         this.shift = shift;
         this.raise = raise;
+
+        this.cycles = cycles;
+        this.name = name;
 
         sinefunction = (value) -> this.raise
                 + this.magnitude
@@ -74,7 +85,9 @@ public class SinusoidalControlCommand extends Command {
 
     @Override
     public void execute() {
-        method.accept(sinefunction.function(sinusoidalTimer.get()));
+        double result = sinefunction.function(sinusoidalTimer.get());
+        method.accept(result);
+        Logger.recordOutput("Sinusoidals/" + this.name, result);
     }
 
     @Override
@@ -82,16 +95,21 @@ public class SinusoidalControlCommand extends Command {
         if (!interrupted) method.accept(finalValue);
     }
 
+    @Override
+    public boolean isFinished() {
+        return period * sinusoidalTimer.get() > cycles;
+    }
+
     public static SinusoidalControlCommand FakeSinusoidalCommand(String name) {
         return new SinusoidalControlCommand(
                 null,
-                (double value) -> {
-                    Logger.recordOutput("SinusoidalCommands/" + name, value);
-                },
+                (double value) -> {},
+                "FakeSine/" + name,
                 1,
                 3,
                 0,
                 0,
+                -1,
                 true);
     }
 }
