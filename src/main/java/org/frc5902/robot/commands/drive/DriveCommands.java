@@ -50,15 +50,7 @@ public class DriveCommands {
 
     private DriveCommands() {}
 
-    public static Command stupidTurnCommand(Drive drive, double referenceRADIANS) {
-        return Commands.run(
-                () -> {
-                    double targetRADIANS = drive.getGyroRotation().getRadians();
-                    double difference = referenceRADIANS - targetRADIANS;
-                    drive.runVelocity(new ChassisSpeeds(0, 0, difference * 0.05));
-                },
-                drive);
-    }
+    
 
     private static Translation2d getLinearVelocityFromJoysticks(double x, double y) {
         // Apply deadband
