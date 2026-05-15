@@ -47,7 +47,8 @@ public class PointCommands {
                         .getTranslation()
                         .minus(target)
                         .getAngle(),
-                translationMultiplier);
+                translationMultiplier,
+                4.0);
     }
 
     public static Command pointAtPose(Drive drive, Pose2d pose) {

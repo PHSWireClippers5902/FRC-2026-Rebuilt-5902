@@ -4,7 +4,7 @@
  * @purpose: A place to simulate sinusoidal controls in an FRC match
  * @author:    Daniel Sabalakov
  */
-package org.frc5902.robot.commands;
+package org.frc5902.robot.commands.MathCommands;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
