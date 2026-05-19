@@ -20,7 +20,7 @@ import org.frc5902.robot.containers.RobotContainer;
 import org.frc5902.robot.subsystems.led.LEDManager;
 import org.frc5902.robot.subsystems.rumble.Rumble;
 import org.frc5902.robot.subsystems.superstructure.Superstructure;
-import org.frc5902.robot.util.buildutil.BuildInfo;
+import org.frc5902.robot.util.BuildInfo;
 import org.frc5902.robot.util.buildutil.SystemTimeValidReader;
 import org.frc5902.robot.util.buildutil.VirtualSubsystem;
 import org.frc5902.robot.util.shifts.Phases;
