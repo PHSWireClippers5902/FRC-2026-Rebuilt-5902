@@ -39,6 +39,7 @@ import org.frc5902.robot.subsystems.drive.modules.ModuleIOSparkAbsolute;
 import org.frc5902.robot.subsystems.indexer.IndexerIO;
 import org.frc5902.robot.subsystems.indexer.IndexerIOSpark;
 import org.frc5902.robot.subsystems.indexer.IndexerSystem;
+import org.frc5902.robot.subsystems.launcher.LauncherCalculatorExperimental;
 import org.frc5902.robot.subsystems.launcher.LauncherSystem;
 import org.frc5902.robot.subsystems.launcher.flywheel.FlywheelIO;
 import org.frc5902.robot.subsystems.launcher.flywheel.FlywheelIOSparks;
@@ -164,6 +165,7 @@ public class CompRobotContainer extends RobotContainer {
                 new SinusoidalControlCommand(
                         null,
                         (value) -> superstructure.getSlam().runSLAMAngle(value),
+                        () -> !this.OVERRIDE_SMART_LAUNCH || LauncherCalculatorExperimental.ready(),
                         "SINUSOIDAL_SLAM",
                         -0.07,
                         2.5,
@@ -316,6 +318,7 @@ public class CompRobotContainer extends RobotContainer {
                 .whileTrue(new SinusoidalControlCommand(
                         drive,
                         (value) -> drive.runVelocity(new ChassisSpeeds(0, 0, value)),
+                        () -> true,
                         "RotationSine",
                         0.3,
                         0.5,

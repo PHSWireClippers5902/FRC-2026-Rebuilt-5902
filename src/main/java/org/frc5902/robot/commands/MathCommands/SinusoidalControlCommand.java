@@ -14,6 +14,7 @@ import lombok.Setter;
 import org.frc5902.robot.util.flywheellib.functions.BaseFunction;
 import org.littletonrobotics.junction.Logger;
 
+import java.util.function.BooleanSupplier;
 import java.util.function.DoubleConsumer;
 
 public class SinusoidalControlCommand extends Command {
@@ -41,6 +42,9 @@ public class SinusoidalControlCommand extends Command {
     private BaseFunction sinefunction;
 
     @Setter
+    private BooleanSupplier condition;
+
+    @Setter
     @Getter
     private double finalValue = 0.0;
 
@@ -53,6 +57,7 @@ public class SinusoidalControlCommand extends Command {
     public SinusoidalControlCommand(
             SubsystemBase system,
             DoubleConsumer method,
+            BooleanSupplier condition,
             String name,
             double magnitude,
             double period,
@@ -62,6 +67,8 @@ public class SinusoidalControlCommand extends Command {
             double finalValue,
             boolean useCosine) {
         this.method = method;
+        this.condition = condition;
+
         sinusoidalTimer = new Timer();
 
         this.magnitude = magnitude;
@@ -92,8 +99,9 @@ public class SinusoidalControlCommand extends Command {
     @Override
     public void execute() {
         double result = sinefunction.function(sinusoidalTimer.get());
-        method.accept(result);
-        Logger.recordOutput("Sinusoidals/" + this.name, result);
+        if (condition.getAsBoolean()) method.accept(result);
+        Logger.recordOutput("Sinusoidals/" + this.name + "/Value", result);
+        Logger.recordOutput("Sinusoids/" + this.name + "/Condition", condition.getAsBoolean());
     }
 
     @Override
@@ -107,6 +115,6 @@ public class SinusoidalControlCommand extends Command {
     }
 
     public static SinusoidalControlCommand FakeSinusoidalCommand(String name) {
-        return new SinusoidalControlCommand(null, (double value) -> {}, "FakeSine/" + name, 1, 3, 0, 0, -1, 0.0, true);
+        return new SinusoidalControlCommand(null, (double value) -> {},() -> true, "FakeSine/" + name, 1, 3, 0, 0, -1, 0.0, true);
     }
 }

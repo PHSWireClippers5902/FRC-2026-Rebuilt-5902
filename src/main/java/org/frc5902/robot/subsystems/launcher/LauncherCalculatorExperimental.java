@@ -45,7 +45,6 @@ public class LauncherCalculatorExperimental {
     }
 
     public static boolean ready() {
-        // tolerance magick number 5 degrees
         Pose2d currentPose = RobotState.getInstance().getEstimatedPose();
         double tolerance = 13.0;
         boolean returnval =
