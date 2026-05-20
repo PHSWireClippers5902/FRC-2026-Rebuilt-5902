@@ -100,7 +100,7 @@ public class SinusoidalControlCommand extends Command {
     public void execute() {
         double result = sinefunction.function(sinusoidalTimer.get());
         if (condition.getAsBoolean()) method.accept(result);
-        Logger.recordOutput("Sinusoidals/" + this.name + "/Value", result);
+        Logger.recordOutput("Sinusoids/" + this.name + "/Value", result);
         Logger.recordOutput("Sinusoids/" + this.name + "/Condition", condition.getAsBoolean());
     }
 
@@ -115,6 +115,7 @@ public class SinusoidalControlCommand extends Command {
     }
 
     public static SinusoidalControlCommand FakeSinusoidalCommand(String name) {
-        return new SinusoidalControlCommand(null, (double value) -> {},() -> true, "FakeSine/" + name, 1, 3, 0, 0, -1, 0.0, true);
+        return new SinusoidalControlCommand(
+                null, (double value) -> {}, () -> true, "FakeSine/" + name, 1, 3, 0, 0, -1, 0.0, true);
     }
 }

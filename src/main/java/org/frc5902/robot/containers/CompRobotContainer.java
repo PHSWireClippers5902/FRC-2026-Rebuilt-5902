@@ -65,9 +65,10 @@ public class CompRobotContainer extends RobotContainer {
 
     private final QuestSubsystem quest;
 
-    @Getter
     @Setter
+    @Getter
     private boolean OVERRIDE_SMART_LAUNCH = false;
+
     // vision? implement later, pah-lease!
     // command xbox
     private final CommandXboxController m_XboxController = new CommandXboxController(0);
@@ -165,7 +166,7 @@ public class CompRobotContainer extends RobotContainer {
                 new SinusoidalControlCommand(
                         null,
                         (value) -> superstructure.getSlam().runSLAMAngle(value),
-                        () -> !this.OVERRIDE_SMART_LAUNCH || LauncherCalculatorExperimental.ready(),
+                        () -> isOVERRIDE_SMART_LAUNCH() || LauncherCalculatorExperimental.ready(),
                         "SINUSOIDAL_SLAM",
                         -0.07,
                         2.5,
@@ -289,10 +290,10 @@ public class CompRobotContainer extends RobotContainer {
                 .onTrue(superstructure.addCommandToScheduler(SuperstructureActions.LAUNCH_STUPID))
                 .whileTrue(NamedCommands.getCommand("SINUSOIDAL_SLAM"))
                 .onFalse(superstructure.removeCommandFromScheduler(SuperstructureActions.LAUNCH_STUPID));
-        // m_XboxController
-        //         .b()
-        //         .toggleOnTrue(Commands.runOnce(() -> this.OVERRIDE_SMART_LAUNCH = !this.OVERRIDE_SMART_LAUNCH));
-        m_XboxController.b().whileTrue(PointCommands.pointAtTranslation(drive, FieldConstants.BLUE_HUB_LOCATION));
+        m_XboxController
+                .b()
+                .toggleOnTrue(Commands.runOnce(() -> this.OVERRIDE_SMART_LAUNCH = !this.OVERRIDE_SMART_LAUNCH));
+        // m_XboxController.b().whileTrue(PointCommands.pointAtTranslation(drive, FieldConstants.BLUE_HUB_LOCATION));
 
         // .onTrue(superstructure.addCommandToScheduler(SuperstructureActions.RAISED_INTAKE))
         // .onFalse(superstructure.removeCommandFromScheduler(SuperstructureActions.RAISED_INTAKE));
