@@ -99,8 +99,8 @@ public class LauncherSystem {
 
                 fIO.runRotationsPerSecond(calculatedValue);
 
-                if (LauncherCalculatorExperimental.ready()) {
-                    iIO.runRotationsPerSecond(calculatedValue);
+                if (LauncherCalculatorExperimental.readyWithSpeeds(fIOInputs.data.velocityRPS() * 2, calculatedValue)) {
+                    iIO.runRotationsPerSecond(feeder_velocity.getAsDouble());
                 } else {
                     iIO.runVolts(0.0);
                 }

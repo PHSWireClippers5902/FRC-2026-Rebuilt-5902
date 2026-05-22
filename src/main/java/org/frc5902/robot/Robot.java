@@ -157,6 +157,14 @@ public class Robot extends LoggedRobot {
         robotContainer.updateAlerts();
         robotContainer.updateDashboardOutputs();
 
+        Logger.recordOutput(
+                "Outputs/MagickCalculator/BlueHubDistance",
+                RobotState.getInstance()
+                        .getEstimatedPose()
+                        .getTranslation()
+                        .minus(FieldConstants.BLUE_HUB_LOCATION)
+                        .getNorm());
+
         var canStatus = RobotController.getCANStatus();
         if (canStatus.transmitErrorCount > 0 || canStatus.receiveErrorCount > 0) {
             canErrorTimer.restart();

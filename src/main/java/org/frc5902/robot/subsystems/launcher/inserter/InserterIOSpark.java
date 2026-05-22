@@ -46,7 +46,7 @@ public class InserterIOSpark implements InserterIO {
                 InserterConstants.inserterPID.getProportional(),
                 InserterConstants.inserterPID.getIntegral(),
                 InserterConstants.inserterPID.getDeriviative());
-
+        config.closedLoop.outputRange(0, 1);
         tryUntilOk(
                 inserter,
                 5,

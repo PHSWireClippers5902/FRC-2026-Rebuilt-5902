@@ -162,6 +162,20 @@ public class CompRobotContainer extends RobotContainer {
                 "LAUNCH_SEQUENCE", MiscCommands.LaunchSequenceBetterSTUPID(drive, superstructure));
         //        public static double raisedAngleLOW = 0.09;
         NamedCommands.registerCommand(
+                "SINUSOIDAL_SLAM_SMART",
+                new SinusoidalControlCommand(
+                        null,
+                        (value) -> superstructure.getSlam().runSLAMAngle(value),
+                        () -> isOVERRIDE_SMART_LAUNCH() || LauncherCalculatorExperimental.ready(),
+                        "SINUSOIDAL_SLAM",
+                        -0.07,
+                        2.5,
+                        0,
+                        0.07,
+                        -1,
+                        0.0,
+                        true));
+        NamedCommands.registerCommand(
                 "SINUSOIDAL_SLAM",
                 new SinusoidalControlCommand(
                         null,
@@ -175,7 +189,6 @@ public class CompRobotContainer extends RobotContainer {
                         -1,
                         0.0,
                         true));
-
         // GREEDY SWEEP
         autoChooser.addOption("BLUE_LEFT_GREEDY_SWEEP", new PathPlannerAuto("SWEEP_GREEDY_L"));
         autoChooser.addOption("RED_RIGHT_GREEDY_SWEEP", new PathPlannerAuto("SWEEP_GREEDY_L", true));
@@ -269,7 +282,7 @@ public class CompRobotContainer extends RobotContainer {
                 .and(() -> !this.OVERRIDE_SMART_LAUNCH)
                 .onTrue(superstructure.addCommandToScheduler(SuperstructureActions.LAUNCH_SMART))
                 .whileTrue(Commands.parallel(
-                        NamedCommands.getCommand("SINUSOIDAL_SLAM"),
+                        NamedCommands.getCommand("SINUSOIDAL_SLAM_SMART"),
                         PointCommands.pointAtTranslationWhileMoving(
                                 drive,
                                 () -> -m_XboxController.getLeftY(),

@@ -99,7 +99,7 @@ public class PointCommands {
                                             : RobotState.getInstance().getRotation()));
                         },
                         drive)
-                .beforeStarting(
-                        () -> angleController.reset(drive.getGyroRotation().getRadians()));
+                .beforeStarting(() -> angleController.reset(
+                        RobotState.getInstance().getRotation().getRadians()));
     }
 }

@@ -93,7 +93,7 @@ public class SLAMTake {
                 Logger.recordOutput("Outputs/Launcher/CalculateExperimental", calculatedValue);
                 if (LauncherCalculatorExperimental.ready()) {
                     slamIO.runAngle(SlamSystemConstants.SlamConstants.raisedAngleLOW);
-                    runIntakeVolts(3.0);
+                    runIntakeVolts(1.0);
                 } else {
                     slamIO.runVolts(0.0);
                     runIntakeVolts(0.0);
@@ -105,7 +105,8 @@ public class SLAMTake {
                 break;
             }
             case ONLY_INTAKE: {
-                runIntakeVolts(3.0);
+                runIntakeVolts(1.0);
+                break;
             }
             default: {
                 stop();

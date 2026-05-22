@@ -15,16 +15,16 @@ public class LauncherCalculatorExperimental {
 
     static {
         // anything under 58 NOTHING
-        inch_velocity.put(Units.inchesToMeters(66.5), 145.0);
-        inch_velocity.put(Units.inchesToMeters(79), 75.0);
-        inch_velocity.put(Units.inchesToMeters(87.5), 155.0);
-        inch_velocity.put(Units.inchesToMeters(102), 80.0);
-        inch_velocity.put(Units.inchesToMeters(113.25), 165.0);
-        inch_velocity.put(Units.inchesToMeters(128), 170.0);
-        inch_velocity.put(Units.inchesToMeters(125), 165.0);
-        inch_velocity.put(Units.inchesToMeters(146), 187.0);
-        inch_velocity.put(Units.inchesToMeters(156), 197.0);
-        inch_velocity.put(Units.inchesToMeters(168.5), 200.0);
+        inch_velocity.put(Units.inchesToMeters(66.5), 155.0);
+        inch_velocity.put(Units.inchesToMeters(79), 85.0);
+        inch_velocity.put(Units.inchesToMeters(87.5), 165.0);
+        inch_velocity.put(Units.inchesToMeters(102), 90.0);
+        inch_velocity.put(Units.inchesToMeters(113.25), 175.0);
+        inch_velocity.put(Units.inchesToMeters(128), 180.0);
+        inch_velocity.put(Units.inchesToMeters(125), 185.0);
+        inch_velocity.put(Units.inchesToMeters(146), 197.0);
+        inch_velocity.put(Units.inchesToMeters(156), 207.0);
+        inch_velocity.put(Units.inchesToMeters(168.5), 210.0);
         // anything over 167 NOTHING
     }
 
@@ -50,8 +50,14 @@ public class LauncherCalculatorExperimental {
         boolean returnval =
                 (Math.abs((currentPose.getRotation().minus(calcPointedAngle()).getDegrees() % 360 + 360) % 360)
                         <= tolerance);
+        // get new condition as well
         Logger.recordOutput("Outputs/MagickCalculator/ReturnValue", returnval);
         return returnval;
+    }
+
+    public static boolean readyWithSpeeds(double currentSpeed, double targetSpeed) {
+        double tolerance = 20;
+        return ready() && Math.abs(currentSpeed - targetSpeed) <= tolerance;
     }
 
     public static Rotation2d calcPointedAngle() {

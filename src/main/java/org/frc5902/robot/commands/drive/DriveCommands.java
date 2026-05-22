@@ -125,8 +125,8 @@ public class DriveCommands {
                         drive)
 
                 // Reset PID controller when command starts
-                .beforeStarting(
-                        () -> angleController.reset(drive.getGyroRotation().getRadians()));
+                .beforeStarting(() -> angleController.reset(
+                        RobotState.getInstance().getRotation().getRadians()));
     }
 
     public static Command resetSwerveAbsolutePositions(Drive drive) {
